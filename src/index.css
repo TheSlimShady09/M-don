@@ -1,0 +1,291 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   M'DON brand tokens (Albanian flag: red & black, a little white)
+   ========================================================================== */
+
+@theme {
+  --color-ink: #0E0A0A;
+  --color-ink-2: #181111;
+  --color-crimson: #B3141B;
+  --color-flame: #E0202A;
+  --color-paper: #F3EFEE;
+  --color-bone: #F7F5F4;
+  --color-stone: #5F5656;
+  --color-rule: #E8E2E1;
+
+  --font-serif: "Cormorant Garamond", "Cormorant", Garamond, "Times New Roman", serif;
+  --font-sans: "Jost", "Futura", "Century Gothic", system-ui, sans-serif;
+
+  --ease-brand: cubic-bezier(.2, .7, .2, 1);
+}
+
+/* Dashboard surfaces. "inline" so each utility reads the variable where it is used,
+   which lets .admin-root[data-theme="dark"] switch every colour at once. */
+@theme inline {
+  --color-canvas: var(--a-canvas);
+  --color-surface: var(--a-surface);
+  --color-sunken: var(--a-sunken);
+  --color-hover: var(--a-hover);
+  --color-fg: var(--a-fg);
+  --color-muted: var(--a-muted);
+  --color-line: var(--a-line);
+  --color-grid: var(--a-grid);
+  --color-strong: var(--a-strong);
+  --color-on-strong: var(--a-on-strong);
+  --color-accent: var(--a-accent);
+  --color-mark: var(--a-mark);
+  --color-ghost: var(--a-ghost);
+}
+
+/* Dark mode for the dashboard: <div class="admin-root" data-theme="dark"> */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root, .admin-root {
+  --a-canvas: #F7F5F4;
+  --a-surface: #FFFFFF;
+  --a-sunken: #F3EFEE;
+  --a-hover: #FAF7F6;
+  --a-fg: #0E0A0A;
+  --a-muted: #5F5656;
+  --a-line: #E8E2E1;
+  --a-grid: #EEE8E7;
+  --a-strong: #0E0A0A;
+  --a-on-strong: #FFFFFF;
+  --a-accent: #B3141B;   /* red for text and links */
+  --a-mark: #B3141B;     /* red for chart marks */
+  --a-ghost: #CBC2C1;    /* comparison / de-emphasis series */
+  /* Order statuses (validated: CVD-safe neighbours, 3:1 on the surface) */
+  --s-pret_pagesen: #0089A8;
+  --s-e_re: #B3141B;
+  --s-ne_pergatitje: #C77700;
+  --s-derguar: #2563EB;
+  --s-dorezuar: #15803D;
+  --s-anuluar: #8E5BA8;
+}
+/* Payment statuses reuse the order colours: paid = delivered green, failed = red, refunded = cancelled purple */
+:root, .admin-root, .admin-root[data-theme="dark"] {
+  --p-paguar: var(--s-dorezuar);
+  --p-ne_pritje: var(--a-ghost);
+  --p-deshtoi: var(--s-e_re);
+  --p-rimbursuar: var(--s-anuluar);
+}
+
+.admin-root[data-theme="dark"] {
+  color-scheme: dark;
+  --a-canvas: #0E0A0A;
+  --a-surface: #171112;
+  --a-sunken: #1F1819;
+  --a-hover: #1C1516;
+  --a-fg: #F4EFEE;
+  --a-muted: #A79B9B;
+  --a-line: #2C2324;
+  --a-grid: #261E1F;
+  --a-strong: #F4EFEE;
+  --a-on-strong: #0E0A0A;
+  --a-accent: #F04A52;   /* crimson is too dark to read on black: 5.1:1 instead of 2.7:1 */
+  --a-mark: #E0202A;
+  --a-ghost: #4E4243;
+  --s-pret_pagesen: #22A2B8;
+  --s-e_re: #E0202A;
+  --s-ne_pergatitje: #C98418;
+  --s-derguar: #5B8DEF;
+  --s-dorezuar: #2F9E5E;
+  --s-anuluar: #A46CC6;
+}
+.admin-root { color-scheme: light; }
+.admin-root[data-theme="dark"] .media-light { --ph-bg: #241C1D; --ph-cap: rgb(255 255 255 / .35); }
+/* Only while switching light/dark: fade colours for a moment */
+.admin-root.theme-fade, .admin-root.theme-fade * { transition: background-color .3s ease, border-color .3s ease, color .3s ease, fill .3s ease, stroke .3s ease !important; }
+
+/* Small uppercase labels with wide tracking */
+@utility caps {
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+}
+@utility caps-xs {
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 1.6;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body {
+    background: var(--color-ink);
+    color: rgb(255 255 255 / .88);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection { background: var(--color-crimson); color: #fff; }
+  :focus-visible { outline: 1px solid var(--color-flame); outline-offset: 4px; }
+  .on-red :focus-visible { outline-color: #fff; }
+  button { cursor: pointer; }
+}
+
+@layer components {
+  /* Eyebrow: a short red rule, then the label */
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 1.6;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / .62);
+  }
+  .eyebrow::before { content: ""; width: 32px; height: 1px; background: var(--color-flame); flex: none; }
+  .eyebrow-center { justify-content: center; }
+  .eyebrow-center::after { content: ""; width: 32px; height: 1px; background: var(--color-flame); flex: none; }
+  .eyebrow-onred { color: rgb(255 255 255 / .86); }
+  .eyebrow-onred::before { background: #fff; }
+  .eyebrow-light { color: var(--color-stone); }
+  .eyebrow-light::before, .eyebrow-light::after { background: var(--color-crimson); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 54px;
+    padding: 0 34px;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: background-color .3s var(--ease-brand), color .3s var(--ease-brand), opacity .2s;
+  }
+  .btn:disabled { opacity: .55; cursor: not-allowed; }
+  .btn-red { background: var(--color-crimson); color: #fff; }
+  .btn-red:hover:not(:disabled) { background: var(--color-flame); }
+  .btn-black { background: var(--color-ink); color: #fff; }
+  .btn-black:hover:not(:disabled) { background: #fff; color: var(--color-ink); }
+  .btn-ink { background: var(--color-ink); color: #fff; }
+  .btn-ink:hover:not(:disabled) { background: var(--color-crimson); }
+
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid currentColor;
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .link-arrow .arr { letter-spacing: 0; transition: transform .35s var(--ease-brand); }
+  .link-arrow:hover .arr, .group:hover .link-arrow .arr { transform: translateX(5px); }
+
+  /* Kukës kilim border: nested diamonds, hooks and teeth */
+  .kilim {
+    height: 64px;
+    background: var(--color-crimson) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%230E0A0A' stroke-width='1.1'%3E%3Cpath d='M32 9 55 32 32 55 9 32Z'/%3E%3Cpath d='M32 18 46 32 32 46 18 32Z'/%3E%3Cpath d='M64 26 58 32 64 38M0 26 6 32 0 38M0 4.5H64M0 59.5H64'/%3E%3C/g%3E%3Cg fill='%230E0A0A'%3E%3Cpath d='M32 27 37 32 32 37 27 32Z'/%3E%3Cpath d='M0 4.5H7L0 11.5ZM64 4.5H57L64 11.5ZM0 59.5H7L0 52.5ZM64 59.5H57L64 52.5Z'/%3E%3C/g%3E%3C/svg%3E") center / 64px 64px repeat-x;
+  }
+  .kilim-dark {
+    background-color: var(--color-ink);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23B3141B' stroke-width='1.1'%3E%3Cpath d='M32 9 55 32 32 55 9 32Z'/%3E%3Cpath d='M32 18 46 32 32 46 18 32Z'/%3E%3Cpath d='M64 26 58 32 64 38M0 26 6 32 0 38M0 4.5H64M0 59.5H64'/%3E%3C/g%3E%3Cg fill='%23B3141B'%3E%3Cpath d='M32 27 37 32 32 37 27 32Z'/%3E%3Cpath d='M0 4.5H7L0 11.5ZM64 4.5H57L64 11.5ZM0 59.5H7L0 52.5ZM64 59.5H57L64 52.5Z'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  @media (max-width: 760px) { .kilim { height: 48px; background-size: 48px 48px; } }
+
+  /* Xhubleta double zigzag */
+  .zigzag {
+    height: 20px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='20' viewBox='0 0 16 20'%3E%3Cpath d='M-8 2 0 9 8 2 16 9 24 2M-8 11 0 18 8 11 16 18 24 11' fill='none' stroke='%23B3141B' stroke-width='1.1'/%3E%3C/svg%3E") center / 16px 20px repeat-x;
+  }
+
+  /* Photo slot: diamond mark + the shot brief until a real photo loads */
+  .media {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background: var(--ph-bg, var(--color-ink-2));
+  }
+  .media::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23B3141B' stroke-width='1'%3E%3Cpath d='M24 2 46 24 24 46 2 24Z'/%3E%3Cpath d='M24 11 37 24 24 37 11 24Z'/%3E%3C/g%3E%3Cpath d='M24 19.5 28.5 24 24 28.5 19.5 24Z' fill='%23B3141B'/%3E%3C/svg%3E") center / 44px 44px no-repeat;
+    opacity: .7;
+  }
+  .media::after {
+    content: attr(data-ph);
+    position: absolute;
+    left: 20px; right: 20px; bottom: 18px;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 1.6;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--ph-cap, rgb(255 255 255 / .4));
+  }
+  .media-onred { --ph-bg: var(--color-ink); }
+  .media-light { --ph-bg: var(--color-paper); --ph-cap: rgb(14 10 10 / .42); }
+  .media-light::before { opacity: .45; }
+  .media-quiet::after { display: none; }
+  /* A real photo is showing: drop the placeholder mark and brief */
+  .media[data-loaded]::before, .media[data-loaded]::after { display: none; }
+  @media (max-width: 760px) { .media-sm-quiet::after { display: none; } }
+
+  /* Add-to-cart bar slides up on hover; on touch it is a small "+" */
+  .product-add {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    z-index: 3;
+    height: 52px;
+    background: var(--color-ink);
+    color: #fff;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    transform: translateY(101%);
+    transition: transform .45s var(--ease-brand), background-color .25s;
+  }
+  .product-add:hover { background: var(--color-crimson); }
+  .group:hover .product-add, .product-add:focus-visible { transform: none; }
+  .product-add:focus-visible { outline-offset: -4px; outline-color: #fff; }
+  .product-add .plus { display: none; }
+  @media (hover: none) {
+    .product-add { left: auto; width: 44px; height: 44px; transform: none; font-size: 22px; font-weight: 300; letter-spacing: 0; }
+    .product-add .txt { display: none; }
+    .product-add .plus { display: inline; }
+  }
+
+  /* Reveal on scroll */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 1s var(--ease-brand), transform 1s var(--ease-brand);
+    transition-delay: var(--d, 0ms);
+  }
+  .reveal.is-in { opacity: 1; transform: none; }
+
+  .rise { animation: rise .6s var(--ease-brand) both; animation-delay: calc(var(--i, 0) * 45ms); }
+
+  /* Sënduk (dowry chest) cart icon */
+  .chest__lid { transform-box: fill-box; transform-origin: 100% 100%; }
+  .is-bump .chest__lid { animation: lid .7s var(--ease-brand); }
+}
+
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes lid { 35% { transform: translateY(-2px) rotate(-14deg); } 100% { transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  .reveal { opacity: 1; transform: none; }
+}

@@ -1,0 +1,35 @@
+{
+  "name": "mdon",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "M'DON — dyqani dhe paneli i pronarit (React + Tailwind + Node/SQLite)",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c red,gray \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "node --disable-warning=ExperimentalWarning --env-file-if-exists=.env --watch server/index.js --dev",
+    "dev:web": "vite",
+    "build": "vite build",
+    "start": "node --disable-warning=ExperimentalWarning --env-file-if-exists=.env server/index.js",
+    "pronari": "node --disable-warning=ExperimentalWarning --env-file-if-exists=.env server/owner.js",
+    "pa-hyrje": "concurrently -k -n api,web -c red,gray \"node --disable-warning=ExperimentalWarning --env-file-if-exists=.env --watch server/index.js --dev --pa-hyrje\" \"vite\""
+  },
+  "dependencies": {
+    "express": "^5.3.0",
+    "multer": "^2.4.0",
+    "qrcode": "^1.5.4",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^7.18.4",
+    "stripe": "^23.0.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-react": "^6.1.2",
+    "concurrently": "^10.0.6",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.4"
+  }
+}

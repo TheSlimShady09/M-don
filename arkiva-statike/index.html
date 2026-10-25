@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="sq">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M’DON — Moda autoktone shqiptare</title>
+<meta name="description" content="M’DON — moda autoktone shqiptare. Xhubleta, qeleshja, qilimat e Kukësit dhe argjendi i Shkodrës, të qepura me dorë në Shqipëri.">
+<meta name="theme-color" content="#0E0A0A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+<script>(function(h){h.classList.add('js');try{var l=new URLSearchParams(location.search).get('lang')||localStorage.getItem('mdon:lang');if(l==='en'){h.classList.add('i18n-wait');setTimeout(function(){h.classList.remove('i18n-wait')},1500)}}catch(e){}})(document.documentElement)</script>
+</head>
+<body id="top">
+
+<a class="skip" href="#main">Kalo te përmbajtja</a>
+
+
+<!-- 2. Koka -->
+<header class="header">
+  <div class="wrap header__in">
+    <button class="header__burger" type="button" aria-expanded="false" aria-controls="mnav" data-menu-toggle>
+      <span class="burger" aria-hidden="true"><i></i><i></i></span>
+      <span>Menu</span>
+    </button>
+    <nav class="header__nav" aria-label="Navigimi kryesor">
+      <ul>
+        <li><a href="katalogu.html?k=burra">Burra</a></li>
+        <li><a href="katalogu.html?k=gra">Gra</a></li>
+        <li><a href="katalogu.html?k=femije">Fëmijë</a></li>
+        <li><a href="#trevat">Trevat</a></li>
+        <li><a href="#historia">Historia</a></li>
+      </ul>
+    </nav>
+    <a class="logo" href="#top" aria-label="M’DON, kthehu në krye">M’DON</a>
+    <ul class="header__tools">
+      <li class="hide-md"><a href="#">Kërko</a></li>
+      <li class="hide-md"><a href="#">Hyr</a></li>
+      <li class="hide-md lang-switch" role="group" aria-label="Gjuha"><button type="button" data-lang="sq" aria-pressed="true">SQ</button><span aria-hidden="true">/</span><button type="button" data-lang="en" aria-pressed="false" lang="en">EN</button></li>
+      <li><a href="#" class="header__cart"><span class="sr-only">Shporta</span><svg class="chest" viewBox="0 0 30 26" aria-hidden="true"><g class="chest__lid"><path d="M3 10V7.5C3 5 5 3 7.5 3h15C25 3 27 5 27 7.5V10Z"/><path d="M13.5 10V7.5h3V10"/></g><path d="M3 10h24v11H3Z"/><path d="M15 12.5 18 15.5 15 18.5 12 15.5Z"/><path class="chest__gem" d="M15 14.3 16.2 15.5 15 16.7 13.8 15.5Z"/><path d="M7.5 13.5 9.5 15.5 7.5 17.5 5.5 15.5ZM22.5 13.5 24.5 15.5 22.5 17.5 20.5 15.5Z"/><path d="M5 21v2.5M25 21v2.5"/></svg><span class="header__cart-n" data-cart-count>0</span></a></li>
+    </ul>
+  </div>
+</header>
+
+<div class="mnav" id="mnav" hidden>
+  <nav class="wrap" aria-label="Navigimi në celular">
+    <ul class="mnav__main">
+      <li><a href="katalogu.html?k=burra">Burra</a></li>
+      <li><a href="katalogu.html?k=gra">Gra</a></li>
+      <li><a href="katalogu.html?k=femije">Fëmijë</a></li>
+      <li><a href="#trevat">Trevat</a></li>
+      <li><a href="#historia">Historia</a></li>
+    </ul>
+    <ul class="mnav__sub">
+      <li><a href="#">Kërko</a></li>
+      <li><a href="#">Hyr</a></li>
+      <li><a href="#">Gjurmo porosinë</a></li>
+      <li><a href="#">Ndihmë</a></li>
+      <li class="lang-switch" role="group" aria-label="Gjuha"><button type="button" data-lang="sq" aria-pressed="true">SQ</button><span aria-hidden="true">/</span><button type="button" data-lang="en" aria-pressed="false" lang="en">EN</button></li>
+    </ul>
+  </nav>
+</div>
+
+<main id="main">
+
+  <!-- 3. Hero -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero__in">
+      <div class="hero__meta">
+        <p class="label">Rrënjë të lashta.<br>Vija të reja.</p>
+      </div>
+      <h1 class="hero__word" id="hero-title">M’DON</h1>
+      <div class="hero__left">
+        <div class="hero__ctas">
+          <a class="btn btn--red" href="katalogu.html">Bli tani</a>
+          <a class="link-arrow" href="#historia">Zbulo historinë <span class="arr" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <p class="hero__sig">Qepur me dorë,<br>në Shqipëri.</p>
+    </div>
+  </section>
+
+  <!-- 4. Bordura e qilimit -->
+  <div class="kilim kilim--onred" aria-hidden="true"></div>
+
+  <!-- 5. Kategoritë -->
+  <section class="cats" id="kategorite" aria-label="Kategoritë">
+    <ul class="wrap cats__grid">
+      <li data-reveal>
+        <a class="cat" href="katalogu.html?k=burra" aria-label="Shiko Burra">
+          <div class="media media--onred r-4x5" data-ph="Foto: burrë me xhamadan të zi">
+            <img src="assets/img/cat-burra.jpg" alt="" loading="lazy">
+          </div>
+          <div class="cat__row">
+            <h2 class="cat__name">Burra</h2>
+            <span class="link-arrow">Shiko <span class="arr" aria-hidden="true">→</span></span>
+          </div>
+          <p class="cat__text">Xhamadani i qëndisur, në prerje të sotme.</p>
+        </a>
+      </li>
+      <li data-reveal>
+        <a class="cat" href="katalogu.html?k=gra" aria-label="Shiko Gra">
+          <div class="media media--onred r-4x5" data-ph="Foto: grua me fustan të zi me thekë">
+            <img src="assets/img/cat-gra.jpg" alt="" loading="lazy">
+          </div>
+          <div class="cat__row">
+            <h2 class="cat__name">Gra</h2>
+            <span class="link-arrow">Shiko <span class="arr" aria-hidden="true">→</span></span>
+          </div>
+          <p class="cat__text">Qëndisma e Malësisë mbi linja të pastra.</p>
+        </a>
+      </li>
+      <li data-reveal>
+        <a class="cat" href="katalogu.html?k=femije" aria-label="Shiko Fëmijë">
+          <div class="media media--onred r-4x5" data-ph="Foto: fëmijë me jelek të qëndisur">
+            <img src="assets/img/cat-femije.jpg" alt="" loading="lazy">
+          </div>
+          <div class="cat__row">
+            <h2 class="cat__name">Fëmijë</h2>
+            <span class="link-arrow">Shiko <span class="arr" aria-hidden="true">→</span></span>
+          </div>
+          <p class="cat__text">Trashëgimia jonë, në masa të vogla.</p>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 6. Besa -->
+  <section class="besa" id="historia" aria-labelledby="besa-title">
+    <div class="wrap besa__in">
+      <div class="zz zz--short" aria-hidden="true"></div>
+      <p class="eyebrow eyebrow--center">Fjala jonë</p>
+      <h2 class="besa__word" id="besa-title" data-reveal>Besa</h2>
+      <p class="besa__def"><span class="besa__lemma">bésë, -a</span> em. f. · Fjala e dhënë, që nuk thyhet.</p>
+      <p class="besa__promise" data-reveal>Çdo copë që qepim është një premtim: cilësi që zgjat, dhe një histori që nuk harrohet.</p>
+      <p class="besa__story" data-reveal>M’DON lindi nga një pyetje e thjeshtë: si do të visheshin sot gjyshet tona të Malësisë? Përgjigjen e kërkuam te xhubleta dhe qeleshja, te qilimat e Kukësit dhe te argjendaria e Shkodrës. Pastaj e qepëm në rroba për jetën e sotme.</p>
+      <p class="besa__sign">Ekipi i M’DON, Tiranë</p>
+      <div class="zz zz--short" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- 7. Sezoni i ri -->
+  <section class="split" aria-labelledby="split-title">
+    <div class="split__panel">
+      <div class="split__copy" data-reveal>
+        <p class="eyebrow eyebrow--onred">Sezoni i ri</p>
+        <h2 class="split__title" id="split-title">Gjak i kuq,<br><em>dhé i zi.</em></h2>
+        <p class="split__text">Ngjyrat e flamurit, të endura në lesh: xhamadanë të zinj, qëndisma të kuqe dhe qeleshe të bardha si bora e Bjeshkëve të Nemuna.</p>
+        <a class="btn btn--black" href="#trevat">Eksploro koleksionin</a>
+      </div>
+    </div>
+    <div class="split__media media media--bw" data-ph="Foto: portret bardh e zi, modele me qeleshe të bardhë">
+      <img src="assets/img/split-qeleshe.jpg" alt="Portret bardh e zi i një modeleje me qeleshe të bardhë" loading="lazy">
+    </div>
+  </section>
+
+  <!-- 8. Koleksionet e trevave -->
+  <section class="trevat" id="trevat" aria-labelledby="trevat-title">
+    <div class="wrap">
+      <header class="sec-head">
+        <div>
+          <p class="eyebrow">Nga veriu në jug</p>
+          <h2 class="h2" id="trevat-title">Koleksionet e trevave</h2>
+        </div>
+        <p class="sec-head__lead">Gjashtë kapsula, gjashtë treva. Secila mban emrin e vendit që e frymëzoi dhe një detaj që e bën të njohshme.</p>
+      </header>
+      <ul class="trevat__grid">
+        <li data-reveal>
+          <a class="treva" href="katalogu.html?treva=malesia">
+            <div class="media r-1x1" data-ph="Foto: xhubleta e zezë me thekë, nga afër">
+              <img src="assets/img/treva-malesia.jpg" alt="" loading="lazy">
+            </div>
+            <div class="treva__bar"><h3 class="treva__name">Malësia</h3><span class="treva__tag">Xhubleta</span></div>
+          </a>
+        </li>
+        <li data-reveal>
+          <a class="treva" href="katalogu.html?treva=kukesi">
+            <div class="media r-1x1" data-ph="Foto: motiv qilimi mbi pallto leshi">
+              <img src="assets/img/treva-kukesi.jpg" alt="" loading="lazy">
+            </div>
+            <div class="treva__bar"><h3 class="treva__name">Kukësi</h3><span class="treva__tag">Qilimi</span></div>
+          </a>
+        </li>
+        <li data-reveal>
+          <a class="treva" href="katalogu.html?treva=shkodra">
+            <div class="media r-1x1" data-ph="Foto: kopsa filigrani argjendi">
+              <img src="assets/img/treva-shkodra.jpg" alt="" loading="lazy">
+            </div>
+            <div class="treva__bar"><h3 class="treva__name">Shkodra</h3><span class="treva__tag">Argjendi</span></div>
+          </a>
+        </li>
+        <li data-reveal>
+          <a class="treva" href="katalogu.html?treva=tirana">
+            <div class="media r-1x1" data-ph="Foto: qeleshe e bardhë në studio">
+              <img src="assets/img/treva-tirana.jpg" alt="" loading="lazy">
+            </div>
+            <div class="treva__bar"><h3 class="treva__name">Tirana</h3><span class="treva__tag">Qeleshja</span></div>
+          </a>
+        </li>
+        <li data-reveal>
+          <a class="treva" href="katalogu.html?treva=korca">
+            <div class="media r-1x1" data-ph="Foto: kostum i zi, mbrëmje në Korçë">
+              <img src="assets/img/treva-korca.jpg" alt="" loading="lazy">
+            </div>
+            <div class="treva__bar"><h3 class="treva__name">Korça</h3><span class="treva__tag">Serenata</span></div>
+          </a>
+        </li>
+        <li data-reveal>
+          <a class="treva" href="katalogu.html?treva=gjirokastra">
+            <div class="media r-1x1" data-ph="Foto: pallto gri mbi kalldrëmin e Pazarit">
+              <img src="assets/img/treva-gjirokastra.jpg" alt="" loading="lazy">
+            </div>
+            <div class="treva__bar"><h3 class="treva__name">Gjirokastra</h3><span class="treva__tag">Guri</span></div>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 9. Zigzag -->
+  <div class="wrap" aria-hidden="true"><div class="zz"></div></div>
+
+  <!-- 10. Lookbook -->
+  <section class="look" aria-labelledby="look-title">
+    <div class="wrap look__grid">
+      <div class="look__a">
+        <p class="eyebrow">Lookbook · Vjeshtë 2026</p>
+        <h2 class="look__title" id="look-title">Malet<br><em>na veshin.</em></h2>
+        <p class="look__text">Fotografuar në Theth, Gjirokastër dhe Shkodër, me njerëz të vendit dhe dritën e tetorit.</p>
+        <figure class="shot" data-reveal>
+          <div class="media r-4x3" data-ph="Foto: modele me xhamadan në luginën e Thethit">
+            <img src="assets/img/look-theth.jpg" alt="Modele me xhamadan në luginën e Thethit" loading="lazy">
+          </div>
+          <figcaption>Thethi, Bjeshkët e Nemuna</figcaption>
+        </figure>
+      </div>
+      <figure class="shot look__b" data-reveal>
+        <div class="media r-2x3" data-ph="Foto: modele me pallto para Kalasë së Gjirokastrës">
+          <img src="assets/img/look-gjirokaster.jpg" alt="Modele me pallto para Kalasë së Gjirokastrës" loading="lazy">
+        </div>
+        <figcaption>Kalaja e Gjirokastrës</figcaption>
+      </figure>
+      <div class="look__c">
+        <figure class="shot" data-reveal>
+          <div class="media r-4x5" data-ph="Foto: qëndisje e Malësisë, nga afër">
+            <img src="assets/img/look-qendisje.jpg" alt="Qëndisje e Malësisë e fotografuar nga afër" loading="lazy">
+          </div>
+          <figcaption>Qëndisje e Malësisë, detaj</figcaption>
+        </figure>
+        <a class="link-arrow" href="#">Shiko lookbook-un <span class="arr" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. Mjeshtëria -->
+  <section class="light craft" aria-labelledby="craft-title">
+    <div class="wrap">
+      <header class="sec-head sec-head--center">
+        <p class="eyebrow eyebrow--center">Mjeshtëria</p>
+        <h2 class="h2" id="craft-title">Nga duart e mjeshtrave</h2>
+        <p class="sec-head__lead">Çdo veshje kalon nëpër tri duar përpara se të vijë te ti.</p>
+      </header>
+      <ol class="craft__steps">
+        <li class="step" data-reveal>
+          <span class="step__num" aria-hidden="true">01</span>
+          <h3 class="step__title">Leshi</h3>
+          <p>Lesh deleje nga kullotat e Dibrës dhe të Kukësit, i larë dhe i krehur me dorë.</p>
+          <p class="step__meta">Burimi · Dibër, Kukës</p>
+        </li>
+        <li class="step" data-reveal>
+          <span class="step__num" aria-hidden="true">02</span>
+          <h3 class="step__title">Qëndisja</h3>
+          <p>Motivet e xhubletës dhe të xhamadanit, të qëndisura me dorë nga gratë e Malësisë së Madhe.</p>
+          <p class="step__meta">Deri në 60 orë për një copë</p>
+        </li>
+        <li class="step" data-reveal>
+          <span class="step__num" aria-hidden="true">03</span>
+          <h3 class="step__title">Prerja</h3>
+          <p>Siluete të sotme, të prera dhe të qepura në punishten tonë në Tiranë.</p>
+          <p class="step__meta">Punishtja · Tiranë</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 12. Më të mirat -->
+  <section class="light best" id="me-te-mirat" aria-labelledby="best-title">
+    <div class="wrap">
+      <header class="best__head">
+        <h2 class="h2" id="best-title">Më të mirat e <span class="red">M’DON</span></h2>
+        <a class="link-arrow" href="katalogu.html">Shiko të gjitha <span class="arr" aria-hidden="true">→</span></a>
+      </header>
+      <ul class="products">
+        <li class="product" data-reveal>
+          <div class="product__frame">
+            <a class="media media--light r-3x4" href="#" data-ph="Foto: xhamadan i zi me qëndisje të kuqe" tabindex="-1" aria-hidden="true">
+              <img src="assets/img/produkte/xhamadan-i-qendisur.jpg" alt="" loading="lazy">
+            </a>
+            <span class="product__badge">Risi</span>
+            <button class="product__add" type="button" data-add aria-label="Shto në shportë: Xhamadan i qëndisur"><span class="product__add-text">Shto në shportë</span><span class="product__add-plus" aria-hidden="true">+</span></button>
+          </div>
+          <div class="product__info">
+            <p class="product__coll">Malësia</p>
+            <h3 class="product__name"><a href="katalogu.html?k=burra">Xhamadan i qëndisur</a></h3>
+            <p class="product__price">24.900 Lekë</p>
+            <p class="product__cat">Burra · Lesh</p>
+          </div>
+        </li>
+        <li class="product" data-reveal>
+          <div class="product__frame">
+            <a class="media media--light r-3x4" href="#" data-ph="Foto: fustan i zi me thekë, frymëzuar nga xhubleta" tabindex="-1" aria-hidden="true">
+              <img src="assets/img/produkte/fustan-me-theke.jpg" alt="" loading="lazy">
+            </a>
+            <button class="product__add" type="button" data-add aria-label="Shto në shportë: Fustan me thekë"><span class="product__add-text">Shto në shportë</span><span class="product__add-plus" aria-hidden="true">+</span></button>
+          </div>
+          <div class="product__info">
+            <p class="product__coll">Malësia</p>
+            <h3 class="product__name"><a href="katalogu.html?k=gra">Fustan me thekë</a></h3>
+            <p class="product__price">32.500 Lekë</p>
+            <p class="product__cat">Gra · Lesh</p>
+          </div>
+        </li>
+        <li class="product" data-reveal>
+          <div class="product__frame">
+            <a class="media media--light r-3x4" href="#" data-ph="Foto: qeleshe e bardhë, sfond i bardhë" tabindex="-1" aria-hidden="true">
+              <img src="assets/img/produkte/qeleshe-e-bardhe.jpg" alt="" loading="lazy">
+            </a>
+            <button class="product__add" type="button" data-add aria-label="Shto në shportë: Qeleshe e bardhë"><span class="product__add-text">Shto në shportë</span><span class="product__add-plus" aria-hidden="true">+</span></button>
+          </div>
+          <div class="product__info">
+            <p class="product__coll">Tirana</p>
+            <h3 class="product__name"><a href="katalogu.html?k=burra">Qeleshe e bardhë</a></h3>
+            <p class="product__price">6.800 Lekë</p>
+            <p class="product__cat">Unisex · Lesh i shtypur</p>
+          </div>
+        </li>
+        <li class="product" data-reveal>
+          <div class="product__frame">
+            <a class="media media--light r-3x4" href="#" data-ph="Foto: pallto me motiv qilimi të Kukësit" tabindex="-1" aria-hidden="true">
+              <img src="assets/img/produkte/pallto-me-motiv-qilimi.jpg" alt="" loading="lazy">
+            </a>
+            <span class="product__badge">Risi</span>
+            <button class="product__add" type="button" data-add aria-label="Shto në shportë: Pallto me motiv qilimi"><span class="product__add-text">Shto në shportë</span><span class="product__add-plus" aria-hidden="true">+</span></button>
+          </div>
+          <div class="product__info">
+            <p class="product__coll">Kukësi</p>
+            <h3 class="product__name"><a href="katalogu.html?k=gra">Pallto me motiv qilimi</a></h3>
+            <p class="product__price">38.000 Lekë</p>
+            <p class="product__cat">Gra · Lesh</p>
+          </div>
+        </li>
+        <li class="product" data-reveal>
+          <div class="product__frame">
+            <a class="media media--light r-3x4" href="#" data-ph="Foto: këmishë liri e bardhë" tabindex="-1" aria-hidden="true">
+              <img src="assets/img/produkte/kemishe-liri.jpg" alt="" loading="lazy">
+            </a>
+            <button class="product__add" type="button" data-add aria-label="Shto në shportë: Këmishë liri"><span class="product__add-text">Shto në shportë</span><span class="product__add-plus" aria-hidden="true">+</span></button>
+          </div>
+          <div class="product__info">
+            <p class="product__coll">Korça</p>
+            <h3 class="product__name"><a href="katalogu.html?k=burra">Këmishë liri</a></h3>
+            <p class="product__price">9.900 Lekë</p>
+            <p class="product__cat">Burra · Li</p>
+          </div>
+        </li>
+        <li class="product" data-reveal>
+          <div class="product__frame">
+            <a class="media media--light r-3x4" href="#" data-ph="Foto: vathë filigrani argjendi" tabindex="-1" aria-hidden="true">
+              <img src="assets/img/produkte/vathe-filigrani.jpg" alt="" loading="lazy">
+            </a>
+            <span class="product__badge">Seri e kufizuar</span>
+            <button class="product__add" type="button" data-add aria-label="Shto në shportë: Vathë filigrani"><span class="product__add-text">Shto në shportë</span><span class="product__add-plus" aria-hidden="true">+</span></button>
+          </div>
+          <div class="product__info">
+            <p class="product__coll">Shkodra</p>
+            <h3 class="product__name"><a href="katalogu.html?k=gra">Vathë filigrani</a></h3>
+            <p class="product__price">14.200 Lekë</p>
+            <p class="product__cat">Aksesorë · Argjend</p>
+          </div>
+        </li>
+        <li class="product" data-reveal>
+          <div class="product__frame">
+            <a class="media media--light r-3x4" href="#" data-ph="Foto: jelek i vogël leshi me qëndisje" tabindex="-1" aria-hidden="true">
+              <img src="assets/img/produkte/jelek-i-qendisur.jpg" alt="" loading="lazy">
+            </a>
+            <button class="product__add" type="button" data-add aria-label="Shto në shportë: Jelek i qëndisur"><span class="product__add-text">Shto në shportë</span><span class="product__add-plus" aria-hidden="true">+</span></button>
+          </div>
+          <div class="product__info">
+            <p class="product__coll">Kukësi</p>
+            <h3 class="product__name"><a href="katalogu.html?k=femije">Jelek i qëndisur</a></h3>
+            <p class="product__price">8.400 Lekë</p>
+            <p class="product__cat">Fëmijë · Lesh</p>
+          </div>
+        </li>
+        <li class="product" data-reveal>
+          <div class="product__frame">
+            <a class="media media--light r-3x4" href="#" data-ph="Foto: shall leshi gri, i palosur" tabindex="-1" aria-hidden="true">
+              <img src="assets/img/produkte/shall-leshi.jpg" alt="" loading="lazy">
+            </a>
+            <button class="product__add" type="button" data-add aria-label="Shto në shportë: Shall leshi"><span class="product__add-text">Shto në shportë</span><span class="product__add-plus" aria-hidden="true">+</span></button>
+          </div>
+          <div class="product__info">
+            <p class="product__coll">Gjirokastra</p>
+            <h3 class="product__name"><a href="katalogu.html?k=burra">Shall leshi</a></h3>
+            <p class="product__price">7.500 Lekë</p>
+            <p class="product__cat">Aksesorë · Lesh</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 13. Përfitimet -->
+  <section class="feats" aria-label="Pse M’DON">
+    <ul class="wrap feats__list">
+      <li class="feat">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 21.5 12 12 21.5 2.5 12Z"/><path d="M9 9l6 6M15 9l-6 6"/></svg>
+        <div><h3>Bërë në Shqipëri</h3><p>Çdo copë e prerë dhe e qepur në punishten tonë në Tiranë.</p></div>
+      </li>
+      <li class="feat">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5Z"/><path d="M3 7.5 12 12l9-4.5M12 12v9"/></svg>
+        <div><h3>Dërgesë e shpejtë</h3><p>1–3 ditë pune, kudo në Shqipëri.</p></div>
+      </li>
+      <li class="feat">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5"/><path d="M3.5 3.5v5h5"/></svg>
+        <div><h3>Kthim i lehtë</h3><p>Kthim falas brenda 30 ditëve.</p></div>
+      </li>
+      <li class="feat">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.5s7.5-3.5 7.5-9.5V5.5L12 2.5l-7.5 3V12c0 6 7.5 9.5 7.5 9.5Z"/><path d="M12 8.5 15 11.5 12 14.5 9 11.5Z"/></svg>
+        <div><h3>Pagesë e sigurt</h3><p>Kartë, transfertë bankare ose pagesë në dorëzim.</p></div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 14. Newsletter -->
+  <section class="news" aria-labelledby="news-title">
+    <div class="wrap news__in">
+      <svg class="news__mark" viewBox="0 0 72 72" aria-hidden="true">
+        <path d="M36 2 70 36 36 70 2 36Z"/>
+        <path d="M36 14 58 36 36 58 14 36Z"/>
+        <path d="M36 26 46 36 36 46 26 36Z"/>
+        <path class="fill" d="M36 32 40 36 36 40 32 36Z"/>
+      </svg>
+      <h2 class="news__title" id="news-title">Bëhu pjesë e fisit</h2>
+      <p class="news__text">Merr i pari koleksionet e reja, ftesat për shfaqjet dhe historitë pas çdo motivi.</p>
+      <form class="news__form" data-news novalidate>
+        <label class="sr-only" for="news-email">Adresa e email-it</label>
+        <input id="news-email" name="email" type="email" autocomplete="email" placeholder="Adresa jote e email-it" required>
+        <button class="btn btn--black" type="submit">Regjistrohu</button>
+      </form>
+      <p class="news__note" data-news-msg data-i18n-skip role="status">Mund të çregjistrohesh kurdo.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- 15. Fundi -->
+<footer class="footer">
+  <div class="kilim kilim--ondark" aria-hidden="true"></div>
+  <div class="wrap footer__top">
+    <div class="footer__brand">
+      <a class="footer__logo" href="#top">M’DON</a>
+      <p>Moda autoktone shqiptare.<br>Qepur me dorë, në Shqipëri.</p>
+    </div>
+    <div>
+      <h3>Bli</h3>
+      <ul>
+        <li><a href="katalogu.html?k=burra">Burra</a></li>
+        <li><a href="katalogu.html?k=gra">Gra</a></li>
+        <li><a href="katalogu.html?k=femije">Fëmijë</a></li>
+        <li><a href="#trevat">Koleksionet e trevave</a></li>
+        <li><a href="#">Dhurata</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>M’DON</h3>
+      <ul>
+        <li><a href="#historia">Historia jonë</a></li>
+        <li><a href="#">Mjeshtrit</a></li>
+        <li><a href="#">Lookbook</a></li>
+        <li><a href="#">Dyqanet</a></li>
+        <li><a href="#">Kontakt</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Ndihmë</h3>
+      <ul>
+        <li><a href="#">Dërgesat</a></li>
+        <li><a href="#">Kthimet</a></li>
+        <li><a href="#">Udhëzuesi i masave</a></li>
+        <li><a href="#">Pyetje të shpeshta</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Na ndiq</h3>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">TikTok</a></li>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">Pinterest</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer__bottom">
+    <p>© 2026 M’DON. Të gjitha të drejtat e rezervuara.</p>
+    <ul>
+      <li><a href="#">Kushtet</a></li>
+      <li><a href="#">Privatësia</a></li>
+    </ul>
+    <p class="footer__made">Bërë me besë në Shqipëri</p>
+  </div>
+</footer>
+
+<div class="toast" data-toast role="status" aria-live="polite"></div>
+
+<script src="js/i18n.js" defer></script>
+<script src="js/main.js" defer></script>
+</body>
+</html>
