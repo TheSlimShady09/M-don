@@ -167,6 +167,30 @@ if (db.prepare('PRAGMA user_version').get().user_version < 3) {
   }
 }
 
+// ---------- The shop moves to Toronto: Canadian dollars and Canadian addresses (schema version 4) ----------
+// Prices were whole Lekë; they become whole Canadian dollars (about 63 Lekë per dollar, products rounded to $5).
+// The owner sets the final prices in the dashboard.
+if (db.prepare('PRAGMA user_version').get().user_version < 4) {
+  const LEK_PER_CAD = 63;
+  db.exec('BEGIN');
+  try {
+    db.function('lek_to_cad', (lek) => Math.round(lek / LEK_PER_CAD));
+    db.function('lek_to_cad_price', (lek) => Math.max(5, Math.round(lek / LEK_PER_CAD / 5) * 5));
+    db.exec(`
+      UPDATE products SET price = lek_to_cad_price(price);
+      UPDATE order_items SET price = lek_to_cad(price);
+      UPDATE orders SET subtotal = lek_to_cad(subtotal), shipping = lek_to_cad(shipping), total = lek_to_cad(total);
+      ALTER TABLE orders ADD COLUMN province TEXT NOT NULL DEFAULT '';
+      ALTER TABLE orders ADD COLUMN postal_code TEXT NOT NULL DEFAULT '';
+      PRAGMA user_version = 4;
+    `);
+    db.exec('COMMIT');
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw err;
+  }
+}
+
 export function tx(fn) {
   db.exec('BEGIN');
   try {

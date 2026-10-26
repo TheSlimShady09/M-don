@@ -23,7 +23,7 @@ const Ornament = () => (
 function Seal({ className = '' }) {
   const { t } = useLang();
   const ring = `${useId().replace(/:/g, '')}-ring`;
-  const words = `${t('Bërë me besë')} · ${t('në Shqipëri')} · M’DON · `.toLocaleUpperCase('sq');
+  const words = `${t('Bërë me besë')} · ${t('rrënjë shqiptare')} · M’DON · `.toLocaleUpperCase('sq');
   return (
     <svg viewBox="0 0 120 120" aria-hidden="true" className={className}>
       <defs><path id={ring} d="M60 60 m-47 0 a47 47 0 1 1 94 0 a47 47 0 1 1 -94 0" /></defs>
@@ -51,9 +51,9 @@ export default function Footer() {
   const toTop = () => window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
 
   const info = [
-    [t('Dërgesa'), `${t('Falas mbi')} ${price(SHIPPING_FREE_FROM)}`, t('Kudo në Shqipëri, 1–3 ditë pune.')],
+    [t('Dërgesa'), `${t('Falas mbi')} ${price(SHIPPING_FREE_FROM)}`, t('Kudo në Kanada, 2–7 ditë pune.')],
     [t('Pagesa'), t('Pagesë e sigurt'), payments.map(([, v]) => pick(v)).join(' · ')],
-    [t('Punishtja'), t('Tiranë, Shqipëri'), t('Prerë, qëndisur dhe qepur me dorë.')],
+    [t('Punishtja'), t('Toronto, Kanada'), t('Prerë, qëndisur dhe qepur me dorë.')],
   ];
 
   return (

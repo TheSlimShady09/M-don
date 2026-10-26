@@ -5,13 +5,11 @@ import { useCart } from '../lib/cart.jsx';
 import { useProducts } from '../lib/products.js';
 import { api } from '../lib/api.js';
 import { useShopConfig } from '../lib/config.js';
-import { MAX_QTY, PAYMENT_METHODS, REGIONS, SHIPPING_FREE_FROM, shippingFor } from '../../shared/shop.js';
+import { CHECKOUT_PAYMENTS, MAX_QTY, PAYMENT_METHODS, PROVINCES, REGIONS, SHIPPING_FREE_FROM, postalCode, shippingFor } from '../../shared/shop.js';
 import { Arrow, Chest, Kilim, Media, Wrap } from '../components/ui.jsx';
 
 const PAYMENT_HINTS = {
   karte: 'Visa, Mastercard e të tjera. Paguan tani, në mënyrë të sigurt.',
-  dorezim: 'Paguan kur të vijë pakoja.',
-  banke: 'Të dërgojmë të dhënat bankare pas konfirmimit.',
 };
 
 function Lock() {
@@ -37,15 +35,17 @@ function CardMarks() {
   );
 }
 
-const EMPTY = { name: '', phone: '', email: '', city: '', address: '', note: '', payment: 'dorezim' };
+const EMPTY = { name: '', phone: '', email: '', address: '', city: '', province: 'ON', postal_code: '', note: '', payment: 'karte' };
 
 function validate(f) {
   const e = {};
   if (f.name.trim().length < 2) e.name = 'Shkruaj emrin dhe mbiemrin.';
-  if (!/^[+\d][\d\s()-]{5,24}$/.test(f.phone.trim())) e.phone = 'Shkruaj një numër telefoni të vlefshëm.';
-  if (f.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.trim())) e.email = 'Shkruaj një adresë email-i të vlefshme.';
-  if (f.city.trim().length < 2) e.city = 'Shkruaj qytetin.';
+  if (!/^[+\d(][\d\s()-]{5,24}$/.test(f.phone.trim())) e.phone = 'Shkruaj një numër telefoni të vlefshëm.';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.trim())) e.email = 'Shkruaj një adresë email-i të vlefshme.';
   if (f.address.trim().length < 5) e.address = 'Shkruaj adresën e plotë.';
+  if (f.city.trim().length < 2) e.city = 'Shkruaj qytetin.';
+  if (!(f.province in PROVINCES)) e.province = 'Zgjidh provincën.';
+  if (!postalCode(f.postal_code)) e.postal_code = 'Shkruaj një kod postar kanadez, p.sh. M5V 2T6.';
   return e;
 }
 
@@ -86,8 +86,10 @@ export default function Cart() {
     }
   }, [params, setParams]);
 
-  const methods = Object.entries(PAYMENT_METHODS).filter(([key]) => key !== 'karte' || cardOn);
+  // Card only (Stripe). Until the Stripe keys are in place there is nothing to pay with, so ordering waits.
+  const methods = CHECKOUT_PAYMENTS.filter((key) => key !== 'karte' || cardOn).map((key) => [key, PAYMENT_METHODS[key]]);
   const byCard = form.payment === 'karte' && cardOn;
+  const canOrder = methods.length > 0;
 
   const byId = useMemo(() => new Map(products.map((p) => [p.id, p])), [products]);
   const lines = items.map((i) => ({ ...i, p: byId.get(i.id) })).filter((l) => l.p);
@@ -122,7 +124,7 @@ export default function Cart() {
     try {
       const res = await api('/orders', {
         method: 'POST',
-        body: { ...form, payment: byCard ? 'karte' : form.payment === 'karte' ? 'dorezim' : form.payment, lang, items: lines.map((l) => ({ id: l.id, qty: l.qty })) },
+        body: { ...form, lang, items: lines.map((l) => ({ id: l.id, qty: l.qty })) },
       });
       if (res.checkoutUrl) {
         // Off to Stripe's secure page. The cart is emptied only once the payment is confirmed.
@@ -134,7 +136,7 @@ export default function Cart() {
     } catch (err) {
       if (err.status === 502 || (err.status === 400 && err.data?.fields?.includes('payment'))) {
         if (err.status === 400) setCardOff(true);
-        setNotice('Pagesa me kartë nuk u hap tani. Provo përsëri pas pak ose zgjidh pagesë në dorëzim.');
+        setNotice('Pagesa me kartë nuk u hap tani. Provo përsëri pas pak.');
       } else if (err.status === 409) {
         const fresh = await api('/products').catch(() => []);
         const ids = new Set(fresh.map((p) => p.id));
@@ -213,26 +215,38 @@ export default function Cart() {
                       <input {...errProps('name')} autoComplete="name" value={form.name} onChange={set('name')} className={input} />
                     </Field>
                     <Field id="f-phone" label={t('Telefoni')} error={errors.phone}>
-                      <input {...errProps('phone')} type="tel" autoComplete="tel" placeholder="+355 6X XXX XXXX" value={form.phone} onChange={set('phone')} className={input} />
-                    </Field>
-                    <Field id="f-email" label={t('Email-i (opsional)')} error={errors.email}>
-                      <input {...errProps('email')} type="email" autoComplete="email" value={form.email} onChange={set('email')} className={input} />
-                    </Field>
-                    <Field id="f-city" label={t('Qyteti')} error={errors.city}>
-                      <input {...errProps('city')} autoComplete="address-level2" value={form.city} onChange={set('city')} className={input} />
+                      <input {...errProps('phone')} type="tel" autoComplete="tel" placeholder="(416) 555-0123" value={form.phone} onChange={set('phone')} className={input} />
                     </Field>
                     <div className="sm:col-span-2">
-                      <Field id="f-address" label={t('Adresa')} error={errors.address}>
+                      <Field id="f-email" label={t('Email-i')} error={errors.email}>
+                        <input {...errProps('email')} type="email" autoComplete="email" value={form.email} onChange={set('email')} className={input} />
+                      </Field>
+                    </div>
+                    <div className="sm:col-span-2">
+                      <Field id="f-address" label={t('Adresa (rruga, numri, apartamenti)')} error={errors.address}>
                         <input {...errProps('address')} autoComplete="street-address" value={form.address} onChange={set('address')} className={input} />
                       </Field>
                     </div>
+                    <div className="sm:col-span-2">
+                      <Field id="f-city" label={t('Qyteti')} error={errors.city}>
+                        <input {...errProps('city')} autoComplete="address-level2" value={form.city} onChange={set('city')} className={input} />
+                      </Field>
+                    </div>
+                    <Field id="f-province" label={t('Provinca')} error={errors.province}>
+                      <select {...errProps('province')} autoComplete="address-level1" value={form.province} onChange={set('province')} className={`${input} cursor-pointer`}>
+                        {Object.entries(PROVINCES).map(([code, name]) => <option key={code} value={code}>{name}</option>)}
+                      </select>
+                    </Field>
+                    <Field id="f-postal_code" label={t('Kodi postar')} error={errors.postal_code}>
+                      <input {...errProps('postal_code')} autoComplete="postal-code" placeholder="M5V 2T6" maxLength={7} value={form.postal_code} onChange={set('postal_code')} className={`${input} uppercase`} />
+                    </Field>
                     <div className="sm:col-span-2">
                       <Field id="f-note" label={t('Shënim për porosinë (opsional)')}>
                         <textarea id="f-note" rows={3} maxLength={500} value={form.note} onChange={set('note')} className={`${input} h-auto py-3`} />
                       </Field>
                     </div>
                   </div>
-                  <p className="mt-4 text-[13px] text-stone">{t('Ruajmë vetëm atë që duhet për dërgesën.')}</p>
+                  <p className="mt-4 text-[13px] text-stone">{t('Dërgojmë vetëm brenda Kanadasë. Ruajmë vetëm atë që duhet për dërgesën.')}</p>
                 </fieldset>
               </div>
 
@@ -249,6 +263,7 @@ export default function Cart() {
                 <fieldset className="mt-8">
                   <legend className="caps-xs text-stone">{t('Mënyra e pagesës')}</legend>
                   <div className="mt-3 grid gap-2">
+                    {!canOrder && <p className="border border-rule bg-white p-4 text-[13px] text-stone">{t('Pagesat online po përgatiten. Porositë hapen së shpejti.')}</p>}
                     {methods.map(([key, pair]) => (
                       <label key={key} className="flex cursor-pointer gap-3 border border-rule bg-white p-4 has-[:checked]:border-ink">
                         <input type="radio" name="payment" value={key} checked={form.payment === key} onChange={set('payment')} className="mt-1 accent-crimson" />
@@ -264,7 +279,7 @@ export default function Cart() {
                   </div>
                 </fieldset>
 
-                <button type="submit" disabled={busy} className="btn btn-red mt-8 w-full">
+                <button type="submit" disabled={busy || !canOrder} className="btn btn-red mt-8 w-full disabled:cursor-not-allowed disabled:opacity-50">
                   {byCard
                     ? (busy ? t('Po hapet pagesa…') : `${t('Paguaj')} ${price(subtotal + shipping)}`)
                     : (busy ? t('Po dërgohet…') : t('Dërgo porosinë'))}

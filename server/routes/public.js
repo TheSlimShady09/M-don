@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { db, tx, productFromRow } from '../db.js';
 import { validEmail } from '../auth.js';
-import { shippingFor, PAYMENT_METHODS, MAX_QTY } from '../../shared/shop.js';
+import { shippingFor, CHECKOUT_PAYMENTS, PROVINCES, postalCode, MAX_QTY } from '../../shared/shop.js';
 import { stripe, stripeEnabled, createCheckout, markPaid } from '../stripe.js';
 
 const router = Router();
@@ -35,12 +35,14 @@ router.post('/orders', async (req, res) => {
   const b = req.body || {};
   const customer = {
     name: text(b.name, 2, 100),
-    phone: typeof b.phone === 'string' && /^[+\d][\d\s()-]{5,24}$/.test(b.phone.trim()) ? b.phone.trim() : null,
-    email: b.email ? (validEmail(String(b.email).trim()) ? String(b.email).trim() : null) : '',
+    phone: typeof b.phone === 'string' && /^[+\d(][\d\s()-]{5,24}$/.test(b.phone.trim()) ? b.phone.trim() : null,
+    email: validEmail(String(b.email || '').trim()) ? String(b.email).trim() : null,   // receipt and shipping updates
     city: text(b.city, 2, 60),
     address: text(b.address, 5, 200),
+    province: b.province in PROVINCES ? b.province : null,
+    postal_code: postalCode(b.postal_code),
     note: typeof b.note === 'string' ? b.note.trim().slice(0, 500) : '',
-    payment: b.payment in PAYMENT_METHODS ? b.payment : null,
+    payment: CHECKOUT_PAYMENTS.includes(b.payment) ? b.payment : null,
     lang: b.lang === 'en' ? 'en' : 'sq',
   };
   if (customer.payment === 'karte' && !stripeEnabled) customer.payment = null;
@@ -68,8 +70,8 @@ router.post('/orders', async (req, res) => {
   const byCard = customer.payment === 'karte';
   const { id, code } = tx(() => {
     const { lastInsertRowid } = db.prepare(`
-      INSERT INTO orders (name, phone, email, city, address, note, payment, lang, status, subtotal, shipping, total)
-      VALUES (:name, :phone, :email, :city, :address, :note, :payment, :lang, :status, :subtotal, :shipping, :total)
+      INSERT INTO orders (name, phone, email, city, address, province, postal_code, note, payment, lang, status, subtotal, shipping, total)
+      VALUES (:name, :phone, :email, :city, :address, :province, :postal_code, :note, :payment, :lang, :status, :subtotal, :shipping, :total)
     `).run({ ...customer, status: byCard ? 'pret_pagesen' : 'e_re', subtotal, shipping, total });
     const orderId = Number(lastInsertRowid);
     const orderCode = `MD-${1000 + orderId}`;

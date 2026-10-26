@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { api } from '../lib/api.js';
-import { formatLek } from '../lib/i18n.jsx';
+import { formatPrice } from '../lib/i18n.jsx';
 import { ORDER_STATUSES, PAYMENT_STATUSES } from '../../shared/shop.js';
 
 // ---------- Session-aware API ----------
@@ -23,7 +23,7 @@ export function useAdminApi() {
 
 // ---------- Formatting ----------
 
-export const lek = formatLek;
+export const money = formatPrice;
 // Written out by hand: most browsers ship no Albanian date names
 const MONTHS = ['jan', 'shk', 'mar', 'pri', 'maj', 'qer', 'korr', 'gush', 'sht', 'tet', 'nën', 'dhj'];
 const MONTHS_LONG = ['janar', 'shkurt', 'mars', 'prill', 'maj', 'qershor', 'korrik', 'gusht', 'shtator', 'tetor', 'nëntor', 'dhjetor'];

@@ -13,7 +13,7 @@ function rng(seed) {
 }
 
 const dayIso = (daysAgo) => new Date(Date.now() - daysAgo * 864e5).toISOString().slice(0, 10);
-const AVG_ORDER = 24500;
+const AVG_ORDER = 390;   // $ CAD
 
 function series(rand, days, offset, growth) {
   return Array.from({ length: days }, (_, i) => {
@@ -22,7 +22,7 @@ function series(rand, days, offset, growth) {
     const weekend = dow === 5 || dow === 6 ? 1.6 : dow === 0 ? 1.25 : 1;
     const trend = 1 + growth * (i / days);
     const orders = Math.max(0, Math.round((rand() * 2.6 + 0.6) * weekend * trend - 0.4));
-    const revenue = orders ? Math.round((orders * AVG_ORDER * (0.75 + rand() * 0.55)) / 100) * 100 : 0;
+    const revenue = orders ? Math.round((orders * AVG_ORDER * (0.75 + rand() * 0.55)) / 5) * 5 : 0;
     return { day: dayIso(daysAgo), orders, revenue };
   });
 }
@@ -35,18 +35,18 @@ const totals = (rows, pieceRate) => {
 };
 const split = (total, weights) => {
   const w = Object.values(weights).reduce((a, b) => a + b, 0);
-  return Object.entries(weights).map(([key, v]) => ({ key, revenue: Math.round((total * v) / w / 100) * 100 }));
+  return Object.entries(weights).map(([key, v]) => ({ key, revenue: Math.round((total * v) / w / 5) * 5 }));
 };
 
 const NAMES = ['Arta Hoxha', 'Ben Kola', 'Drita Gjoka', 'Elira Marku', 'Gentian Leka', 'Mira Dushku', 'Ardit Shehu', 'Teuta Prifti'];
-const CITIES = ['Tiranë', 'Shkodër', 'Durrës', 'Korçë', 'Vlorë', 'Prishtinë', 'Kukës', 'Gjirokastër'];
+const CITIES = ['Toronto', 'Mississauga', 'Brampton', 'Vaughan', 'Hamilton', 'Ottawa', 'Montréal', 'Vancouver'];
 const TOP = [
-  ['qeleshe-e-bardhe', 'Qeleshe e bardhë', 6800],
-  ['xhamadan-i-qendisur', 'Xhamadan i qëndisur', 24900],
-  ['fustan-me-theke', 'Fustan me thekë', 32500],
-  ['shall-leshi', 'Shall leshi', 7500],
-  ['vathe-filigrani', 'Vathë filigrani', 14200],
-  ['pallto-me-motiv-qilimi', 'Pallto me motiv qilimi', 38000],
+  ['qeleshe-e-bardhe', 'Qeleshe e bardhë', 110],
+  ['xhamadan-i-qendisur', 'Xhamadan i qëndisur', 395],
+  ['fustan-me-theke', 'Fustan me thekë', 515],
+  ['shall-leshi', 'Shall leshi', 120],
+  ['vathe-filigrani', 'Vathë filigrani', 225],
+  ['pallto-me-motiv-qilimi', 'Pallto me motiv qilimi', 605],
 ];
 
 export function demoStats(days) {
@@ -68,13 +68,8 @@ export function demoStats(days) {
     return { dow, orders, revenue: orders * AVG_ORDER };
   });
 
-  const card = Math.round(n * 0.34);
-  const dor = Math.round(n * 0.5);
-  const byPayment = {
-    karte: { orders: card, revenue: Math.round(current.revenue * 0.37) },
-    dorezim: { orders: dor, revenue: Math.round(current.revenue * 0.48) },
-    banke: { orders: n - card - dor, revenue: current.revenue - Math.round(current.revenue * 0.37) - Math.round(current.revenue * 0.48) },
-  };
+  // Card is the only way to pay at checkout
+  const byPayment = { karte: { orders: n, revenue: current.revenue } };
 
   const topProducts = TOP.map(([id, name, price], i) => {
     const qty = Math.max(1, Math.round((n * (0.32 - i * 0.045)) * (0.9 + rand() * 0.2)));

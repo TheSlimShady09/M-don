@@ -82,7 +82,7 @@ function Besa() {
         <Reveal as="p" className="mt-9 max-w-[60ch] text-white/62">
           {t('M’DON lindi nga një pyetje e thjeshtë: si do të visheshin sot gjyshet tona të Malësisë? Përgjigjen e kërkuam te xhubleta dhe qeleshja, te qilimat e Kukësit dhe te argjendaria e Shkodrës. Pastaj e qepëm në rroba për jetën e sotme.')}
         </Reveal>
-        <p className="mb-14 mt-8 caps text-white">{t('Ekipi i M’DON, Tiranë')}</p>
+        <p className="mb-14 mt-8 caps text-white">{t('Ekipi i M’DON, Toronto')}</p>
         <Zigzag className="w-52" />
       </Wrap>
     </section>
@@ -214,7 +214,7 @@ const STEPS = [
     art: 'Ilustrim: një dele dhe leshi i saj që bëhet lëmsh i kuq' },
   { n: '02', step: 'qendisja', title: 'Qëndisja', text: 'Motivet e xhubletës dhe të xhamadanit, të qëndisura me dorë nga gratë e Malësisë së Madhe.', meta: 'Deri në 60 orë për një copë',
     art: 'Ilustrim: një gjergjef me një motiv me pika kryq, ende në punë, dhe gjilpëra me pe të kuq' },
-  { n: '03', step: 'prerja', title: 'Prerja', text: 'Siluete të sotme, të prera dhe të qepura në punishten tonë në Tiranë.', meta: 'Punishtja · Tiranë',
+  { n: '03', step: 'prerja', title: 'Prerja', text: 'Siluete të sotme, të prera dhe të qepura në punishten tonë në Toronto.', meta: 'Punishtja · Toronto',
     art: 'Ilustrim: kallëpi i një xhamadani mbi tavolinë, me gërshërë, metër dhe gjilpëra me kokë' },
 ];
 

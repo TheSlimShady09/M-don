@@ -62,7 +62,7 @@ Duhet një aplikacion verifikimi në telefon: **Google Authenticator** ose **Mic
 
 Klienti zgjedh **Kartë (Stripe)** te shporta dhe paguan në faqen e sigurt të Stripe. Të dhënat e kartës nuk kalojnë kurrë nga serveri ynë. Pastaj kthehet te faqja "Faleminderit!". Porosia del në panel si **Pret pagesën** dhe kalon vetë në **E re / Paguar** sapo Stripe konfirmon pagesën. Nëse klienti nuk paguan brenda 30 minutash, porosia anulohet vetë. Pa çelësat e Stripe, opsioni i kartës thjesht nuk shfaqet dhe dyqani punon si më parë.
 
-**Kujdes, para se të fillosh:** Stripe nuk hap llogari për biznese të regjistruara në Shqipëri (kontrolloje te [stripe.com/global](https://stripe.com/global)). Duhet një biznes i regjistruar në një vend që e mbështet Stripe (p.sh. në BE, Mbretëri e Bashkuar ose SHBA). Për taksat dhe ligjin pyet kontabilistin. Përndryshe, lidhja mund të ndërrohet me një ofrues vendas (p.sh. POK ose POS virtual nga banka). Kodi është ndërtuar që kjo pjesë të zëvendësohet lehtë (`server/stripe.js`).
+**Biznesi është në Toronto, Kanada**, dhe Stripe punon në Kanada: hap llogarinë Stripe me të dhënat e biznesit kanadez. Pagesa me kartë është e vetmja mënyrë pagese në dyqan; derisa të vendosen çelësat, shporta tregon "Pagesat online po përgatiten" dhe porositë presin.
 
 ### Provë në kompjuterin tënd (pa para të vërteta)
 
@@ -84,7 +84,8 @@ Kodin `whsec_...` që të jep vendose te `.env` si `STRIPE_WEBHOOK_SECRET` dhe n
 - Te `.env` në server: çelësi **live** `sk_live_...` dhe `PUBLIC_URL=https://adresa-jote.al`. Pa HTTPS mos përdor çelësin live.
 - Te Stripe → Developers → Webhooks shto adresën `https://adresa-jote.al/api/stripe/webhook` me këto ngjarje: `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `checkout.session.expired`, `charge.refunded`. Kodin e nënshkrimit (`whsec_...`) vendose te `STRIPE_WEBHOOK_SECRET`.
 - Rimbursimet bëhen te paneli i Stripe. Porosia del vetë **Rimbursuar** te paneli ynë.
-- Çmimet i dërgojmë në Lekë (ALL). Stripe i konverton në monedhën e llogarisë tënde dhe mban tarifën e vet.
+- Çmimet janë në dollarë kanadezë (CAD), numra të plotë (p.sh. $395). Stripe mban tarifën e vet për çdo pagesë.
+- **Taksat (GST/HST/PST):** tani dyqani nuk shton taksë mbi çmimin. Nëse biznesi regjistrohet për GST/HST, taksa duhet shtuar (p.sh. me Stripe Tax). Pyet kontabilistin.
 - Serveri e kontrollon shumën e paguar me totalin e porosisë. Nëse nuk përputhen, porosia nuk shënohet si e paguar.
 
 ## Ku ruhen të dhënat
@@ -141,4 +142,4 @@ shared/shop.js  rregullat e përbashkëta: transporti, kategoritë, stinët, tre
 arkiva-statike/ versioni i vjetër HTML/CSS (vetëm për referencë)
 ```
 
-Transporti: falas mbi 5.000 Lekë, përndryshe 300 Lekë. Ndryshohet te `shared/shop.js`.
+Dyqani dërgon vetëm brenda Kanadasë. Transporti: falas mbi $150, përndryshe $15 (`SHIPPING_FREE_FROM` dhe `SHIPPING_COST` te `shared/shop.js`). Shporta kërkon provincën dhe kodin postar kanadez.

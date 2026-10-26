@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { BADGES, CATEGORIES, LABELS, REGIONS, SEASONS } from '../../shared/shop.js';
 import { Media } from '../components/ui.jsx';
-import { Card, Empty, ErrorNote, PageHeader, Switch, btnDanger, btnGhost, btnPrimary, field, labelCls, lek, useAdminApi } from './ui.jsx';
+import { Card, Empty, ErrorNote, PageHeader, Switch, btnDanger, btnGhost, btnPrimary, field, labelCls, money, useAdminApi } from './ui.jsx';
 
 const BLANK = {
   name_sq: '', name_en: '', categories: [], seasons: [], region: 'malesia', material_sq: '', material_en: '',
@@ -129,8 +129,8 @@ function ProductForm({ product, onClose, onSaved, onDeleted }) {
               <input id="pf-mat-en" maxLength={60} placeholder="e.g. Wool" value={f.material_en} onChange={set('material_en')} className={field} />
             </div>
             <div>
-              <label htmlFor="pf-price" className={labelCls}>Çmimi në Lekë *</label>
-              <input id="pf-price" required inputMode="numeric" placeholder="24900" value={f.price} onChange={set('price')} className={field} />
+              <label htmlFor="pf-price" className={labelCls}>Çmimi në $ CAD *</label>
+              <input id="pf-price" required inputMode="numeric" placeholder="395" value={f.price} onChange={set('price')} className={field} />
             </div>
             <div>
               <label htmlFor="pf-region" className={labelCls}>Treva *</label>
@@ -293,7 +293,7 @@ export default function Products() {
                   </td>
                   <td className="py-3">{p.label ? LABELS[p.label].sq : p.categories.map((c) => CATEGORIES[c].sq).join(', ')}</td>
                   <td className="py-3">{REGIONS[p.region]}<span className="block text-xs text-muted">{p.seasons.map((k) => SEASONS[k].sq).join(', ')}</span></td>
-                  <td className="py-3 text-right tabular-nums">{lek(p.price)}</td>
+                  <td className="py-3 text-right tabular-nums">{money(p.price)}</td>
                   <td className="py-3 pl-8"><Switch checked={p.active} onChange={() => quickToggle(p, 'active')} label={`${p.name_sq} në dyqan`} /></td>
                   <td className="py-3"><Switch checked={p.featured} onChange={() => quickToggle(p, 'featured')} label={`${p.name_sq} te Më të mirat`} /></td>
                   <td className="px-5 py-3 text-right">

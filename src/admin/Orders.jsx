@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { ORDER_STATUSES, PAYMENT_METHODS } from '../../shared/shop.js';
-import { Card, Empty, ErrorNote, PageHeader, PaymentChip, StatusSelect, field, fmtDateTime, lek, useAdminApi } from './ui.jsx';
+import { Card, Empty, ErrorNote, PageHeader, PaymentChip, StatusSelect, field, fmtDateTime, money, useAdminApi } from './ui.jsx';
 
 export default function Orders() {
   const call = useAdminApi();
@@ -86,9 +86,9 @@ export default function Orders() {
                     <span className="block text-xs text-muted">{fmtDateTime(o.created_at)}</span>
                   </td>
                   <td className="py-3.5">{o.name}<span className="block text-xs text-muted">{o.phone}</span></td>
-                  <td className="py-3.5">{o.city}</td>
+                  <td className="py-3.5">{o.city}{o.province ? `, ${o.province}` : ''}</td>
                   <td className="py-3.5 text-right tabular-nums">{o.pieces}</td>
-                  <td className="py-3.5 text-right tabular-nums">{lek(o.total)}</td>
+                  <td className="py-3.5 text-right tabular-nums">{money(o.total)}</td>
                   <td className="py-3.5 pl-6">
                     <span className="block text-muted">{PAYMENT_METHODS[o.payment]?.sq}</span>
                     <PaymentChip status={o.payment_status} />

@@ -10,7 +10,7 @@ import {
   startPending, getPending, updatePending, endPending, startSession, currentSession, endSession, endUserSessions, listSessions,
   requireUser, requireOwnerRole, ipBlocked, noteIpFailure, audit,
 } from '../auth.js';
-import { CATEGORIES, SEASONS, REGIONS, LABELS, BADGES, ORDER_STATUSES, PAYMENT_METHODS, PAYMENT_STATUSES, NOT_SOLD } from '../../shared/shop.js';
+import { CATEGORIES, SEASONS, REGIONS, LABELS, BADGES, ORDER_STATUSES, PAYMENT_METHODS, CHECKOUT_PAYMENTS, PAYMENT_STATUSES, NOT_SOLD } from '../../shared/shop.js';
 import { dashboardUrl } from '../stripe.js';
 
 const TOO_MANY = 'Shumë përpjekje të gabuara. Provo përsëri më vonë.';
@@ -340,7 +340,9 @@ export default function adminRoutes({ isDev, noLogin = false }) {
     });
 
     const pay = db.prepare(`SELECT payment, COUNT(*) AS orders, SUM(o.total) AS revenue FROM orders o WHERE ${LIVE} AND ${cur} GROUP BY payment`).all();
-    const byPayment = Object.fromEntries(Object.keys(PAYMENT_METHODS).map((k) => {
+    // Methods offered today, plus any older one that still has orders in this period
+    const shownMethods = Object.keys(PAYMENT_METHODS).filter((k) => CHECKOUT_PAYMENTS.includes(k) || pay.some((x) => x.payment === k));
+    const byPayment = Object.fromEntries(shownMethods.map((k) => {
       const r = pay.find((x) => x.payment === k);
       return [k, { orders: r ? r.orders : 0, revenue: r ? r.revenue : 0 }];
     }));
@@ -448,7 +450,7 @@ export default function adminRoutes({ isDev, noLogin = false }) {
     if (!p.categories.length) return { error: 'Zgjidh të paktën një kategori.' };
     if (!p.seasons.length) return { error: 'Zgjidh të paktën një stinë.' };
     if (!p.region) return { error: 'Zgjidh trevën.' };
-    if (!Number.isInteger(p.price) || p.price < 1 || p.price > 10_000_000) return { error: 'Çmimi duhet të jetë numër i plotë në Lekë.' };
+    if (!Number.isInteger(p.price) || p.price < 1 || p.price > 100_000) return { error: 'Çmimi duhet të jetë numër i plotë në dollarë kanadezë (p.sh. 395).' };
     return { product: { ...p, categories: JSON.stringify(p.categories), seasons: JSON.stringify(p.seasons) } };
   }
 
@@ -482,7 +484,7 @@ export default function adminRoutes({ isDev, noLogin = false }) {
         featured = :featured, active = :active
       WHERE id = :id
     `).run({ ...product, id: req.params.id });
-    audit(req, req.user, 'product_updated', `${product.name_sq} · ${product.price} Lekë${product.active ? '' : ' · fshehur'}`);
+    audit(req, req.user, 'product_updated', `${product.name_sq} · $${product.price}${product.active ? '' : ' · fshehur'}`);
     res.json(productFromRow(getProduct(req.params.id)));
   });
 

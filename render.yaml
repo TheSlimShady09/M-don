@@ -6,7 +6,7 @@ services:
     name: mdon
     runtime: node
     plan: starter
-    region: frankfurt
+    region: ohio          # closest Render region to Toronto (Render has no Canadian region)
     buildCommand: npm ci && npm run build
     startCommand: npm start
     healthCheckPath: /api/config

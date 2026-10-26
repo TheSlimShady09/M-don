@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { PAYMENT_METHODS, PAYMENT_STATUSES } from '../../shared/shop.js';
 import { Media } from '../components/ui.jsx';
-import { Card, ErrorNote, PaymentChip, StatusChip, StatusSelect, fmtDateTime, lek, useAdminApi } from './ui.jsx';
+import { Card, ErrorNote, PaymentChip, StatusChip, StatusSelect, fmtDateTime, money, useAdminApi } from './ui.jsx';
 
 function Row({ label, children }) {
   return (
@@ -65,16 +65,16 @@ export default function OrderDetail() {
                 <Media src={it.image} ratio="3 / 4" tone="light" className="media-quiet" />
                 <div className="min-w-0">
                   <p className="truncate font-medium">{it.name_sq}</p>
-                  <p className="text-[13px] text-muted">{it.qty} × {lek(it.price)}</p>
+                  <p className="text-[13px] text-muted">{it.qty} × {money(it.price)}</p>
                 </div>
-                <p className="tabular-nums">{lek(it.qty * it.price)}</p>
+                <p className="tabular-nums">{money(it.qty * it.price)}</p>
               </li>
             ))}
           </ul>
           <dl className="mt-2 grid grid-cols-[1fr_auto] gap-y-2 border-t border-fg pt-4 text-sm tabular-nums">
-            <dt className="text-muted">Nëntotali</dt><dd className="text-right">{lek(o.subtotal)}</dd>
-            <dt className="text-muted">Transporti</dt><dd className="text-right">{o.shipping ? lek(o.shipping) : 'Falas'}</dd>
-            <dt className="pt-2 text-base font-medium">Totali</dt><dd className="pt-2 text-right text-base font-medium">{lek(o.total)}</dd>
+            <dt className="text-muted">Nëntotali</dt><dd className="text-right">{money(o.subtotal)}</dd>
+            <dt className="text-muted">Transporti</dt><dd className="text-right">{o.shipping ? money(o.shipping) : 'Falas'}</dd>
+            <dt className="pt-2 text-base font-medium">Totali</dt><dd className="pt-2 text-right text-base font-medium">{money(o.total)}</dd>
           </dl>
         </Card>
 
@@ -84,8 +84,9 @@ export default function OrderDetail() {
             <Row label="Emri">{o.name}</Row>
             <Row label="Telefoni"><a href={`tel:${o.phone.replace(/[^\d+]/g, '')}`} className="text-accent hover:underline">{o.phone}</a></Row>
             <Row label="Email-i">{o.email ? <a href={`mailto:${o.email}`} className="text-accent hover:underline">{o.email}</a> : <span className="text-muted">—</span>}</Row>
-            <Row label="Qyteti">{o.city}</Row>
             <Row label="Adresa">{o.address}</Row>
+            <Row label="Qyteti">{o.city}{o.province ? `, ${o.province}` : ''}</Row>
+            {o.postal_code && <Row label="Kodi postar">{o.postal_code}</Row>}
             <Row label="Pagesa">
               {PAYMENT_METHODS[o.payment]?.sq}
               <span className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-2">

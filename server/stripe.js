@@ -22,8 +22,9 @@ export const stripe = stripeEnabled
   })
   : null;
 
-// Lek (ALL) has two decimal places at Stripe: 24.900 Lekë = 2 490 000
-const toMinor = (lek) => Math.round(lek * 100);
+// Prices are whole Canadian dollars; Stripe counts cents: $395 = 39 500
+const CURRENCY = 'cad';
+const toMinor = (dollars) => Math.round(dollars * 100);
 
 export const dashboardUrl = (paymentIntent) =>
   (paymentIntent ? `https://dashboard.stripe.com/${live ? '' : 'test/'}payments/${paymentIntent}` : null);
@@ -33,7 +34,7 @@ export async function createCheckout(order, lines, lang) {
   const line_items = lines.map((l) => ({
     quantity: l.qty,
     price_data: {
-      currency: 'all',
+      currency: CURRENCY,
       unit_amount: toMinor(l.price),
       product_data: {
         name: (lang === 'en' && l.name_en) || l.name_sq,
@@ -44,7 +45,7 @@ export async function createCheckout(order, lines, lang) {
   if (order.shipping > 0) {
     line_items.push({
       quantity: 1,
-      price_data: { currency: 'all', unit_amount: toMinor(order.shipping), product_data: { name: lang === 'en' ? 'Shipping' : 'Transporti' } },
+      price_data: { currency: CURRENCY, unit_amount: toMinor(order.shipping), product_data: { name: lang === 'en' ? 'Shipping' : 'Transporti' } },
     });
   }
 
@@ -75,7 +76,7 @@ export function markPaid(session) {
   if (order.payment_status === 'paguar') return { ok: true, order, already: true };
   if (session.payment_status !== 'paid') return { ok: false, reason: `not paid (${session.payment_status})`, order };
   // Never trust an amount we did not ask for
-  if (session.currency !== 'all' || session.amount_total !== toMinor(order.total)) {
+  if (session.currency !== CURRENCY || session.amount_total !== toMinor(order.total)) {
     console.error(`Stripe: shuma nuk përputhet për ${order.code}: ${session.amount_total} ${session.currency}`);
     return { ok: false, reason: 'amount mismatch', order };
   }

@@ -14,7 +14,8 @@ function initialLang() {
   }
 }
 
-const lekSq = (n) => `${String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.')} Lekë`;
+// Whole Canadian dollars, written the Canadian way in both languages: $1,250
+const dollars = (n) => `$${String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
 
 export function LangProvider({ children }) {
   const [lang, setLang] = useState(initialLang);
@@ -34,7 +35,7 @@ export function LangProvider({ children }) {
     /** Product name / material in the current language (falls back to Albanian) */
     pname: (p) => (lang === 'en' && p.name_en) || p.name_sq,
     pmaterial: (p) => (lang === 'en' && p.material_en) || p.material_sq,
-    price: (n) => (lang === 'en' ? `${Number(n).toLocaleString('en-US')} Lek` : lekSq(n)),
+    price: dollars,
   }), [lang]);
 
   return <LangContext.Provider value={value}>{children}</LangContext.Provider>;
@@ -50,4 +51,4 @@ export function useTitle(sq, suffix = ' — M’DON') {
   }, [sq, suffix, t]);
 }
 
-export const formatLek = lekSq;
+export const formatPrice = dollars;

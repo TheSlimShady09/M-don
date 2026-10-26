@@ -97,7 +97,7 @@ export default function OrderDone() {
               {t('Pagesa po verifikohet nga banka. Sapo të konfirmohet, porosia kalon për përgatitje. Nuk ke nevojë të paguash sërish.')}
             </p>
           )}
-          <p className="mt-10 max-w-[44ch] text-white/80">{t('Do të të telefonojmë për të konfirmuar dërgesën.')}</p>
+          <p className="mt-10 max-w-[44ch] text-white/80">{t('Do të të shkruajmë me email kur porosia të niset.')}</p>
           {state?.payment === 'banke' && (
             <p className="mt-3 max-w-[44ch] text-white/80">{t('Për transfertën bankare do të të dërgojmë të dhënat pas telefonatës.')}</p>
           )}

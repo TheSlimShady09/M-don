@@ -277,6 +277,29 @@ const EN = {
   // 404
   'Faqja nuk u gjet.': 'Page not found.',
   'Kthehu në kryefaqe': 'Back to home',
+
+  // Toronto / Canada
+  'Qepur në Toronto': 'Sewn in Toronto',
+  'Çdo copë e prerë dhe e qepur me dorë në punishten tonë në Toronto.': 'Every piece cut and sewn by hand in our Toronto workshop.',
+  'Dërgesë në gjithë Kanadanë': 'Delivery across Canada',
+  '2–7 ditë pune, kudo në Kanada.': '2–7 business days, anywhere in Canada.',
+  'Me kartë, përmes faqes së sigurt të Stripe.': 'By card, on Stripe’s secure checkout.',
+  'rrënjë shqiptare': 'Albanian roots',
+  'Kudo në Kanada, 2–7 ditë pune.': 'Anywhere in Canada, 2–7 business days.',
+  'Toronto, Kanada': 'Toronto, Canada',
+  'Ekipi i M’DON, Toronto': 'The M’DON team, Toronto',
+  'Siluete të sotme, të prera dhe të qepura në punishten tonë në Toronto.': 'Modern silhouettes, cut and sewn in our Toronto workshop.',
+  'Punishtja · Toronto': 'Workshop · Toronto',
+  'Do të të shkruajmë me email kur porosia të niset.': 'We will email you when your order ships.',
+  'Email-i': 'Email',
+  'Adresa (rruga, numri, apartamenti)': 'Address (street, number, apartment)',
+  'Provinca': 'Province',
+  'Kodi postar': 'Postal code',
+  'Zgjidh provincën.': 'Choose a province.',
+  'Shkruaj një kod postar kanadez, p.sh. M5V 2T6.': 'Enter a Canadian postal code, e.g. M5V 2T6.',
+  'Dërgojmë vetëm brenda Kanadasë. Ruajmë vetëm atë që duhet për dërgesën.': 'We ship within Canada only. We keep only what we need for delivery.',
+  'Pagesat online po përgatiten. Porositë hapen së shpejti.': 'Online payments are being set up. Ordering opens soon.',
+  'Pagesa me kartë nuk u hap tani. Provo përsëri pas pak.': 'Card payment could not be opened right now. Please try again shortly.',
 };
 
 export default EN;

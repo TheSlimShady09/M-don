@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CATEGORIES, ORDER_STATUSES, PAYMENT_METHODS, REGIONS } from '../../shared/shop.js';
-import { Card, Empty, ErrorNote, PageHeader, StatusChip, compact, fmtDateTime, fmtDay, fmtToday, lek, useAdmin, useAdminApi } from './ui.jsx';
+import { Card, Empty, ErrorNote, PageHeader, StatusChip, compact, fmtDateTime, fmtDay, fmtToday, money, useAdmin, useAdminApi } from './ui.jsx';
 import { BarList, Columns, CountUp, Segmented, Sparkline, StatusBar, TrendChart, bucket } from './charts.jsx';
 import { demoStats } from './demoStats.js';
 
@@ -101,7 +101,7 @@ export default function Overview() {
   if (!s) return error ? <ErrorNote>{error}</ErrorNote> : <p className="text-muted">Po ngarkohet…</p>;
 
   const empty = !demo && s.allTime.orders === 0;
-  const fmtMetric = metric === 'revenue' ? lek : (n) => `${count(n)} porosi`;
+  const fmtMetric = metric === 'revenue' ? money : (n) => `${count(n)} porosi`;
   const go = (path) => { if (!demo) navigate(path); };
   const revSpark = bucket(s.series.map((d) => d.revenue));
   const ordSpark = bucket(s.series.map((d) => d.orders));
@@ -148,9 +148,9 @@ export default function Overview() {
 
       <div className={`transition-opacity duration-300 ${loading && real ? 'opacity-60' : ''}`}>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <Kpi label={`Të ardhurat, ${days} ditë`} value={s.current.revenue} format={lek} now={s.current.revenue} before={s.previous.revenue} spark={revSpark} />
+          <Kpi label={`Të ardhurat, ${days} ditë`} value={s.current.revenue} format={money} now={s.current.revenue} before={s.previous.revenue} spark={revSpark} />
           <Kpi label={`Porositë, ${days} ditë`} value={s.current.orders} format={count} now={s.current.orders} before={s.previous.orders} spark={ordSpark} />
-          <Kpi label="Vlera mesatare e porosisë" value={s.current.avg} format={lek} now={s.current.avg} before={s.previous.avg} spark={avgSpark} />
+          <Kpi label="Vlera mesatare e porosisë" value={s.current.avg} format={money} now={s.current.avg} before={s.previous.avg} spark={avgSpark} />
           <Kpi label="Abonentë të newsletter-it" value={s.subscribers.total} format={count} spark={subSpark}>
             <p className="mt-2 text-[13px] text-muted"><span className="font-medium text-fg">+{count(s.subscribers.inPeriod)}</span> në {days} ditët e fundit</p>
           </Kpi>
@@ -185,7 +185,7 @@ export default function Overview() {
             />
             <TableView
               head={['Dita', 'Porosi', 'Të ardhura', ...(compare ? ['Më parë'] : [])]}
-              rows={[...s.series].reverse().map((d, i) => [dayLabel(d.day), d.orders, lek(d.revenue), ...(compare ? [lek(s.previousSeries[s.series.length - 1 - i].revenue)] : [])])}
+              rows={[...s.series].reverse().map((d, i) => [dayLabel(d.day), d.orders, money(d.revenue), ...(compare ? [money(s.previousSeries[s.series.length - 1 - i].revenue)] : [])])}
             />
           </Card>
 
@@ -204,7 +204,7 @@ export default function Overview() {
                     <li key={k}>
                       <div className="flex items-baseline justify-between gap-3 text-sm">
                         <span className="text-fg">{PAYMENT_METHODS[k]?.sq || k}</span>
-                        <span className="tabular-nums text-fg">{Math.round((v.orders / payTotal) * 100)}%<span className="ml-1.5 text-xs text-muted">{v.orders} porosi · {lek(v.revenue)}</span></span>
+                        <span className="tabular-nums text-fg">{Math.round((v.orders / payTotal) * 100)}%<span className="ml-1.5 text-xs text-muted">{v.orders} porosi · {money(v.revenue)}</span></span>
                       </div>
                       <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-sunken"><div className="h-full rounded-full bg-mark" style={{ width: `${(v.orders / payTotal) * 100}%` }} /></div>
                     </li>
@@ -219,19 +219,19 @@ export default function Overview() {
           <Card className="p-5 sm:p-6">
             <CardHead title="Sipas kategorisë" sub="Të ardhurat në këtë periudhë" />
             {s.byCategory.length
-              ? <BarList items={s.byCategory.map((c) => ({ key: c.key, label: CATEGORIES[c.key]?.sq || 'Të tjera', value: c.revenue, qty: c.qty }))} format={lek} meta={(it) => (it.qty ? `${it.qty} copë` : '')} onSelect={demo ? undefined : () => navigate('/admin/produktet')} />
+              ? <BarList items={s.byCategory.map((c) => ({ key: c.key, label: CATEGORIES[c.key]?.sq || 'Të tjera', value: c.revenue, qty: c.qty }))} format={money} meta={(it) => (it.qty ? `${it.qty} copë` : '')} onSelect={demo ? undefined : () => navigate('/admin/produktet')} />
               : <p className="text-sm text-muted">Ende pa shitje.</p>}
           </Card>
           <Card className="p-5 sm:p-6">
             <CardHead title="Sipas trevës" sub="Cila trevë shitet më shumë" />
             {s.byRegion.length
-              ? <BarList items={s.byRegion.map((r) => ({ key: r.key, label: REGIONS[r.key] || 'Të tjera', value: r.revenue, qty: r.qty }))} format={lek} meta={(it) => (it.qty ? `${it.qty} copë` : '')} />
+              ? <BarList items={s.byRegion.map((r) => ({ key: r.key, label: REGIONS[r.key] || 'Të tjera', value: r.revenue, qty: r.qty }))} format={money} meta={(it) => (it.qty ? `${it.qty} copë` : '')} />
               : <p className="text-sm text-muted">Ende pa shitje.</p>}
           </Card>
           <Card className="p-5 sm:p-6">
             <CardHead title="Ditët e javës" sub="Kur porositin më shumë" />
             <Columns data={s.byWeekday.map((d, i) => ({ label: WEEKDAYS[i][0], full: WEEKDAYS[i][1], value: d.orders }))} format={(n) => `${n} porosi`} />
-            <TableView head={['Dita', 'Porosi', 'Të ardhura']} rows={s.byWeekday.map((d, i) => [WEEKDAYS[i][1], d.orders, lek(d.revenue)])} />
+            <TableView head={['Dita', 'Porosi', 'Të ardhura']} rows={s.byWeekday.map((d, i) => [WEEKDAYS[i][1], d.orders, money(d.revenue)])} />
           </Card>
         </div>
 
@@ -239,7 +239,7 @@ export default function Overview() {
           <Card className="p-5 sm:p-6">
             <CardHead title="Më të shiturat" sub={`Copë të shitura në ${days} ditë`} />
             {s.topProducts.length
-              ? <BarList items={s.topProducts.map((p) => ({ key: p.id, label: p.name, value: p.qty, revenue: p.revenue }))} format={(n) => `${n} copë`} meta={(it) => lek(it.revenue)} onSelect={demo ? undefined : () => navigate('/admin/produktet')} />
+              ? <BarList items={s.topProducts.map((p) => ({ key: p.id, label: p.name, value: p.qty, revenue: p.revenue }))} format={(n) => `${n} copë`} meta={(it) => money(it.revenue)} onSelect={demo ? undefined : () => navigate('/admin/produktet')} />
               : <Empty title="Ende pa shitje">Produktet më të shitura do të dalin këtu pas porosive të para.</Empty>}
           </Card>
 
@@ -260,7 +260,7 @@ export default function Overview() {
                           <span className="block text-xs text-muted">{fmtDateTime(o.created_at)}</span>
                         </td>
                         <td className="hidden py-3 sm:table-cell">{o.name}<span className="block text-xs text-muted">{o.city}</span></td>
-                        <td className="py-3 text-right tabular-nums">{lek(o.total)}</td>
+                        <td className="py-3 text-right tabular-nums">{money(o.total)}</td>
                         <td className="py-3 pl-4 pr-5 text-right sm:pr-6"><StatusChip status={o.status} /></td>
                       </tr>
                     ))}
@@ -271,7 +271,7 @@ export default function Overview() {
         </div>
 
         <p className="mt-6 text-xs text-muted">
-          Gjithsej që nga fillimi: <span className="text-fg">{count(s.allTime.orders)} porosi</span> · <span className="text-fg">{lek(s.allTime.revenue)}</span>. Ditët llogariten sipas orës UTC.
+          Gjithsej që nga fillimi: <span className="text-fg">{count(s.allTime.orders)} porosi</span> · <span className="text-fg">{money(s.allTime.revenue)}</span>. Ditët llogariten sipas orës UTC.
         </p>
       </div>
     </>
