@@ -1,0 +1,31 @@
+# One-click deploy on Render (render.com → New → Blueprint → pick this repository).
+# Runs the whole shop: pages, API, owner dashboard (/admin) and the database, with HTTPS.
+# The disk keeps the database and product photos between deploys; Render only offers disks on paid instances.
+services:
+  - type: web
+    name: mdon
+    runtime: node
+    plan: starter
+    region: frankfurt
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/config
+    disk:
+      name: mdon-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: MDON_DATA_DIR
+        value: /var/data
+      - key: TRUST_PROXY
+        value: "1"
+      # The address customers use, e.g. https://mdon.onrender.com or your own domain
+      - key: PUBLIC_URL
+        sync: false
+      # Optional: card payments (see README → Pagesat me kartë)
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false

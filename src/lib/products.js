@@ -9,7 +9,12 @@ export function useProducts() {
 
   useEffect(() => {
     let alive = true;
-    request = request || api('/products').catch((err) => { request = null; throw err; });
+    request = request || api('/products')
+      .then((list) => {
+        if (!Array.isArray(list)) throw new Error('API_UNAVAILABLE');
+        return list;
+      })
+      .catch((err) => { request = null; throw err; });
     request
       .then((products) => alive && setState({ products, loading: false, error: null }))
       .catch((error) => alive && setState({ products: [], loading: false, error }));

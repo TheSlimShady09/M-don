@@ -107,12 +107,27 @@ Ngjyrat e përbashkëta të vizatimeve janë te `src/components/artkit.js`.
 
 ## Për ta nxjerrë online
 
+Dyqani ka nevojë për **serverin Node** (produktet, porositë, paneli dhe databaza punojnë aty). Prandaj **nuk** punon në hostime vetëm për faqe statike si Vercel, Netlify, Cloudflare Pages ose GitHub Pages: atje hapen vetëm faqet, pa produkte dhe pa panel.
+
+### Me Render (më e thjeshta)
+
+1. Hap llogari te [render.com](https://render.com) dhe lidhe me GitHub.
+2. **New → Blueprint** dhe zgjidh këtë repo. Render lexon `render.yaml` dhe krijon gjithçka: serverin, diskun për databazën dhe HTTPS.
+3. Te `PUBLIC_URL` vendos adresën që të jep Render (p.sh. `https://mdon.onrender.com`) ose domain-in tënd.
+4. Pas deploy-t, te faqja e shërbimit hap **Shell** dhe shkruaj `npm run pronari` për të krijuar llogarinë e pronarit (email + fjalëkalim, i shkruan vetë).
+5. Hap `https://adresa-jote/admin`, hyr dhe lidh aplikacionin e kodeve. Personin e dytë e shton te **Përdoruesit**.
+
+Kujdes: disku (që databaza të mos fshihet) kërkon një instancë me pagesë te Render. Pa disk, çdo deploy i ri fshin porositë dhe llogaritë.
+Databaza online fillon e re, me 28 produktet fillestare; ajo e kompjuterit tënd nuk kalon vetë.
+
+### Në një server tjetër (Railway, VPS)
+
 ```
-npm run build
+npm ci && npm run build
 npm start          # serveri + dyqani në një port (3000 si parazgjedhje, ose PORT=...)
 ```
 
-- Duhet një hosting që ekzekuton Node 22.13 ose më të ri (p.sh. Render, Railway ose një VPS) dhe një disk që nuk fshihet, për dosjen `data/` (ose vendos `MDON_DATA_DIR=/rruga/e/diskut`).
+- Node 22.13 ose më i ri, dhe një disk që nuk fshihet për dosjen `data/` (ose vendos `MDON_DATA_DIR=/rruga/e/diskut`).
 - Përdor HTTPS. Pas një proxy-je (Render, nginx) vendos `TRUST_PROXY=1`.
 - Online, llogaria e pronarit krijohet vetëm me `npm run pronari` në server, jo nga shfletuesi.
 

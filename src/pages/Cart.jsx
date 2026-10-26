@@ -65,7 +65,7 @@ function Field({ id, label, error, children }) {
 export default function Cart() {
   const { t, lang, pick, pname, price } = useLang();
   const { items, setQty, remove, removeMany, clear } = useCart();
-  const { products, loading } = useProducts();
+  const { products, loading, error: loadError } = useProducts();
   const navigate = useNavigate();
   const [form, setForm] = useState(EMPTY);
   const [errors, setErrors] = useState({});
@@ -168,6 +168,7 @@ export default function Cart() {
           {notice && <p role="status" className="mb-8 border-l-2 border-crimson bg-paper px-5 py-4 text-[15px]">{t(notice)}</p>}
 
           {loading && items.length > 0 && <p className="py-24 text-center text-stone">{t('Po ngarkohet…')}</p>}
+          {loadError && items.length > 0 && <p role="alert" className="py-24 text-center text-stone">{t('Shporta nuk u ngarkua. Produktet e tua janë ruajtur; rifresko faqen pas pak.')}</p>}
 
           {items.length === 0 && (
             <div className="py-[clamp(48px,8vw,96px)] text-center">

@@ -214,6 +214,8 @@ const EN = {
   'Shiko të gjitha stinët': 'See all seasons',
   'Po ngarkohet…': 'Loading…',
   'Katalogu nuk u ngarkua. Rifresko faqen.': 'The catalogue did not load. Refresh the page.',
+  'Produktet nuk u ngarkuan. Rifresko faqen pas pak.': 'The pieces could not be loaded. Please refresh the page in a moment.',
+  'Shporta nuk u ngarkua. Produktet e tua janë ruajtur; rifresko faqen pas pak.': 'Your bag could not be loaded. Your pieces are saved; please refresh the page in a moment.',
 
   // Bag & checkout
   'Shporta jote': 'Your bag',

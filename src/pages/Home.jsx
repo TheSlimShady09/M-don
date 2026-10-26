@@ -252,7 +252,7 @@ function Craft() {
 
 function BestSellers() {
   const { t } = useLang();
-  const { products } = useProducts();
+  const { products, error } = useProducts();
   const best = products.filter((p) => p.featured).slice(0, 8);
   return (
     <section id="me-te-mirat" aria-labelledby="best-title" className="scroll-mt-20 border-t border-rule bg-white pb-[clamp(88px,11vw,168px)] pt-[clamp(80px,9vw,136px)] text-ink">
@@ -261,6 +261,7 @@ function BestSellers() {
           <h2 id="best-title" className={`${h2} mt-0`}>{t('Më të mirat e')} <span className="text-flame">M’DON</span></h2>
           <Link to="/katalogu" className="link-arrow md:mb-2.5">{t('Shiko të gjitha')} <Arrow /></Link>
         </header>
+        {error && <p className="border-l-2 border-crimson bg-paper px-5 py-4 text-stone">{t('Produktet nuk u ngarkuan. Rifresko faqen pas pak.')}</p>}
         <ul className="grid grid-cols-2 gap-x-3 gap-y-10 md:grid-cols-3 md:gap-x-[clamp(16px,1.8vw,28px)] md:gap-y-[clamp(40px,4vw,64px)] xl:grid-cols-4">
           {best.map((p, i) => (
             <Reveal as={ProductCard} key={p.id} p={p} delay={(i % 4) * 90} />
