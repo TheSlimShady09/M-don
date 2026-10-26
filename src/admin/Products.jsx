@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { BADGES, CATEGORIES, LABELS, REGIONS } from '../../shared/shop.js';
+import { BADGES, CATEGORIES, LABELS, REGIONS, SEASONS } from '../../shared/shop.js';
 import { Media } from '../components/ui.jsx';
 import { Card, Empty, ErrorNote, PageHeader, Switch, btnDanger, btnGhost, btnPrimary, field, labelCls, lek, useAdminApi } from './ui.jsx';
 
 const BLANK = {
-  name_sq: '', name_en: '', categories: [], region: 'malesia', material_sq: '', material_en: '',
+  name_sq: '', name_en: '', categories: [], seasons: [], region: 'malesia', material_sq: '', material_en: '',
   label: null, price: '', badge: null, featured: false, active: true, image: null,
 };
 
@@ -31,7 +31,7 @@ function ProductForm({ product, onClose, onSaved, onDeleted }) {
   useEffect(() => () => { if (preview?.startsWith('blob:')) URL.revokeObjectURL(preview); }, [preview]);
 
   const set = (key) => (e) => setF((x) => ({ ...x, [key]: e.target.value }));
-  const toggleCat = (c) => setF((x) => ({ ...x, categories: x.categories.includes(c) ? x.categories.filter((y) => y !== c) : [...x.categories, c] }));
+  const toggle = (key, v) => setF((x) => ({ ...x, [key]: x[key].includes(v) ? x[key].filter((y) => y !== v) : [...x[key], v] }));
 
   const pickFile = (e) => {
     const chosen = e.target.files[0];
@@ -145,7 +145,19 @@ function ProductForm({ product, onClose, onSaved, onDeleted }) {
             <div className="flex flex-wrap gap-2">
               {Object.entries(CATEGORIES).map(([k, v]) => (
                 <label key={k} className="flex cursor-pointer items-center gap-2 border border-line px-3.5 py-2 text-sm has-[:checked]:border-strong has-[:checked]:bg-strong has-[:checked]:text-on-strong">
-                  <input type="checkbox" checked={f.categories.includes(k)} onChange={() => toggleCat(k)} className="accent-crimson" />
+                  <input type="checkbox" checked={f.categories.includes(k)} onChange={() => toggle('categories', k)} className="accent-crimson" />
+                  {v.sq}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend className={labelCls}>Stinët (koleksionet) *</legend>
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(SEASONS).map(([k, v]) => (
+                <label key={k} className="flex cursor-pointer items-center gap-2 border border-line px-3.5 py-2 text-sm has-[:checked]:border-strong has-[:checked]:bg-strong has-[:checked]:text-on-strong">
+                  <input type="checkbox" checked={f.seasons.includes(k)} onChange={() => toggle('seasons', k)} className="accent-crimson" />
                   {v.sq}
                 </label>
               ))}
@@ -260,7 +272,7 @@ export default function Products() {
               <tr>
                 <th className="px-5 py-3 font-normal">Produkti</th>
                 <th className="py-3 font-normal">Kategoria</th>
-                <th className="py-3 font-normal">Treva</th>
+                <th className="py-3 font-normal">Treva · stinët</th>
                 <th className="py-3 text-right font-normal">Çmimi</th>
                 <th className="py-3 pl-8 font-normal">Në dyqan</th>
                 <th className="py-3 font-normal">Kryefaqe</th>
@@ -280,7 +292,7 @@ export default function Products() {
                     </div>
                   </td>
                   <td className="py-3">{p.label ? LABELS[p.label].sq : p.categories.map((c) => CATEGORIES[c].sq).join(', ')}</td>
-                  <td className="py-3">{REGIONS[p.region]}</td>
+                  <td className="py-3">{REGIONS[p.region]}<span className="block text-xs text-muted">{p.seasons.map((k) => SEASONS[k].sq).join(', ')}</span></td>
                   <td className="py-3 text-right tabular-nums">{lek(p.price)}</td>
                   <td className="py-3 pl-8"><Switch checked={p.active} onChange={() => quickToggle(p, 'active')} label={`${p.name_sq} në dyqan`} /></td>
                   <td className="py-3"><Switch checked={p.featured} onChange={() => quickToggle(p, 'featured')} label={`${p.name_sq} te Më të mirat`} /></td>

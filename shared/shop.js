@@ -11,7 +11,18 @@ export const CATEGORIES = {
   femije: { sq: 'Fëmijë', en: 'Kids' },
 };
 
-// North to south
+// The collections are organised by season. `title` is the definite form used as a page heading.
+export const SEASONS = {
+  pranvere: { sq: 'Pranverë', en: 'Spring', title: 'Pranvera' },
+  vere: { sq: 'Verë', en: 'Summer', title: 'Vera' },
+  vjeshte: { sq: 'Vjeshtë', en: 'Autumn', title: 'Vjeshta' },
+  dimer: { sq: 'Dimër', en: 'Winter', title: 'Dimri' },
+};
+
+/** Season for a date: March–May spring, June–August summer, September–November autumn, December–February winter */
+export const seasonOf = (date = new Date()) => ['dimer', 'pranvere', 'vere', 'vjeshte'][Math.floor(((date.getMonth() + 1) % 12) / 3)];
+
+// Where a product was made, north to south (shown on the product, not used for collections)
 export const REGIONS = {
   malesia: 'Malësia',
   kukesi: 'Kukësi',

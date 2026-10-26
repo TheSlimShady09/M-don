@@ -11,7 +11,7 @@ const FEATURES = [
 export default function Features() {
   const { t } = useLang();
   return (
-    <section aria-label={t('Pse M’DON')} className="border-b border-white/14 bg-ink py-[clamp(48px,5vw,72px)]">
+    <section id="sherbimet" aria-label={t('Pse M’DON')} className="scroll-mt-20 border-b border-white/14 bg-ink py-[clamp(48px,5vw,72px)]">
       <Wrap as="ul" className="grid gap-x-[clamp(24px,3vw,48px)] gap-y-8 sm:grid-cols-2 xl:grid-cols-4">
         {FEATURES.map(([title, text, icon]) => (
           <li key={title} className="flex items-start gap-[18px]">

@@ -12,7 +12,7 @@ const EN = {
   'Burra': 'Men',
   'Gra': 'Women',
   'Fëmijë': 'Kids',
-  'Trevat': 'Regions',
+  'Stinët': 'Seasons',
   'Historia': 'Story',
   'M’DON, kthehu në krye': 'M’DON, home',
   'Kërko': 'Search',
@@ -61,29 +61,24 @@ const EN = {
   'Ilustrim: një çift kërcen valle me veshje tradicionale shqiptare. Ajo me fustan të bardhë dhe jelek të qëndisur, ai me jelek të kuq dhe qeleshe të bardhë.':
     'Illustration: a couple dancing a traditional Albanian valle. She wears a white dress and an embroidered vest; he wears a red vest and a white qeleshe.',
 
-  // Regions
-  'Nga veriu në jug': 'From north to south',
-  'Koleksionet e trevave': 'The regional collections',
-  'Gjashtë kapsula, gjashtë treva. Secila me veshjen, zanatin dhe muzikën që e bëjnë të njohshme.':
-    'Six capsules, six regions, each with the dress, craft and music that make it recognisable.',
-  'Xhubleta · Lahuta': 'Xhubleta · Lahuta',
-  'Tirqit · Çiftelia': 'Tirq · Çifteli',
-  'Xhamadani · Filigrani': 'Xhamadan · Filigree',
-  'Qeleshja · Defi': 'Qeleshe · Def drum',
-  'Kitara · Mandolina': 'Guitar · Mandolin',
-  'Fustanella · Klarineta': 'Fustanella · Clarinet',
-  'Xhubleta, fundi i leshtë në formë kambane i grave të Malësisë, dhe lahuta që shoqëron këngët e kreshnikëve.':
-    'The xhubleta, the bell-shaped wool skirt of Malësia’s women, and the lahuta that accompanies the songs of the frontier warriors.',
-  'Tirqit e bardhë të leshit me gajtan të zi dhe çiftelia me dy tela, zëri i këngëve të veriut.':
-    'White wool tirq trousers trimmed with black braid, and the two-string çifteli, the voice of northern song.',
-  'Xhamadani i qëndisur me sërmë dhe filigrani i argjendit, mjeshtëria e argjendarëve të Shkodrës.':
-    'The xhamadan vest embroidered with metal thread, and the silver filigree of Shkodra’s silversmiths.',
-  'Qeleshja e bardhë prej leshi të ngjeshur dhe defi që mban ritmin në këngët e dasmave.':
-    'The white felted-wool qeleshe cap, and the def frame drum that keeps the rhythm of wedding songs.',
-  'Kitara dhe mandolina e serenatave, që ende këndohen nën dritaret e Korçës.':
-    'The guitar and mandolin of the serenades still sung beneath Korça’s windows.',
-  'Fustanella me pala të bardha dhe klarineta e sazeve të jugut, pranë isopolifonisë që UNESCO e ka në mbrojtje.':
-    'The white pleated fustanella and the clarinet of southern folk bands, alongside the iso-polyphony protected by UNESCO.',
+  // Seasons
+  'Katër stinë': 'Four seasons',
+  'Koleksionet e stinëve': 'The seasonal collections',
+  'Katër koleksione, një për çdo stinë: materiali, ngjyra dhe tradita që i shkojnë asaj kohe të vitit.':
+    'Four collections, one for each season: the fabric, colour and tradition that suit that time of year.',
+  'Sezoni i tanishëm': 'This season',
+  'Liri · Pambuk': 'Linen · Cotton',
+  'Liri i bardhë': 'White linen',
+  'Lesh · Kadife': 'Wool · Velvet',
+  'Lesh i trashë': 'Heavy wool',
+  'Këmisha liri me qëndisje të lehta, dhe verorja kuq e bardhë që varet në degë kur kthehen dallëndyshet.':
+    'Linen shirts with light embroidery, and the red-and-white verore hung on a branch when the swallows return.',
+  'Fustane liri të bardhë, të lehta për vapën e bregdetit dhe mbrëmjet e gjata të verës.':
+    'White linen dresses, light enough for the coastal heat and the long summer evenings.',
+  'Pallto leshi me motive qilimi, për ditët kur bien gjethet dhe vilet rrushi.':
+    'Wool coats with kilim motifs, for the days when the leaves fall and the grapes are picked.',
+  'Guna e leshit dhe qeleshja e bardhë, për dimrat e gjatë të malësisë.':
+    'The wool guna cloak and the white qeleshe, for the long highland winters.',
 
   // Lookbook
   'Lookbook · Vjeshtë 2026': 'Lookbook · Autumn 2026',
@@ -106,6 +101,12 @@ const EN = {
   'Mjeshtëria': 'Craft',
   'Nga duart e mjeshtrave': 'From the hands of masters',
   'Çdo veshje kalon nëpër tri duar përpara se të vijë te ti.': 'Every garment passes through three pairs of hands before it reaches you.',
+  'Ilustrim: një dele dhe leshi i saj që bëhet lëmsh i kuq': 'Illustration: a sheep, and its wool becoming a ball of red yarn',
+  'Ilustrim: një gjergjef me një motiv me pika kryq, ende në punë, dhe gjilpëra me pe të kuq':
+    'Illustration: an embroidery hoop with a cross-stitch motif still in progress, and a needle with red thread',
+  'Ilustrim: kallëpi i një xhamadani mbi tavolinë, me gërshërë, metër dhe gjilpëra me kokë':
+    'Illustration: a xhamadan sewing pattern on the table, with scissors, a tape measure and pins',
+  'Një fije e kuqe, nga delja deri te ti.': 'One red thread, from the sheep all the way to you.',
   'Leshi': 'Wool',
   'Lesh deleje nga kullotat e Dibrës dhe të Kukësit, i larë dhe i krehur me dorë.':
     'Sheep’s wool from the pastures of Dibër and Kukës, washed and combed by hand.',
@@ -149,6 +150,21 @@ const EN = {
   'Faleminderit! Tani je pjesë e fisit.': 'Thank you! You are now part of the clan.',
 
   // Footer
+  'Më të mirat': 'Best sellers',
+  'Dërgesat dhe kthimet': 'Delivery and returns',
+  'Mënyrat e pagesës': 'Payment methods',
+  'Bërë me besë': 'Made with besa',
+  'në Shqipëri': 'in Albania',
+  'Dërgesa': 'Delivery',
+  'Falas mbi': 'Free over',
+  'Kudo në Shqipëri, 1–3 ditë pune.': 'Anywhere in Albania, 1–3 working days.',
+  'Punishtja': 'Workshop',
+  'Tiranë, Shqipëri': 'Tirana, Albania',
+  'Prerë, qëndisur dhe qepur me dorë.': 'Cut, embroidered and sewn by hand.',
+  'Shiko koleksionin': 'See the collection',
+  'Rrënjë të lashta, vija të reja.': 'Ancient roots, new lines.',
+  'Kthehu lart': 'Back to top',
+  'Pagesa': 'Payment',
   'Moda autoktone shqiptare.': 'Autochthonous Albanian fashion.',
   'Qepur me dorë, në Shqipëri.': 'Sewn by hand, in Albania.',
   'Bli': 'Shop',
@@ -176,17 +192,26 @@ const EN = {
   'Veshje për burra, të qepura me dorë: xhamadanë, jelekë dhe pallto leshi.': 'Menswear, sewn by hand: xhamadans, vests and wool coats.',
   'Veshje për gra, me qëndismat e Malësisë dhe argjendin e Shkodrës.': 'Womenswear with Malësia embroidery and Shkodra silver.',
   'Trashëgimia jonë në masa të vogla: lesh i butë dhe qëndisje që zgjasin.': 'Our heritage in small sizes: soft wool and embroidery that lasts.',
+  'Koleksioni i pranverës: liri, pambuk dhe qëndisje të lehta.': 'The spring collection: linen, cotton and light embroidery.',
+  'Koleksioni i verës: liri i bardhë dhe mëndafsh, për ditët e nxehta.': 'The summer collection: white linen and silk, for the hot days.',
+  'Koleksioni i vjeshtës: lesh, kadife dhe motive qilimi.': 'The autumn collection: wool, velvet and kilim motifs.',
+  'Koleksioni i dimrit: lesh i trashë, pallto dhe shalle.': 'The winter collection: heavy wool, coats and scarves.',
+  'Pranvera': 'Spring',
+  'Vera': 'Summer',
+  'Vjeshta': 'Autumn',
+  'Dimri': 'Winter',
   'Të gjitha': 'All',
   'Produktet': 'Products',
-  'Filtro sipas trevës': 'Filter by region',
+  'Filtro sipas stinës': 'Filter by season',
+  'Të gjitha stinët': 'All seasons',
   'Rendit': 'Sort',
   'Të rekomanduara': 'Recommended',
   'Të rejat': 'Newest',
   'Çmimi më i ulët': 'Price: low to high',
   'Çmimi më i lartë': 'Price: high to low',
   'Asnjë produkt këtu, ende.': 'Nothing here, yet.',
-  'Nuk ka ende produkte nga kjo trevë në këtë kategori.': 'There are no pieces from this region in this category yet.',
-  'Shiko të gjitha trevat': 'See all regions',
+  'Nuk ka ende produkte për këtë stinë në këtë kategori.': 'There are no pieces for this season in this category yet.',
+  'Shiko të gjitha stinët': 'See all seasons',
   'Po ngarkohet…': 'Loading…',
   'Katalogu nuk u ngarkua. Rifresko faqen.': 'The catalogue did not load. Refresh the page.',
 

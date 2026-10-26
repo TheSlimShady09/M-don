@@ -2,8 +2,8 @@
 
 export const INK = '#0E0A0A';
 export const BONE = '#F7F5F4';
-export const RED = '#B3141B';
-export const FLAME = '#E0202A';
+export const RED = '#700C0C';
+export const FLAME = '#B81C1C';
 export const STONE = '#5F5656';
 export const RULE = '#E8E2E1';
 

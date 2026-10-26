@@ -46,7 +46,7 @@ Duhet një aplikacion verifikimi në telefon: **Google Authenticator** ose **Mic
 |---|---|
 | Pasqyra | Periudha 7 / 30 / 90 ditë; të ardhurat, porositë, vlera mesatare dhe abonentët me krahasim; grafiku ditor (me periudhën e mëparshme), statuset, pagesat, kategoritë, trevat, ditët e javës, më të shiturat, porositë e fundit. Butoni **Dritë / Errësirë** poshtë majtas. Pa porosi të vërteta, mund ta shikosh me **të dhëna shembull** (nuk ruhen) |
 | Porositë | Lista e porosive me filtër sipas statusit dhe statusin e pagesës (Paguar / Në pritje); hap një porosi për të parë klientin, adresën dhe produktet; ndrysho statusin (E re → Në përgatitje → Dërguar → Dorëzuar). Pagesat në dorëzim dhe me bankë i shënon si **Paguar** vetë; pagesat me kartë i përditëson Stripe, me lidhje **Shih në Stripe** |
-| Produktet | Shto, ndrysho, fshi; emri dhe materiali në shqip/anglisht, çmimi, treva, kategoritë, foto; fshih nga dyqani ose vendos te "Më të mirat" |
+| Produktet | Shto, ndrysho, fshi; emri dhe materiali në shqip/anglisht, çmimi, treva, kategoritë, **stinët** (në cilin koleksion del: pranverë, verë, vjeshtë, dimër), foto; fshih nga dyqani ose vendos te "Më të mirat" |
 | Abonentët | Email-et nga "Bëhu pjesë e fisit", me shkarkim CSV |
 | Përdoruesit | Dy llogaritë e panelit; pronari shton, rivendos ose heq personin e dytë |
 | Regjistri | Regjistri i sigurisë: hyrjet, tentativat e dështuara, ndryshimet |
@@ -88,7 +88,8 @@ Gjithçka që shkruan dyqani ruhet në dosjen **`data/`**: databaza `mdon.db` dh
 Kryefaqja nuk ka nevojë për foto, sepse çdo seksion ka vizatimin e vet:
 - Burra / Gra / Fëmijë: veshjet e plota (`src/components/OutfitArt.jsx`)
 - "Gjak i kuq, dhé i zi": ilustrimi i vallesë (`public/img/valle.jpg`)
-- trevat: veshja popullore dhe një instrument ose zanat për secilën (`src/components/TrevaArt.jsx`, tekstet te `REGION_CARDS` në `src/pages/Home.jsx`)
+- koleksionet e stinëve: një veshje dhe shenjat e stinës për secilën (`src/components/SeasonArt.jsx`, tekstet te `SEASON_CARDS` në `src/pages/Home.jsx`)
+- "Nga duart e mjeshtrave": leshi, qëndisja dhe prerja, të lidhura nga një fije e kuqe (`src/components/CraftArt.jsx`)
 - "Malet na veshin": Thethi, Kalaja e Gjirokastrës dhe një qëndisje e Malësisë (`src/components/LookArt.jsx`)
 
 Ngjyrat e përbashkëta të vizatimeve janë te `src/components/artkit.js`.
@@ -114,7 +115,7 @@ npm start          # serveri + dyqani në një port (3000 si parazgjedhje, ose P
 ```
 src/            dyqani (React) dhe src/admin/ paneli
 server/         API, hyrja e pronarit, databaza; server/stripe.js pagesat me kartë
-shared/shop.js  rregullat e përbashkëta: transporti, kategoritë, trevat, statuset, mënyrat e pagesës
+shared/shop.js  rregullat e përbashkëta: transporti, kategoritë, stinët, trevat, statuset, mënyrat e pagesës
 .env            çelësat sekretë (nuk publikohet; shih .env.example)
 arkiva-statike/ versioni i vjetër HTML/CSS (vetëm për referencë)
 ```

@@ -37,3 +37,48 @@ export const SEED_PRODUCTS = [
   { id: 'qeleshe-e-bardhe', name_sq: 'Qeleshe e bardhë', name_en: 'White qeleshe', categories: ['burra', 'gra'], region: 'tirana', material_sq: 'Lesh i shtypur', material_en: 'Felted wool', price: 6800, label: 'unisex', featured: 1 },
   { id: 'shall-leshi', name_sq: 'Shall leshi', name_en: 'Wool scarf', categories: ['burra', 'gra'], region: 'gjirokastra', material_sq: 'Lesh', material_en: 'Wool', price: 7500, label: 'unisex', featured: 1 },
 ];
+
+// Seasons of the starting collection: linen and silk for spring/summer, wool for autumn/winter,
+// light wool vests for the in-between seasons, silver all year.
+const ALL_YEAR = ['pranvere', 'vere', 'vjeshte', 'dimer'];
+const WARM = ['pranvere', 'vere'];
+const COLD = ['vjeshte', 'dimer'];
+const MILD = ['pranvere', 'vjeshte'];
+export const SEED_SEASONS = {
+  'xhamadan-i-qendisur': MILD,
+  'xhamadan-klasik': MILD,
+  'jelek-me-motiv-qilimi': MILD,
+  'kemishe-liri': WARM,
+  'pantallona-leshi': COLD,
+  'kostum-i-zi': COLD,
+  'pallto-leshi-gri': COLD,
+  'kopsa-argjendi': ALL_YEAR,
+  'fustan-me-theke': COLD,
+  'pallto-me-motiv-qilimi': COLD,
+  'fund-leshi-me-qendisje': COLD,
+  'kemishe-e-qendisur': WARM,
+  'vathe-filigrani': ALL_YEAR,
+  'jelek-kadifeje': COLD,
+  'fustan-mbremjeje': WARM,
+  'shall-me-theke': COLD,
+  'varese-argjendi': ALL_YEAR,
+  'xhakete-leshi': COLD,
+  'jelek-i-qendisur': MILD,
+  'fustan-i-vogel-me-theke': COLD,
+  'xhamadan-i-vogel': MILD,
+  'qeleshe-e-vogel': COLD,
+  'kemishe-liri-femije': WARM,
+  'pulover-me-motiv-qilimi': COLD,
+  'pallto-e-vogel': ['dimer'],
+  'shall-i-vogel': ['dimer'],
+  'qeleshe-e-bardhe': COLD,
+  'shall-leshi': ['dimer'],
+};
+
+/** Best guess for a product without a season yet, from its material */
+export function seasonsForMaterial(material = '') {
+  const m = material.toLowerCase();
+  if (/argjend|ar\b|filigran/.test(m)) return ALL_YEAR;
+  if (/\bli\b|liri|pambuk|mëndafsh|mendafsh/.test(m)) return WARM;
+  return COLD;
+}

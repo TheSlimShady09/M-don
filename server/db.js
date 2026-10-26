@@ -2,7 +2,7 @@ import { DatabaseSync } from 'node:sqlite';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { SEED_PRODUCTS } from './seed-products.js';
+import { SEED_PRODUCTS, SEED_SEASONS, seasonsForMaterial } from './seed-products.js';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 // Everything the shop writes (database + uploaded photos) lives here. Back this folder up.
@@ -150,6 +150,23 @@ if (db.prepare('PRAGMA user_version').get().user_version < 2) {
   }
 }
 
+// ---------- Collections by season (schema version 3) ----------
+if (db.prepare('PRAGMA user_version').get().user_version < 3) {
+  db.exec('BEGIN');
+  try {
+    db.exec("ALTER TABLE products ADD COLUMN seasons TEXT NOT NULL DEFAULT '[]'");
+    const setSeasons = db.prepare('UPDATE products SET seasons = ? WHERE id = ?');
+    for (const r of db.prepare('SELECT id, material_sq FROM products').all()) {
+      setSeasons.run(JSON.stringify(SEED_SEASONS[r.id] || seasonsForMaterial(r.material_sq)), r.id);
+    }
+    db.exec('PRAGMA user_version = 3');
+    db.exec('COMMIT');
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw err;
+  }
+}
+
 export function tx(fn) {
   db.exec('BEGIN');
   try {
@@ -167,6 +184,7 @@ export const productFromRow = (r) => ({
   name_sq: r.name_sq,
   name_en: r.name_en,
   categories: JSON.parse(r.categories),
+  seasons: JSON.parse(r.seasons || '[]'),
   region: r.region,
   material_sq: r.material_sq,
   material_en: r.material_en,
@@ -182,8 +200,8 @@ export const productFromRow = (r) => ({
 // First run: fill the catalogue with the starting collection
 if (db.prepare('SELECT COUNT(*) AS n FROM products').get().n === 0) {
   const insert = db.prepare(`
-    INSERT INTO products (id, name_sq, name_en, categories, region, material_sq, material_en, label, price, badge, featured, sort_order)
-    VALUES (:id, :name_sq, :name_en, :categories, :region, :material_sq, :material_en, :label, :price, :badge, :featured, :sort_order)
+    INSERT INTO products (id, name_sq, name_en, categories, seasons, region, material_sq, material_en, label, price, badge, featured, sort_order)
+    VALUES (:id, :name_sq, :name_en, :categories, :seasons, :region, :material_sq, :material_en, :label, :price, :badge, :featured, :sort_order)
   `);
   tx(() => SEED_PRODUCTS.forEach((p, i) => insert.run({
     label: null,
@@ -191,6 +209,7 @@ if (db.prepare('SELECT COUNT(*) AS n FROM products').get().n === 0) {
     featured: 0,
     ...p,
     categories: JSON.stringify(p.categories),
+    seasons: JSON.stringify(SEED_SEASONS[p.id] || seasonsForMaterial(p.material_sq)),
     sort_order: i,
   })));
 }

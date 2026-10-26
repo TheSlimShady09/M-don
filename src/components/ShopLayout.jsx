@@ -4,7 +4,7 @@ import { useLang } from '../lib/i18n.jsx';
 import Header from './Header.jsx';
 import Footer from './Footer.jsx';
 
-// New page: start at the top. Links like /#trevat: scroll to that section.
+// New page: start at the top. Links like /#stinet: scroll to that section.
 function ScrollManager() {
   const { pathname, hash } = useLocation();
   useEffect(() => {

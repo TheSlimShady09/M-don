@@ -21,7 +21,7 @@ function Shell({ title, wide = false, children }) {
           </div>
           {children}
           <p className="mt-10 text-center">
-            <Link to="/" className="caps-xs text-white/50 hover:text-white">← Kthehu te dyqani</Link>
+            <Link to="/" className="inline-block py-1.5 caps-xs text-white/50 hover:text-white">← Kthehu te dyqani</Link>
           </p>
         </div>
       </div>

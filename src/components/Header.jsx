@@ -9,25 +9,25 @@ const NAV = [
   { to: '/katalogu?k=burra', label: 'Burra', k: 'burra' },
   { to: '/katalogu?k=gra', label: 'Gra', k: 'gra' },
   { to: '/katalogu?k=femije', label: 'Fëmijë', k: 'femije' },
-  { to: '/#trevat', label: 'Trevat' },
+  { to: '/#stinet', label: 'Stinët' },
   { to: '/#historia', label: 'Historia' },
 ];
 
 const navLink = 'relative caps text-white/88 transition-colors hover:text-white after:absolute after:-bottom-2 after:left-0 after:right-[.28em] after:h-px after:origin-left after:scale-x-0 after:bg-flame after:transition-transform after:duration-300 hover:after:scale-x-100';
 
-function LangSwitch({ big = false }) {
+export function LangSwitch({ big = false }) {
   const { lang, setLang, t } = useLang();
   return (
     <div role="group" aria-label={t('Gjuha')} className={`flex items-center ${big ? 'gap-3' : 'gap-2'}`}>
       {['sq', 'en'].map((l, i) => (
         <span key={l} className="contents">
-          {i > 0 && <span aria-hidden="true" className="text-[11px] text-crimson">/</span>}
+          {i > 0 && <span aria-hidden="true" className="text-[11px] text-flame">/</span>}
           <button
             type="button"
             lang={l}
             aria-pressed={lang === l}
             onClick={() => setLang(l)}
-            className={`${big ? 'py-1.5 text-[13px]' : 'text-[11px]'} font-normal uppercase tracking-[.26em] transition-colors hover:text-white ${lang === l ? 'text-white' : 'text-white/62'}`}
+            className={`${big ? 'py-1.5 text-[13px]' : 'min-h-6 min-w-6 text-[11px]'} font-normal uppercase tracking-[.26em] transition-colors hover:text-white ${lang === l ? 'text-white' : 'text-white/62'}`}
           >
             {l}
           </button>
@@ -80,7 +80,7 @@ export default function Header() {
             aria-expanded={open}
             aria-controls="mnav"
             onClick={() => setOpen((o) => !o)}
-            className="inline-flex items-center gap-3 justify-self-start caps text-white/88 lg:hidden"
+            className="-my-3 inline-flex min-h-11 items-center gap-3 justify-self-start py-3 caps text-white/88 lg:hidden"
           >
             <span aria-hidden="true" className="grid w-[22px] gap-1.5">
               <i className={`block h-px bg-current transition-transform duration-300 ${open ? 'translate-y-[3.5px] rotate-45' : ''}`} />

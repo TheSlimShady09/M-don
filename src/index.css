@@ -7,8 +7,8 @@
 @theme {
   --color-ink: #0E0A0A;
   --color-ink-2: #181111;
-  --color-crimson: #B3141B;
-  --color-flame: #E0202A;
+  --color-crimson: #700C0C;   /* brand red, from the logo artwork */
+  --color-flame: #B81C1C;     /* the same red, lighter: readable on black (3:1) for the logo, headlines and hovers */
   --color-paper: #F3EFEE;
   --color-bone: #F7F5F4;
   --color-stone: #5F5656;

@@ -4,6 +4,7 @@ import { useLang, useTitle } from '../lib/i18n.jsx';
 import { useCart } from '../lib/cart.jsx';
 import { useProducts } from '../lib/products.js';
 import { api } from '../lib/api.js';
+import { useShopConfig } from '../lib/config.js';
 import { MAX_QTY, PAYMENT_METHODS, REGIONS, SHIPPING_FREE_FROM, shippingFor } from '../../shared/shop.js';
 import { Arrow, Chest, Kilim, Media, Wrap } from '../components/ui.jsx';
 
@@ -70,14 +71,11 @@ export default function Cart() {
   const [errors, setErrors] = useState({});
   const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
-  const [cardOn, setCardOn] = useState(false);
+  const config = useShopConfig();
+  const [cardOff, setCardOff] = useState(false);   // the server refused card payment during this visit
+  const cardOn = config.stripe && !cardOff;
   const [params, setParams] = useSearchParams();
   useTitle('Shporta');
-
-  // Card payments appear only when the server has Stripe keys
-  useEffect(() => {
-    api('/config').then((c) => setCardOn(Boolean(c?.stripe))).catch(() => {});
-  }, []);
 
   // Back from Stripe without paying: nothing was charged, the cart is still here
   useEffect(() => {
@@ -135,7 +133,7 @@ export default function Cart() {
       navigate(`/porosia/${res.code}`, { state: { ...res, payment: form.payment } });
     } catch (err) {
       if (err.status === 502 || (err.status === 400 && err.data?.fields?.includes('payment'))) {
-        if (err.status === 400) setCardOn(false);
+        if (err.status === 400) setCardOff(true);
         setNotice('Pagesa me kartë nuk u hap tani. Provo përsëri pas pak ose zgjidh pagesë në dorëzim.');
       } else if (err.status === 409) {
         const fresh = await api('/products').catch(() => []);

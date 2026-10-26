@@ -10,7 +10,7 @@ import {
   startPending, getPending, updatePending, endPending, startSession, currentSession, endSession, endUserSessions, listSessions,
   requireUser, requireOwnerRole, ipBlocked, noteIpFailure, audit,
 } from '../auth.js';
-import { CATEGORIES, REGIONS, LABELS, BADGES, ORDER_STATUSES, PAYMENT_METHODS, PAYMENT_STATUSES, NOT_SOLD } from '../../shared/shop.js';
+import { CATEGORIES, SEASONS, REGIONS, LABELS, BADGES, ORDER_STATUSES, PAYMENT_METHODS, PAYMENT_STATUSES, NOT_SOLD } from '../../shared/shop.js';
 import { dashboardUrl } from '../stripe.js';
 
 const TOO_MANY = 'Shumë përpjekje të gabuara. Provo përsëri më vonë.';
@@ -420,6 +420,7 @@ export default function adminRoutes({ isDev, noLogin = false }) {
       name_sq: str(b.name_sq, 120),
       name_en: str(b.name_en, 120),
       categories: Array.isArray(b.categories) ? [...new Set(b.categories.filter((c) => c in CATEGORIES))] : [],
+      seasons: Array.isArray(b.seasons) ? Object.keys(SEASONS).filter((k) => b.seasons.includes(k)) : [],
       region: b.region in REGIONS ? b.region : null,
       material_sq: str(b.material_sq, 60),
       material_en: str(b.material_en, 60),
@@ -431,9 +432,10 @@ export default function adminRoutes({ isDev, noLogin = false }) {
     };
     if (!p.name_sq) return { error: 'Shkruaj emrin e produktit në shqip.' };
     if (!p.categories.length) return { error: 'Zgjidh të paktën një kategori.' };
+    if (!p.seasons.length) return { error: 'Zgjidh të paktën një stinë.' };
     if (!p.region) return { error: 'Zgjidh trevën.' };
     if (!Number.isInteger(p.price) || p.price < 1 || p.price > 10_000_000) return { error: 'Çmimi duhet të jetë numër i plotë në Lekë.' };
-    return { product: { ...p, categories: JSON.stringify(p.categories) } };
+    return { product: { ...p, categories: JSON.stringify(p.categories), seasons: JSON.stringify(p.seasons) } };
   }
 
   const getProduct = (id) => db.prepare('SELECT * FROM products WHERE id = ?').get(id);
@@ -449,8 +451,8 @@ export default function adminRoutes({ isDev, noLogin = false }) {
     for (let n = 2; getProduct(id); n += 1) id = `${slugify(product.name_sq)}-${n}`;
     const sort = db.prepare('SELECT COALESCE(MAX(sort_order), 0) + 1 AS n FROM products').get().n;
     db.prepare(`
-      INSERT INTO products (id, name_sq, name_en, categories, region, material_sq, material_en, label, price, badge, featured, active, sort_order)
-      VALUES (:id, :name_sq, :name_en, :categories, :region, :material_sq, :material_en, :label, :price, :badge, :featured, :active, :sort_order)
+      INSERT INTO products (id, name_sq, name_en, categories, seasons, region, material_sq, material_en, label, price, badge, featured, active, sort_order)
+      VALUES (:id, :name_sq, :name_en, :categories, :seasons, :region, :material_sq, :material_en, :label, :price, :badge, :featured, :active, :sort_order)
     `).run({ ...product, id, sort_order: sort });
     audit(req, req.user, 'product_created', product.name_sq);
     res.status(201).json(productFromRow(getProduct(id)));
@@ -461,7 +463,7 @@ export default function adminRoutes({ isDev, noLogin = false }) {
     const { product, error } = cleanProduct(req.body || {});
     if (error) return res.status(400).json({ error });
     db.prepare(`
-      UPDATE products SET name_sq = :name_sq, name_en = :name_en, categories = :categories, region = :region,
+      UPDATE products SET name_sq = :name_sq, name_en = :name_en, categories = :categories, seasons = :seasons, region = :region,
         material_sq = :material_sq, material_en = :material_en, label = :label, price = :price, badge = :badge,
         featured = :featured, active = :active
       WHERE id = :id
