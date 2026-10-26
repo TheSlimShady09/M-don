@@ -38,7 +38,13 @@ Duhet një aplikacion verifikimi në telefon: **Google Authenticator** ose **Mic
 ## Nëse humbet telefonin ose fjalëkalimin
 
 - **Personi i dytë:** pronari shtyp **Rivendos hyrjen** te Përdoruesit.
-- **Pronari:** përdor një kod rezervë. Nëse nuk ke as kode, në kompjuterin ku punon serveri ndalo serverin dhe shkruaj `npm run pronari`. Zgjidh llogarinë, vendos fjalëkalim të ri dhe përgjigju **po** për të lidhur telefonin nga e para.
+- **Pronari:** përdor një kod rezervë. Nëse nuk ke as kode, në kompjuterin ku punon serveri ndalo serverin dhe shkruaj `npm run pronari`. Zgjidh llogarinë, zgjidh **Fjalëkalimin**, vendos një të ri dhe përgjigju **po** për të lidhur telefonin nga e para.
+
+### Ndrysho email-in ose fjalëkalimin
+
+- **Nga paneli:** Cilësimet → **Ndrysho email-in** ose **Ndrysho fjalëkalimin**. Të kërkon fjalëkalimin aktual dhe kodin nga aplikacioni.
+- **Nga terminali** (edhe pa hyrë në panel): `npm run pronari`, zgjidh llogarinë, pastaj **1** fjalëkalimin, **2** email-in ose **3** të dyja. Fjalëkalimi nuk shfaqet në ekran ndërsa e shkruan.
+- Pas ndryshimit, çdo pajisje ku ishe i hyrë nxirret jashtë dhe ndryshimi shënohet te Regjistri.
 
 ## Çfarë ka paneli
 
@@ -50,7 +56,7 @@ Duhet një aplikacion verifikimi në telefon: **Google Authenticator** ose **Mic
 | Abonentët | Email-et nga "Bëhu pjesë e fisit", me shkarkim CSV |
 | Përdoruesit | Dy llogaritë e panelit; pronari shton, rivendos ose heq personin e dytë |
 | Regjistri | Regjistri i sigurisë: hyrjet, tentativat e dështuara, ndryshimet |
-| Cilësimet | Fjalëkalimi, kodet rezervë, pajisjet ku je i hyrë, dalja |
+| Cilësimet | Fjalëkalimi, email-i, kodet rezervë, pajisjet ku je i hyrë, dalja |
 
 ## Pagesat me kartë (Stripe)
 

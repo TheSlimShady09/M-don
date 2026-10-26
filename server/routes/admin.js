@@ -185,6 +185,20 @@ export default function adminRoutes({ isDev, noLogin = false }) {
     res.json({ ok: true });
   });
 
+  router.put('/email', (req, res) => {
+    const next = String(req.body?.email || '').trim().toLowerCase();
+    if (!validEmail(next)) return res.status(400).json({ error: 'Shkruaj një email të vlefshëm.' });
+    if (next === req.user.email.toLowerCase()) return res.status(400).json({ error: 'Ky është tashmë email-i yt.' });
+    const err = confirmIdentity(req.user, { password: req.body?.password, code: req.body?.code });
+    if (err) { noteFailedLogin(req.user); audit(req, req.user, 'confirm_fail', 'Ndryshim email-i'); return res.status(400).json({ error: err }); }
+    // Checked only after the identity check, so the form can't be used to find out which emails have accounts
+    if (userByEmail(next)) return res.status(400).json({ error: 'Ky email ka tashmë llogari.' });
+    db.prepare('UPDATE users SET email = ? WHERE id = ?').run(next, req.user.id);
+    endUserSessions(req.user.id, req.session?.id ?? -1); // every other device is signed out
+    audit(req, { ...req.user, email: next }, 'email_changed', `${req.user.email} → ${next}`);
+    return res.json({ ok: true, email: next });
+  });
+
   router.post('/recovery-codes', (req, res) => {
     const err = confirmIdentity(req.user, { password: req.body?.password, code: req.body?.code });
     if (err) { noteFailedLogin(req.user); audit(req, req.user, 'confirm_fail', 'Kode rezervë të reja'); return res.status(400).json({ error: err }); }

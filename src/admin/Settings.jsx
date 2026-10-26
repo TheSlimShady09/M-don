@@ -58,6 +58,55 @@ function PasswordCard() {
   );
 }
 
+function EmailCard() {
+  const call = useAdminApi();
+  const { email, refresh } = useAdmin();
+  const [f, setF] = useState({ email: '', password: '', code: '' });
+  const [msg, setMsg] = useState({ error: '', ok: '' });
+  const [busy, setBusy] = useState(false);
+  const set = (key) => (e) => setF((x) => ({ ...x, [key]: e.target.value }));
+
+  const save = async (e) => {
+    e.preventDefault();
+    setBusy(true);
+    try {
+      const res = await call('/email', { method: 'PUT', body: f });
+      setF({ email: '', password: '', code: '' });
+      setMsg({ error: '', ok: `Email-i u ndryshua në ${res.email}. Herën tjetër hyr me të. Çdo pajisje tjetër u nxor jashtë.` });
+      refresh();
+    } catch (err) {
+      setMsg({ error: err.message, ok: '' });
+    }
+    setBusy(false);
+  };
+
+  return (
+    <Card className="p-6">
+      <h2 className="text-[17px] font-medium">Ndrysho email-in</h2>
+      <p className="mt-1 text-sm text-muted">Tani: {email}</p>
+      <form onSubmit={save} className="mt-5 grid gap-4">
+        <div>
+          <label htmlFor="em-next" className={labelCls}>Email-i i ri</label>
+          <input id="em-next" type="email" autoComplete="email" required value={f.email} onChange={set('email')} className={field} />
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label htmlFor="em-pw" className={labelCls}>Fjalëkalimi aktual</label>
+            <input id="em-pw" type="password" autoComplete="current-password" required value={f.password} onChange={set('password')} className={field} />
+          </div>
+          <div>
+            <label htmlFor="em-code" className={labelCls}>Kodi nga aplikacioni</label>
+            <input id="em-code" inputMode="numeric" autoComplete="one-time-code" required maxLength={9} value={f.code} onChange={set('code')} className={codeInput} />
+          </div>
+        </div>
+        <ErrorNote>{msg.error}</ErrorNote>
+        {msg.ok && <p role="status" className="border-l-2 border-emerald-700 bg-emerald-50 dark:bg-emerald-950/50 px-4 py-3 text-sm">{msg.ok}</p>}
+        <div><button type="submit" disabled={busy} className={btnPrimary}>{busy ? 'Po ruhet…' : 'Ruaj email-in'}</button></div>
+      </form>
+    </Card>
+  );
+}
+
 function TwoFactorCard() {
   const call = useAdminApi();
   const { user, email, refresh } = useAdmin();
@@ -142,6 +191,7 @@ export default function Settings() {
       </PageHeader>
       <div className="grid items-start gap-4 lg:grid-cols-2">
         <PasswordCard />
+        <EmailCard />
         <TwoFactorCard />
         <DevicesCard />
       </div>

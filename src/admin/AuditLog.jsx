@@ -12,6 +12,7 @@ const ACTIONS = {
   confirm_fail: 'Konfirmim i dështuar',
   logout: 'Dalje',
   password_changed: 'Fjalëkalimi u ndryshua',
+  email_changed: 'Email-i u ndryshua',
   session_revoked: 'Pajisje e nxjerrë',
   user_added: 'Llogari e re',
   user_removed: 'Llogari e hequr',
@@ -26,7 +27,7 @@ const ACTIONS = {
   subscriber_removed: 'Abonent i hequr',
 };
 const FAILURES = ['login_fail', 'login_blocked', '2fa_fail', 'confirm_fail'];
-const ACCESS = ['login_ok', 'logout', '2fa_enabled', 'recovery_used', 'recovery_regenerated', 'password_changed', 'session_revoked', 'user_added', 'user_removed', 'user_reset'];
+const ACCESS = ['login_ok', 'logout', '2fa_enabled', 'recovery_used', 'recovery_regenerated', 'password_changed', 'email_changed', 'session_revoked', 'user_added', 'user_removed', 'user_reset'];
 
 const FILTERS = [
   ['', 'Të gjitha', () => true],
