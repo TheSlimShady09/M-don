@@ -4,11 +4,12 @@ import { Card, Empty, ErrorNote, PageHeader, btnGhost, field, fmtDate, useAdminA
 export default function Subscribers() {
   const call = useAdminApi();
   const [subs, setSubs] = useState(null);
+  const [brevo, setBrevo] = useState(false);
   const [query, setQuery] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
-    call('/subscribers').then(setSubs).catch((e) => setError(e.message));
+    call('/subscribers').then((d) => { setSubs(d.subscribers); setBrevo(d.brevo); }).catch((e) => setError(e.message));
   }, [call]);
 
   const remove = async (s) => {
@@ -34,6 +35,12 @@ export default function Subscribers() {
       </PageHeader>
       <ErrorNote>{error}</ErrorNote>
 
+      <p className="mb-5 max-w-[72ch] text-sm text-muted">
+        {brevo
+          ? 'Çdo email i ri kalon vetë te Brevo, që i dërgon email-in e konfirmimit dhe pastaj atë të mirëseardhjes. Newsletter-at i dërgon nga Brevo; secili ka lidhjen për t’u çregjistruar.'
+          : 'Email-et ruhen vetëm këtu dhe askush nuk merr email. Për email-in e mirëseardhjes dhe newsletter-at, lidh Brevo, falas (shiko README → Newsletter).'}
+      </p>
+
       {subs.length > 0 && (
         <label className="mb-4 block sm:w-72">
           <span className="sr-only">Kërko email</span>
@@ -53,6 +60,7 @@ export default function Subscribers() {
                 <th className="px-5 py-3 font-normal">Email-i</th>
                 <th className="py-3 font-normal">Gjuha</th>
                 <th className="py-3 font-normal">Regjistruar më</th>
+                {brevo && <th className="py-3 font-normal">Brevo</th>}
                 <th className="px-5 py-3"><span className="sr-only">Veprime</span></th>
               </tr>
             </thead>
@@ -62,6 +70,11 @@ export default function Subscribers() {
                   <td className="px-5 py-3"><a href={`mailto:${s.email}`} className="hover:text-accent">{s.email}</a></td>
                   <td className="py-3">{s.lang === 'en' ? 'Anglisht' : 'Shqip'}</td>
                   <td className="py-3 text-muted">{fmtDate(s.created_at)}</td>
+                  {brevo && (
+                    <td className="py-3 text-muted">
+                      {s.newsletter === 'ok' ? 'Dërguar' : s.newsletter === 'refuzuar' ? <span className="text-accent">Refuzuar nga Brevo</span> : 'Në pritje'}
+                    </td>
+                  )}
                   <td className="px-5 py-3 text-right">
                     <button type="button" onClick={() => remove(s)} className="text-[13px] text-muted hover:text-accent">Hiq</button>
                   </td>

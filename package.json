@@ -14,6 +14,8 @@
     "build": "vite build",
     "start": "node --disable-warning=ExperimentalWarning --env-file-if-exists=.env server/index.js",
     "pronari": "node --disable-warning=ExperimentalWarning --env-file-if-exists=.env server/owner.js",
+    "brevo": "node --env-file-if-exists=.env server/brevo-setup.js",
+    "emails": "node --env-file-if-exists=.env server/emails-export.js",
     "pa-hyrje": "concurrently -k -n api,web -c red,gray \"node --disable-warning=ExperimentalWarning --env-file-if-exists=.env --watch server/index.js --dev --pa-hyrje\" \"vite\""
   },
   "dependencies": {

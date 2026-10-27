@@ -6,6 +6,7 @@ import { ROOT, UPLOAD_DIR } from './db.js';
 import publicRoutes from './routes/public.js';
 import adminRoutes from './routes/admin.js';
 import { stripeEnabled, WEBHOOK_SECRET, handleWebhook, syncPending } from './stripe.js';
+import { brevoEnabled, syncSubscribers } from './newsletter.js';
 
 const isDev = process.argv.includes('--dev');
 const PORT = Number(process.env.PORT) || (isDev ? 3001 : 3000);
@@ -93,7 +94,15 @@ app.listen(PORT, HOST, () => {
   console.log(`M'DON ${isDev ? 'API (zhvillim)' : 'server'}: http://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${PORT}`);
   if (!stripeEnabled) console.log('  Pagesa me kartë: joaktive (vendos STRIPE_SECRET_KEY në .env)');
   else console.log(`  Pagesa me kartë: aktive${WEBHOOK_SECRET ? '' : ' (pa webhook: pagesat kontrollohen çdo 2 minuta)'}`);
+  console.log(`  Newsletter: ${brevoEnabled ? 'lidhur me Brevo' : 'vetëm në panel (vendos BREVO_API_KEY, BREVO_LIST_ID dhe BREVO_DOI_TEMPLATE_ID në .env)'}`);
 });
+
+// Addresses that didn't reach Brevo (no connection, or saved before it was set up)
+if (brevoEnabled) {
+  const sync = () => syncSubscribers().catch((err) => console.error('Brevo:', err.message));
+  setTimeout(sync, 15_000).unref();
+  setInterval(sync, 30 * 60_000).unref();
+}
 
 // Safety net for payments whose webhook never arrived
 if (stripeEnabled) {

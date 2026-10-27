@@ -1,7 +1,7 @@
-// Illustrations for the seasonal collections: one garment and the signs of its season.
-// Spring: linen shirt, almond blossom, the red-and-white verore and swallows.
-// Summer: white linen dress, sun and sea. Autumn: wool coat with a kilim band, grapes and falling leaves.
-// Winter: the wool guna and qeleshe, snow and mountains.
+// Illustrations for the seasonal collections: one modern garment with an Albanian detail, and the signs of its season.
+// Spring: cotton bomber with the sun embroidered on the chest, the embroidered sun, the red-and-white verore, swallows over a kulla.
+// Summer: linen tee with a cross-stitch band, sun and sea. Autumn: hoodie with a kilim band, grapes and falling leaves.
+// Winter: red down jacket and a white beanie after the qeleshe, snow and mountains.
 import { useId } from 'react';
 import { BONE, FLAME, INK, RED, RULE, STONE, range } from './artkit.js';
 
@@ -21,11 +21,29 @@ const Mirror = ({ children }) => (
 
 const Diamond = ({ x, y, r = 2.4, fill = FLAME }) => <path d={`M${x} ${y - r} l${r} ${r} -${r} ${r} -${r} -${r} Z`} fill={fill} />;
 
-function Flower({ x, y, r = 1 }) {
+/** The embroidered sun of the xhubleta: a diamond with ram's-horn hooks at its four tips */
+function SunMotif({ x, y }) {
+  const horn = 'M0 -17 V-22 M0 -22 C-1.5 -26.5 -6 -26 -5.2 -22.6 M0 -22 C1.5 -26.5 6 -26 5.2 -22.6';
   return (
-    <g transform={`translate(${x} ${y}) scale(${r})`}>
-      {[0, 72, 144, 216, 288].map((a) => <ellipse key={a} cx="0" cy="-3.3" rx="2.3" ry="3.3" fill={BONE} transform={`rotate(${a})`} />)}
-      <circle r="1.5" fill={FLAME} />
+    <g transform={`translate(${x} ${y})`}>
+      <g fill="none" stroke={FLAME} strokeWidth=".9" strokeLinecap="round">
+        <path d="M0 -17 L17 0 L0 17 L-17 0 Z" strokeOpacity=".7" />
+        <path d="M0 -10 L10 0 L0 10 L-10 0 Z" strokeOpacity=".45" />
+        {[0, 90, 180, 270].map((a) => <path key={a} d={horn} transform={`rotate(${a})`} strokeOpacity=".7" />)}
+      </g>
+      <Diamond x={0} y={0} r={3.4} />
+    </g>
+  );
+}
+
+/** A stone kulla, the tower house of the northern highlands (x = centre, y = base) */
+function Kulla({ x, y }) {
+  return (
+    <g transform={`translate(${x} ${y})`}>
+      <rect x="-7" y="-24" width="14" height="24" fill={RULE} />
+      <path d="M-9 -24 L0 -30 L9 -24 Z" fill={STONE} />
+      {[[-3.5, -19], [1.5, -19], [-3.5, -12], [1.5, -12]].map(([wx, wy]) => <rect key={`${wx}${wy}`} x={wx} y={wy} width="2" height="3" fill={INK} />)}
+      <rect x="-1.5" y="-6" width="3" height="6" fill={INK} />
     </g>
   );
 }
@@ -62,113 +80,142 @@ function Snowflake({ x, y, r, o = 0.8 }) {
   );
 }
 
-// ---------- Garments (120 × 170 box) ----------
+// ---------- Garments (120 × 170 box): modern cuts, each carrying one Albanian detail ----------
 
-function LinenShirt() {
+/** Cotton bomber: black ribbing striped red (the flag's colours), a sleeve pocket, and the xhubleta's sun embroidered on the chest */
+function Bomber() {
+  const horn = 'M0 -6 V-8 M0 -8 C-.6 -9.8 -2.4 -9.6 -2.1 -8.3 M0 -8 C.6 -9.8 2.4 -9.6 2.1 -8.3';
+  const stripes = { stroke: FLAME, strokeWidth: 0.9 };
   return (
-    <>
+    <g transform="translate(0 6)">
       <Mirror>
-        <path d="M34 30 C22 34 16 46 14 60 L6 130 L22 133 L32 72 Z" {...LINEN} />
-        <path d="M18 80 L13 120" stroke={STONE} strokeOpacity=".35" strokeWidth=".6" />
-        <path d="M6.9 122 L22.9 125 L22 133 L6 130 Z" fill={FLAME} />
-        <Diamond x={12} y={127} r={1.6} fill={BONE} /><Diamond x={18} y={128} r={1.6} fill={BONE} />
+        <path d="M33 34 C21 38 16 50 14 64 Q11 96 11 126 L27 128 Q28 104 31 80 Z" {...LINEN} />
+        <path d="M24 50 Q20 70 22 92" fill="none" stroke={STONE} strokeOpacity=".35" strokeWidth=".6" />
+        <path d="M11 126 L27 128 L26.4 140 L11.4 138.5 Z" fill={INK} />
+        <path d="M11.2 130.5 L26.8 132.3 M11.3 133.6 L26.6 135.4" {...stripes} />
       </Mirror>
-      <path d="M34 28 L48 20 Q60 26 72 20 L86 28 L90 156 Q60 162 30 156 Z" {...LINEN} />
-      <path d="M47 20 Q60 27 73 20 L72 14.5 Q60 21.5 48 14.5 Z" fill={FLAME} />
-      <path d="M60 26 V88" stroke={STONE} strokeWidth=".7" />
-      {range(34, 80, 9).map((y) => <g key={y}><Diamond x={55} y={y} r={1.8} /><Diamond x={65} y={y} r={1.8} /></g>)}
-      <Mirror>
-        <path d="M44 42 l4 4 -4 4 -4 -4 Z M44 38 V54 M36 46 H52" fill="none" stroke={FLAME} strokeWidth=".9" />
-        <path d="M40 104 L42 150" stroke={STONE} strokeOpacity=".3" strokeWidth=".6" />
-      </Mirror>
-      <path d="M31 148 Q60 154 89 148" fill="none" stroke={FLAME} strokeWidth="1.4" />
-      <path d="M31 143 Q60 149 89 143" fill="none" stroke={FLAME} strokeWidth=".8" strokeDasharray="1.5 2" />
-    </>
+      <path d="M46 22 Q60 13 74 22 L74 26 Q60 18 46 26 Z" fill={INK} />
+      <path d="M33 34 L47 28 Q60 32 73 28 L87 34 Q93 80 90 140 L30 140 Q27 80 33 34 Z" {...LINEN} />
+      <path d="M30 140 L90 140 L89.5 152 L30.5 152 Z" fill={INK} />
+      <path d="M30.2 143.5 H89.8 M30.3 146.6 H89.7" {...stripes} />
+      <path d="M45 27 Q60 36 75 27 L74 21 Q60 29 46 21 Z" fill={INK} />
+      <path d="M45.6 24.3 Q60 32.6 74.4 24.3" fill="none" {...stripes} strokeWidth=".8" />
+      <path d="M60 32 V140" stroke={STONE} strokeWidth=".9" />
+      <rect x="58.8" y="34" width="2.4" height="6" rx="1" fill={INK} />
+      <Mirror><path d="M37 118 L43 100" stroke={STONE} strokeWidth="1.4" strokeLinecap="round" /></Mirror>
+      {/* Zip pocket on the left sleeve */}
+      <path d="M94 62 h10 v12 h-10 Z" fill="none" stroke={STONE} strokeWidth=".7" />
+      <path d="M94.5 64.5 h9" stroke={STONE} strokeWidth=".7" />
+      <rect x="101" y="63.5" width="1.6" height="3.5" fill={FLAME} />
+      {/* The sun, embroidered on the left chest */}
+      <g transform="translate(75 62)">
+        <g fill="none" stroke={FLAME} strokeWidth="1" strokeLinecap="round">
+          <path d="M0 -6 L6 0 L0 6 L-6 0 Z" />
+          {[0, 90, 180, 270].map((a) => <path key={a} d={horn} transform={`rotate(${a})`} />)}
+        </g>
+        <Diamond x={0} y={0} r={2} />
+      </g>
+    </g>
   );
 }
 
-function LinenDress() {
-  const hemY = (x) => { const t = (x - 12) / 96; return 160 + 16 * t * (1 - t); };
+/** Oversized linen tee with a band of cross-stitch across the chest: the xhubleta's zigzag, closed into diamonds */
+function Tee() {
+  const pts = [];
+  for (let c = 0; c <= 16; c++) {
+    const x = 60 + (c - 8) * 3.4;
+    const z = Math.abs(((c + 2) % 4) - 2);
+    pts.push([x, 64 + z * 3.6]);
+    if (z) pts.push([x, 78.4 - z * 3.6]);
+  }
+  const hearts = range(0, 16, 4).map((c) => [60 + (c - 8) * 3.4, 71.2]);
+  const cross = (list) => list.map(([x, y]) => `M${(x - 1.3).toFixed(1)} ${(y - 1.3).toFixed(1)}l2.6 2.6m0 -2.6l-2.6 2.6`).join('');
   return (
-    <>
-      <Mirror><path d="M42 20 L27 31 L33 43 L42 35 Z" {...LINEN} /></Mirror>
-      <path d="M38 60 L82 60 C90 96 100 128 108 160 Q60 168 12 160 C20 128 30 96 38 60 Z" {...LINEN} />
-      {range(0, 6, 1).map((i) => {
-        const x0 = 44 + i * 6.4;
-        const x1 = 22 + i * 15.2;
-        return <path key={i} d={`M${x0} 66 L${x1} ${hemY(x1) - 2}`} stroke={STONE} strokeOpacity=".28" strokeWidth=".6" />;
-      })}
-      <path d="M42 18 L52 13 Q60 20 68 13 L78 18 L82 62 L38 62 Z" {...LINEN} />
-      {range(0, 6, 1).map((i) => {
-        const t = i / 6;
-        const x = 52 + 16 * t;
-        const y = 13 + 14 * t * (1 - t) + 1.5;
-        return <circle key={i} cx={x} cy={y} r="1.1" fill={FLAME} />;
-      })}
-      <Diamond x={60} y={30} r={2.6} />
-      <path d={`M16 ${hemY(16) - 7} ${range(16, 104, 6).map((x, i) => `L${x} ${(hemY(x) - 7 + (i % 2 ? -2.5 : 2.5)).toFixed(1)}`).join(' ')}`} fill="none" stroke={FLAME} strokeWidth="1" />
-      <path d="M38 58 Q60 62 82 58 L82 64 Q60 68 38 64 Z" fill={FLAME} />
-      <path d="M77 64 L83 86 L86.5 84.5 L81 64 Z M80 64 L91 81 L93.5 78.5 L84 63 Z" fill={FLAME} />
-    </>
+    <g transform="translate(0 12)">
+      <path d="M44 18 Q60 27 76 18 L98 28 L112 62 L95 68 L91 56 L91 140 Q60 143 29 140 L29 56 L25 68 L8 62 L22 28 Z" {...LINEN} />
+      <path d="M44 18 Q60 12 76 18 Q60 27 44 18 Z" fill={RULE} stroke={STONE} strokeWidth=".5" />
+      <path d="M44 18 Q60 27 76 18" fill="none" stroke={FLAME} strokeWidth="1.8" />
+      <Mirror>
+        <path d="M8 62 L25 68" stroke={FLAME} strokeWidth="1.4" />
+        <path d="M22 28 Q26 43 29 56" fill="none" stroke={STONE} strokeOpacity=".4" strokeWidth=".6" />
+        <path d="M40 92 L42 134" stroke={STONE} strokeOpacity=".3" strokeWidth=".6" />
+      </Mirror>
+      <path d={cross(pts)} stroke={FLAME} strokeWidth=".9" strokeLinecap="round" />
+      <path d={cross(hearts)} stroke={RED} strokeWidth=".9" strokeLinecap="round" />
+      <path d="M30 136 Q60 139 90 136" fill="none" stroke={STONE} strokeOpacity=".5" strokeWidth=".6" strokeDasharray="1.5 2" />
+    </g>
   );
 }
 
-function WoolCoat({ uid }) {
-  const clip = `${uid}-coat`;
-  const body = 'M30 22 L48 14 L60 44 L72 14 L90 22 L95 160 Q60 166 25 160 Z';
+/** Heavy hoodie with a Kukës kilim band across the chest and sleeves, and tassels (xhufka) on the drawstrings */
+function Hoodie({ uid }) {
+  const clip = `${uid}-hoodie`;
+  const body = 'M31 30 C38 25 45 24 49 26 L71 26 C75 24 82 25 89 30 L93 146 L27 146 Z';
   return (
     <>
-      <path d="M47 13 L60 47 L73 13 Q60 18 47 13 Z" fill={BONE} />
+      <path d="M40 32 C36 14 46 2 60 2 C74 2 84 14 80 32 Z" fill={COAT} {...EDGE} />
       <Mirror>
-        <path d="M30 22 C20 26 15 38 13 52 L8 128 L24 130 L31 64 Z" fill={COAT} {...EDGE} />
-        <path d="M8.8 116 L24.6 118 L24 130 L8 128 Z" fill={RED} />
-        <Diamond x={14} y={123} r={1.7} fill={BONE} /><Diamond x={20} y={124} r={1.7} fill={BONE} />
+        <path d="M31 30 C21 34 16 46 14 60 L10 128 L26 130 L31 76 Z" fill={COAT} {...EDGE} />
+        <path d="M12.1 92 L29.5 92 L28.8 100 L11.6 100 Z" fill={RED} />
+        <Diamond x={20.3} y={96} r={2} fill={BONE} />
+        <path d="M10 128 L26 130 L25.4 140 L9.4 138 Z" fill={LAPEL} {...EDGE} />
+        {range(12, 24, 2.4).map((x) => <path key={x} d={`M${x} ${129 + (x - 10) / 8} v9`} stroke={INK} strokeOpacity=".35" strokeWidth=".6" />)}
       </Mirror>
       <clipPath id={clip}><path d={body} /></clipPath>
       <path d={body} fill={COAT} />
       <g clipPath={`url(#${clip})`}>
-        <rect x="0" y="116" width="120" height="16" fill={RED} />
-        <path d={`M0 116 ${range(0, 120, 6).map((x, i) => `L${x} ${i % 2 ? 119 : 116}`).join(' ')} M0 132 ${range(0, 120, 6).map((x, i) => `L${x} ${i % 2 ? 129 : 132}`).join(' ')}`} fill="none" stroke={INK} strokeWidth=".8" />
-        {range(10, 110, 12).map((x) => (
+        <rect x="0" y="62" width="120" height="16" fill={RED} />
+        <path d={`M0 62 ${range(0, 120, 6).map((x, i) => `L${x} ${i % 2 ? 65 : 62}`).join(' ')} M0 78 ${range(0, 120, 6).map((x, i) => `L${x} ${i % 2 ? 75 : 78}`).join(' ')}`} fill="none" stroke={INK} strokeWidth=".8" />
+        {range(12, 108, 12).map((x) => (
           <g key={x}>
-            <path d={`M${x} 119 l5 5 -5 5 -5 -5 Z`} fill="none" stroke={BONE} strokeWidth=".8" />
-            <Diamond x={x} y={124} r={1.6} fill={BONE} />
+            <path d={`M${x} 65 l5 5 -5 5 -5 -5 Z`} fill="none" stroke={BONE} strokeWidth=".8" />
+            <Diamond x={x} y={70} r={1.6} fill={BONE} />
           </g>
         ))}
       </g>
       <path d={body} fill="none" {...EDGE} />
-      <Mirror><path d="M48 14 L60 44 L54 47 L42 23 Z" fill={LAPEL} stroke={BONE} strokeOpacity=".3" strokeWidth=".6" /></Mirror>
-      <path d="M60 46 V114 M60 133 V161" stroke={INK} strokeOpacity=".7" strokeWidth=".7" />
-      {[58, 76, 94].map((y) => <circle key={y} cx="63.5" cy={y} r="2" fill={BONE} />)}
-      <path d="M35 100 h15 M70 100 h15" stroke={INK} strokeOpacity=".7" strokeWidth=".8" />
+      <path d="M40 112 L80 112 L86 140 L34 140 Z" fill="none" stroke={INK} strokeOpacity=".6" strokeWidth=".8" />
+      <path d="M27 146 L93 146 L93.5 158 L26.5 158 Z" fill={LAPEL} {...EDGE} />
+      {range(30, 91, 3).map((x) => <path key={x} d={`M${x} 147 v10`} stroke={INK} strokeOpacity=".35" strokeWidth=".6" />)}
+      <path d="M47 30 C46 16 52 9 60 9 C68 9 74 16 73 30 C68 34 52 34 47 30 Z" fill={BLACK} />
+      {[55, 65].map((x) => (
+        <g key={x}>
+          <path d={`M${x} 32 V52`} stroke={BONE} strokeWidth="1" />
+          <path d={`M${x} 51 l-2.6 8 h5.2 Z`} fill={FLAME} />
+        </g>
+      ))}
     </>
   );
 }
 
-function Guna() {
-  const left = (y) => 25 - (y - 58) * (18 / 98);
-  const ticks = [];
-  for (let y = 66, row = 0; y <= 148; y += 9, row += 1) {
-    for (let x = left(y) + 5 + (row % 2) * 3.5; x < 120 - left(y) - 5; x += 7) ticks.push([x, y]);
-  }
+/** Red down jacket, its chest channel quilted with the xhubleta's white zigzag; a white wool beanie, the qeleshe made new */
+function Puffer() {
+  const zig = (y0, y1) => `M30 ${y0} ${range(33, 90, 3).map((x, i) => `L${x} ${i % 2 ? y0 : y1}`).join(' ')}`;
   return (
     <>
-      <path d="M60 42 C44 42 31 47 25 58 C17 90 11 128 7 156 L113 156 C109 128 103 90 95 58 C89 47 76 42 60 42 Z" fill={BLACK} {...EDGE} />
-      {ticks.map(([x, y]) => <path key={`${x.toFixed(1)}-${y}`} d={`M${x.toFixed(1)} ${y} l1 5`} stroke={BONE} strokeOpacity=".16" strokeWidth=".9" />)}
-      <path d="M60 47 V156" stroke={BONE} strokeOpacity=".15" strokeWidth=".7" />
-      <path d="M8 152 H112" stroke={FLAME} strokeWidth="1" />
-      {range(8, 112, 2.6).map((x, i) => <line key={x} x1={x} y1="156" x2={x + (i % 2 ? 0.8 : -0.8)} y2={164 + (i % 3)} stroke={BONE} strokeOpacity=".45" strokeWidth=".7" />)}
-      <ellipse cx="60" cy="44" rx="12" ry="3.5" fill="#1A1414" stroke={BONE} strokeOpacity=".4" strokeWidth=".6" />
-      {[52, 68].map((x) => (
-        <g key={x}>
-          <path d={`M${x} 47 V54`} stroke={FLAME} strokeWidth=".8" />
-          <path d={`M${x} 53 l-3 9 h6 Z`} fill={FLAME} />
+      <Mirror>
+        <path d="M30 42 C21 45 17 52 16 60 Q12 70 15 80 Q11 92 14 104 Q10 116 13 128 L27 130 L29 84 Z" fill={RED} {...EDGE} />
+        <path d="M15.5 80 L28.5 82 M14.5 104 L28 106" stroke={INK} strokeOpacity=".45" strokeWidth=".8" />
+        <path d="M13 128 L27 130 L26.6 138 L12.6 136 Z" fill={BLACK} {...EDGE} />
+      </Mirror>
+      <path d="M45 38 L30 42 Q26 48 28 56 Q23 66 28 76 Q23 86 28 96 Q23 106 28 116 Q23 126 28 136 Q24 146 29 156 L91 156 Q96 146 92 136 Q97 126 92 116 Q97 106 92 96 Q97 86 92 76 Q97 66 92 56 Q94 48 90 42 L75 38 Z" fill={RED} {...EDGE} />
+      {[56, 76, 96, 116, 136].map((y) => (
+        <g key={y}>
+          <path d={`M28 ${y} Q60 ${y + 3} 92 ${y}`} fill="none" stroke={INK} strokeOpacity=".5" strokeWidth=".9" />
+          <path d={`M34 ${y + 6} Q60 ${y + 9} 86 ${y + 6}`} fill="none" stroke={BONE} strokeOpacity=".1" strokeWidth="3" strokeLinecap="round" />
         </g>
       ))}
-      {/* Qeleshe */}
-      <path d="M42 34 C42 16 50 6 60 6 C70 6 78 16 78 34 Z" fill={BONE} />
-      <path d="M47 31 C47 20 51 13 57 9.5" fill="none" stroke={STONE} strokeOpacity=".35" strokeWidth="1" strokeLinecap="round" />
-      <ellipse cx="60" cy="34" rx="18" ry="3.2" fill={RULE} stroke={STONE} strokeWidth=".6" />
+      <path d={`${zig(63, 66.5)} ${zig(68.5, 72)}`} fill="none" stroke={BONE} strokeWidth=".8" />
+      <path d="M44 38 L76 38 L77 26 L43 26 Z" fill={RED} {...EDGE} />
+      <path d="M43.5 31 H76.5" stroke={INK} strokeOpacity=".45" strokeWidth=".7" />
+      <path d="M60 26 V156" stroke={INK} strokeWidth="1" />
+      <rect x="58.6" y="29" width="2.8" height="6" rx="1" fill={BONE} />
+      {/* Beanie */}
+      <path d="M44 20 C44 8 51 2 60 2 C69 2 76 8 76 20 Z" fill={BONE} />
+      <path d="M48 16 C48 10 52 6 57 4.5" fill="none" stroke={STONE} strokeOpacity=".35" strokeWidth="1" strokeLinecap="round" />
+      <rect x="42.5" y="14" width="35" height="8" rx="1.5" fill={RULE} stroke={STONE} strokeWidth=".6" />
+      {range(45, 76, 2.5).map((x) => <path key={x} d={`M${x} 15.5 V20.5`} stroke={STONE} strokeOpacity=".3" strokeWidth=".6" />)}
+      <rect x="56.5" y="15.5" width="7" height="5" fill={FLAME} />
     </>
   );
 }
@@ -176,22 +223,25 @@ function Guna() {
 // ---------- Season scenes (drawn in the 240 × 240 frame, right of the garment) ----------
 
 function Spring() {
+  // Two strands twisted round each other: one red, one white
+  const twist = (dir) => `M152 0 ${range(0, 80, 10).map((y) => `C${152 + 4 * dir} ${y + 3.5} ${152 - 4 * dir} ${y + 6.5} 152 ${y + 10}`).join(' ')}`;
   return (
     <>
-      <g fill="none" stroke={BONE} strokeOpacity=".5" strokeLinecap="round">
-        <path d="M246 26 C214 22 186 40 150 44 C126 47 104 38 84 42" strokeWidth="1.8" />
-        <path d="M186 36 C190 28 198 24 206 22 M128 46 C124 38 118 34 110 33 M150 44 C155 52 161 56 169 58" strokeWidth="1.2" />
-      </g>
-      {[[200, 27, 1.1], [176, 39], [130, 46, 1.1], [104, 40], [88, 42, 0.8], [168, 58, 0.9], [112, 33, 0.8], [222, 24, 0.75]].map(([x, y, r]) => <Flower key={`${x}-${y}`} x={x} y={y} r={r} />)}
-      {[[192, 98, 30], [216, 124, -20], [178, 140, 60]].map(([x, y, a]) => <ellipse key={x} cx={x} cy={y} rx="2" ry="3" fill={BONE} opacity=".6" transform={`rotate(${a} ${x} ${y})`} />)}
-      {/* Verore: red and white cord, hung on a blossoming branch */}
-      <path d="M150 45 C154 52 146 58 150 65 C154 72 146 78 150 85" fill="none" stroke={FLAME} strokeWidth="1.6" />
-      <path d="M150 45 C146 52 154 58 150 65 C146 72 154 78 150 85" fill="none" stroke={BONE} strokeWidth="1.6" />
-      <circle cx="150" cy="90" r="4.5" fill="none" stroke={FLAME} strokeWidth="1.4" />
-      <path d="M147 94 L144 104 M153 94 L156 104" stroke={BONE} strokeWidth="1.2" />
-      <path d="M144 104 l-2 5 h4 Z M156 104 l-2 5 h4 Z" fill={FLAME} />
-      <Swallow x={204} y={106} />
-      <Swallow x={224} y={82} s={0.7} />
+      <SunMotif x={206} y={50} />
+      {/* Hills with a kulla, under the returning swallows */}
+      <path d="M126 217 C146 200 166 196 186 202 C204 207 222 196 242 190 L242 217 Z" fill={FAR} />
+      <Kulla x={212} y={212} />
+      <path d="M126 217 C150 208 178 206 204 211 C220 214 232 210 242 207 L242 217 Z" fill="#221A1B" />
+      {/* Verore: the red-and-white cord, with a bead and a silver coin */}
+      <path d={twist(1)} fill="none" stroke={FLAME} strokeWidth="1.6" />
+      <path d={twist(-1)} fill="none" stroke={BONE} strokeWidth="1.6" />
+      <circle cx="152" cy="93" r="2.6" fill={BONE} />
+      <circle cx="152" cy="102" r="6" fill={RULE} stroke={STONE} strokeWidth=".7" />
+      <circle cx="152" cy="102" r="3.8" fill="none" stroke={STONE} strokeWidth=".5" />
+      <Diamond x={152} y={102} r={1.6} />
+      <Swallow x={198} y={108} />
+      <Swallow x={226} y={86} s={0.72} />
+      <Swallow x={180} y={140} s={0.55} />
     </>
   );
 }
@@ -251,10 +301,10 @@ function Winter() {
 }
 
 const SEASON_ART = {
-  pranvere: [LinenShirt, Spring],
-  vere: [LinenDress, Summer],
-  vjeshte: [WoolCoat, Autumn],
-  dimer: [Guna, Winter],
+  pranvere: [Bomber, Spring],
+  vere: [Tee, Summer],
+  vjeshte: [Hoodie, Autumn],
+  dimer: [Puffer, Winter],
 };
 
 export default function SeasonArt({ season, label, className = '' }) {

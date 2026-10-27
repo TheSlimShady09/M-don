@@ -11,6 +11,8 @@
   --color-flame: #B81C1C;     /* the same red, lighter: readable on black (3:1) for the logo, headlines and hovers */
   --color-paper: #F3EFEE;
   --color-bone: #F7F5F4;
+  --color-beige: #E8DCC8;     /* the MD monogram, warm instead of pure white */
+  --color-cream: #E9E4DE;     /* the MD monogram on its red square, as on the brand image */
   --color-stone: #5F5656;
   --color-rule: #E8E2E1;
 

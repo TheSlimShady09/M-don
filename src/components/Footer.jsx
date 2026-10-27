@@ -1,10 +1,10 @@
-import { useId } from 'react';
 import { Link } from 'react-router-dom';
 import { useLang } from '../lib/i18n.jsx';
 import { useShopConfig } from '../lib/config.js';
 import { PAYMENT_METHODS, SEASONS, SHIPPING_FREE_FROM, seasonOf } from '../../shared/shop.js';
 import { Arrow, Kilim, Wrap } from './ui.jsx';
 import { LangSwitch } from './Header.jsx';
+import { QendisjeBand } from './LookArt.jsx';
 import Logo from './Logo.jsx';
 
 const COLUMNS = [
@@ -18,29 +18,6 @@ const SOCIAL = [['Instagram', '#'], ['TikTok', '#'], ['Facebook', '#'], ['Pinter
 const Ornament = () => (
   <svg viewBox="0 0 10 10" aria-hidden="true" className="size-2 flex-none fill-flame"><path d="M5 0 10 5 5 10 0 5Z" /></svg>
 );
-
-/** Round "made with besa" seal with its text running around the edge (turns slowly unless reduced motion is on) */
-function Seal({ className = '' }) {
-  const { t } = useLang();
-  const ring = `${useId().replace(/:/g, '')}-ring`;
-  const words = `${t('Bërë me besë')} · ${t('rrënjë shqiptare')} · M’DON · `.toLocaleUpperCase('sq');
-  return (
-    <svg viewBox="0 0 120 120" aria-hidden="true" className={className}>
-      <defs><path id={ring} d="M60 60 m-47 0 a47 47 0 1 1 94 0 a47 47 0 1 1 -94 0" /></defs>
-      <circle cx="60" cy="60" r="59" fill="#0E0A0A" />
-      <circle cx="60" cy="60" r="57" fill="none" stroke="#700C0C" strokeWidth="1.5" />
-      <circle cx="60" cy="60" r="37" fill="none" stroke="#700C0C" />
-      <g className="origin-center animate-[spin_40s_linear_infinite] motion-reduce:animate-none">
-        <text fill="#F7F5F4" fontSize="8.6" fontFamily="Jost, sans-serif" fontWeight="500" letterSpacing="2.6">
-          <textPath href={`#${ring}`} textLength="292" lengthAdjust="spacing">{words}</textPath>
-        </text>
-      </g>
-      <path d="M60 41 79 60 60 79 41 60Z" fill="none" stroke="#B81C1C" strokeWidth="1.2" />
-      <path d="M60 50 70 60 60 70 50 60Z" fill="#B81C1C" />
-      <path d="M60 56 64 60 60 64 56 60Z" fill="#0E0A0A" />
-    </svg>
-  );
-}
 
 export default function Footer() {
   const { t, pick, price } = useLang();
@@ -57,9 +34,8 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative bg-ink">
+    <footer className="bg-ink">
       <Kilim dark />
-      <Seal className="absolute -top-3 right-[clamp(16px,4vw,56px)] size-[88px] sm:-top-6 sm:size-28" />
 
       {/* Shipping, payment, workshop and the season on sale now */}
       <Wrap className="pt-[clamp(48px,6vw,80px)]">
@@ -124,12 +100,13 @@ export default function Footer() {
         </div>
       </Wrap>
 
-      {/* The wordmark, large and cropped by the bottom of the page */}
-      <Wrap aria-hidden="true">
-        <div className="relative aspect-[539/120] overflow-hidden">
-          <Logo className="absolute inset-x-0 top-0 h-auto w-full text-crimson" />
-        </div>
-      </Wrap>
+      {/* Malësia embroidery as a hem along the bottom of the page, edge to edge */}
+      <figure className="relative">
+        <QendisjeBand className="block h-[clamp(200px,24vw,360px)] w-full" />
+        <Wrap as="figcaption" className="absolute inset-x-0 top-0 mx-auto flex items-center justify-end gap-2.5 caps-xs text-white/45">
+          {t('Qëndisje e Malësisë, detaj')}<Ornament />
+        </Wrap>
+      </figure>
     </footer>
   );
 }

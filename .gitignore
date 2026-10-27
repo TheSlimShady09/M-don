@@ -7,3 +7,5 @@ data/
 # Local tool caches
 .impeccable/
 *.log
+# Email HTML for pasting into Brevo, made by npm run emails from server/emails.js
+emails/

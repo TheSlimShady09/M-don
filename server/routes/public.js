@@ -3,6 +3,7 @@ import { db, tx, productFromRow } from '../db.js';
 import { validEmail } from '../auth.js';
 import { shippingFor, CHECKOUT_PAYMENTS, PROVINCES, postalCode, MAX_QTY } from '../../shared/shop.js';
 import { stripe, stripeEnabled, createCheckout, markPaid } from '../stripe.js';
+import { brevoEnabled, pushSubscriber } from '../newsletter.js';
 
 const router = Router();
 
@@ -121,9 +122,12 @@ router.post('/subscribers', (req, res) => {
   if (limited(`sub:${req.ip}`, 10)) return res.status(429).json({ error: 'too_many' });
   const email = typeof req.body?.email === 'string' ? req.body.email.trim().toLowerCase() : '';
   if (!validEmail(email)) return res.status(400).json({ error: 'invalid' });
-  db.prepare('INSERT INTO subscribers (email, lang) VALUES (?, ?) ON CONFLICT(email) DO NOTHING')
-    .run(email, req.body.lang === 'en' ? 'en' : 'sq');
-  res.status(201).json({ ok: true });
+  const lang = req.body.lang === 'en' ? 'en' : 'sq';
+  db.prepare('INSERT INTO subscribers (email, lang) VALUES (?, ?) ON CONFLICT(email) DO NOTHING').run(email, lang);
+  // Brevo in the background: the visitor doesn't wait for it, and a failure is retried later
+  pushSubscriber({ email, lang });
+  // confirm: Brevo is sending them an email to confirm the address
+  res.status(201).json({ ok: true, confirm: brevoEnabled });
 });
 
 export default router;

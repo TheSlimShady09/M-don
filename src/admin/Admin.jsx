@@ -49,7 +49,14 @@ export default function Admin() {
     document.documentElement.lang = 'sq';
     const robots = Object.assign(document.createElement('meta'), { name: 'robots', content: 'noindex, nofollow' });
     document.head.appendChild(robots);
-    return () => robots.remove();
+    // The dashboard's browser tab shows the MD monogram instead of the shop's icon
+    const icon = document.querySelector('link[rel="icon"]');
+    const shopIcon = icon && { href: icon.getAttribute('href'), type: icon.type };
+    if (icon) Object.assign(icon, { type: 'image/png', href: '/brand/md-icon.png' });
+    return () => {
+      robots.remove();
+      if (icon) Object.assign(icon, shopIcon);
+    };
   }, [refresh]);
 
   const signedOut = useCallback((reason = '') => {

@@ -215,17 +215,21 @@ function stitches() {
   return [...cells.values()];
 }
 
-const STITCHES = stitches();
+// One path per colour, each stitch an X in its 8 × 8 cell (the motif is 320 × 400)
+const CELL = 8;
+const STITCH_PATHS = {};
+stitches().forEach(([c, r, color]) => {
+  const x = c * CELL + 1.6;
+  const y = r * CELL + 1.6;
+  const l = CELL - 3.2;
+  STITCH_PATHS[color] = (STITCH_PATHS[color] || '') + `M${x} ${y}l${l} ${l}M${x + l} ${y}l${-l} ${l}`;
+});
+
+const Stitches = () => Object.entries(STITCH_PATHS).map(([color, d]) => (
+  <path key={color} d={d} stroke={color} strokeWidth="2.1" strokeLinecap="round" fill="none" />
+));
 
 export function QendisjeArt({ label, className = '' }) {
-  const s = 8;
-  const byColor = {};
-  STITCHES.forEach(([c, r, color]) => {
-    const x = c * s + 1.6;
-    const y = r * s + 1.6;
-    const l = s - 3.2;
-    byColor[color] = (byColor[color] || '') + `M${x} ${y}l${l} ${l}M${x + l} ${y}l${-l} ${l}`;
-  });
   return (
     <svg viewBox="0 0 320 400" role="img" aria-label={label} className={className} preserveAspectRatio="xMidYMid slice">
       <defs>
@@ -239,10 +243,32 @@ export function QendisjeArt({ label, className = '' }) {
       </defs>
       <rect width="320" height="400" fill={INK} />
       <rect width="320" height="400" fill="url(#mdon-weave)" />
-      {Object.entries(byColor).map(([color, d]) => (
-        <path key={color} d={d} stroke={color} strokeWidth="2.1" strokeLinecap="round" fill="none" />
-      ))}
+      <Stitches />
       <rect width="320" height="400" fill="url(#mdon-vignette)" />
+    </svg>
+  );
+}
+
+/** The same embroidery repeated side by side, as a hem across the bottom of the footer (decorative) */
+export function QendisjeBand({ className = '' }) {
+  const n = 7;   // odd, so one motif sits in the middle; the sides are cropped to the screen
+  const w = 320 * n;
+  return (
+    <svg viewBox={`0 0 ${w} 400`} preserveAspectRatio="xMidYMin slice" aria-hidden="true" className={className}>
+      <defs>
+        <pattern id="mdon-band-weave" width="4" height="4" patternUnits="userSpaceOnUse">
+          <path d="M0 2 H4 M2 0 V4" stroke={BONE} strokeOpacity=".05" strokeWidth=".6" />
+        </pattern>
+        <linearGradient id="mdon-band-fade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor={INK} />
+          <stop offset=".22" stopColor={INK} stopOpacity="0" />
+        </linearGradient>
+        <g id="mdon-band-motif"><Stitches /></g>
+      </defs>
+      <rect width={w} height="400" fill={INK} />
+      <rect width={w} height="400" fill="url(#mdon-band-weave)" />
+      {Array.from({ length: n }, (_, i) => <use key={i} href="#mdon-band-motif" x={i * 320} />)}
+      <rect width={w} height="400" fill="url(#mdon-band-fade)" />
     </svg>
   );
 }

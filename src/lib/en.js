@@ -16,7 +16,6 @@ const EN = {
   'Historia': 'Story',
   'M’DON, kthehu në krye': 'M’DON, home',
   'Kërko': 'Search',
-  'Hyr': 'Sign in',
   'Shporta': 'Bag',
   'Gjuha': 'Language',
   'Gjurmo porosinë': 'Track order',
@@ -41,13 +40,13 @@ const EN = {
   'Ilustrim: një djalë dhe një vajzë me jelekë të kuq të qëndisur': 'Illustration: a boy and a girl in embroidered red vests',
   'Trashëgimia jonë, në masa të vogla.': 'Our heritage, in small sizes.',
 
-  // Besa
-  'Fjala jonë': 'Our word',
-  'em. f. · Fjala e dhënë, që nuk thyhet.': 'n. · A promise given that is never broken.',
-  'Çdo copë që qepim është një premtim: cilësi që zgjat, dhe një histori që nuk harrohet.':
-    'Every piece we sew is a promise: quality that lasts, and a story that is never forgotten.',
-  'M’DON lindi nga një pyetje e thjeshtë: si do të visheshin sot gjyshet tona të Malësisë? Përgjigjen e kërkuam te xhubleta dhe qeleshja, te qilimat e Kukësit dhe te argjendaria e Shkodrës. Pastaj e qepëm në rroba për jetën e sotme.':
-    'M’DON was born from a simple question: how would our grandmothers from Malësia dress today? We looked for the answer in the xhubleta and the qeleshe, in the kilims of Kukës and the silversmiths of Shkodra. Then we sewed it into clothes for life today.',
+  // Our story
+  'Si lindi': 'The birth of',
+  'Themeluar në Toronto, me rrënjë në Shqipëri.': 'Founded in Toronto, with roots in Albania.',
+  'M’DON lindi në Toronto, për këdo që e mban Shqipërinë me vete kudo që shkon.':
+    'M’DON was born in Toronto, for everyone who carries Albania with them wherever they go.',
+  'Bëjmë veshje moderne për burra, gra dhe fëmijë: xhaketa, hudi, bluza dhe aksesorë, me detaje shqiptare në gjuhën e sotme. Çdo copë pritet dhe qepet në Toronto dhe dërgohet kudo në Kanada.':
+    'We make modern clothing for men, women and kids: jackets, hoodies, tees and accessories, with Albanian details in today’s language. Every piece is cut and sewn in Toronto and shipped anywhere in Canada.',
   'Ekipi i M’DON, Tiranë': 'The M’DON team, Tirana',
 
   // Split banner
@@ -69,16 +68,20 @@ const EN = {
   'Sezoni i tanishëm': 'This season',
   'Liri · Pambuk': 'Linen · Cotton',
   'Liri i bardhë': 'White linen',
-  'Lesh · Kadife': 'Wool · Velvet',
-  'Lesh i trashë': 'Heavy wool',
-  'Këmisha liri me qëndisje të lehta, dhe verorja kuq e bardhë që varet në degë kur kthehen dallëndyshet.':
-    'Linen shirts with light embroidery, and the red-and-white verore hung on a branch when the swallows return.',
-  'Fustane liri të bardhë, të lehta për vapën e bregdetit dhe mbrëmjet e gjata të verës.':
-    'White linen dresses, light enough for the coastal heat and the long summer evenings.',
-  'Pallto leshi me motive qilimi, për ditët kur bien gjethet dhe vilet rrushi.':
-    'Wool coats with kilim motifs, for the days when the leaves fall and the grapes are picked.',
-  'Guna e leshit dhe qeleshja e bardhë, për dimrat e gjatë të malësisë.':
-    'The wool guna cloak and the white qeleshe, for the long highland winters.',
+  'Pambuk i trashë': 'Heavy cotton',
+  'Pupla · Lesh': 'Down · Wool',
+  'Verorja · 1 Mars': 'The verore · 1 March',
+  'Bregu i Jonit': 'The Ionian coast',
+  'Vjelja e rrushit': 'The grape harvest',
+  'Bjeshkët e Nemuna': 'The Accursed Mountains',
+  'Xhaketa bomber me diellin e xhubletës të qëndisur në gjoks, dhe verorja kuq e bardhë, që hiqet kur kthehen dallëndyshet.':
+    'Bomber jackets with the xhubleta’s sun embroidered on the chest, and the red-and-white verore, taken off when the swallows return.',
+  'Bluza liri të bardha me një brez qëndisjeje me pika kryq, të lehta për vapën e bregdetit.':
+    'White linen tees with a band of cross-stitch, light enough for the coastal heat.',
+  'Hudi me brez qilimi të Kukësit dhe xhufka në kordonë, për ditët kur bien gjethet dhe vilet rrushi.':
+    'Hoodies with a Kukës kilim band and tassels on the drawstrings, for the days when the leaves fall and the grapes are picked.',
+  'Xhaketa me pupla dhe kapela e bardhë leshi si qeleshja, për dimrat e gjatë të malësisë.':
+    'Down jackets and a white wool beanie like the qeleshe, for the long highland winters.',
 
   // Lookbook
   'Lookbook · Vjeshtë 2026': 'Lookbook · Autumn 2026',
@@ -108,14 +111,17 @@ const EN = {
     'Illustration: a xhamadan sewing pattern on the table, with scissors, a tape measure and pins',
   'Një fije e kuqe, nga delja deri te ti.': 'One red thread, from the sheep all the way to you.',
   'Leshi': 'Wool',
-  'Lesh deleje nga kullotat e Dibrës dhe të Kukësit, i larë dhe i krehur me dorë.':
-    'Sheep’s wool from the pastures of Dibër and Kukës, washed and combed by hand.',
-  'Burimi · Dibër, Kukës': 'Source · Dibër, Kukës',
+  'Lesh, li dhe pambuk të zgjedhur me kujdes, të përgatitur në fabrikat tona në Toronto.':
+    'Wool, linen and cotton, chosen with care and prepared in our Toronto workshops.',
+  'Lesh · Li · Pambuk': 'Wool · Linen · Cotton',
   'Qëndisja': 'Embroidery',
-  'Motivet e xhubletës dhe të xhamadanit, të qëndisura me dorë nga gratë e Malësisë së Madhe.':
-    'Motifs of the xhubleta and the xhamadan, embroidered by hand by the women of Malësia e Madhe.',
+  'Motivet e xhubletës dhe të xhamadanit, të qëndisura me dorë nga mjeshtrat tanë në Toronto.':
+    'Motifs of the xhubleta and the xhamadan, embroidered by hand by our artisans in Toronto.',
   'Deri në 60 orë për një copë': 'Up to 60 hours per piece',
   'Prerja': 'Cut',
+  'Veshje moderne, autoktone shqiptare, të prera dhe të qepura në Toronto për ty.':
+    'Modern, authentically Albanian clothing, cut and sewn in Toronto for you.',
+  'Bërë në Toronto': 'Made in Toronto',
   'Siluete të sotme, të prera dhe të qepura në punishten tonë në Tiranë.':
     'Modern silhouettes, cut and sewn in our workshop in Tirana.',
   'Punishtja · Tiranë': 'Workshop · Tirana',
@@ -148,6 +154,8 @@ const EN = {
   'Mund të çregjistrohesh kurdo.': 'You can unsubscribe at any time.',
   'Shkruaj një adresë email-i të vlefshme.': 'Please enter a valid email address.',
   'Faleminderit! Tani je pjesë e fisit.': 'Thank you! You are now part of the clan.',
+  'Faleminderit! Të dërguam një email: konfirmoje dhe je pjesë e fisit.': 'Thank you! We’ve sent you an email: confirm it and you’re part of the clan.',
+  'Email-i u konfirmua. Mirë se erdhe në fis!': 'Email confirmed. Welcome to the clan!',
 
   // Footer
   'Më të mirat': 'Best sellers',

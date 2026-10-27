@@ -191,6 +191,22 @@ if (db.prepare('PRAGMA user_version').get().user_version < 4) {
   }
 }
 
+// ---------- Newsletter sent on to Brevo (schema version 5) ----------
+// subscribers.newsletter: NULL = not sent yet, 'ok' = sent (confirmation email on its way), 'refuzuar' = Brevo refused the address
+if (db.prepare('PRAGMA user_version').get().user_version < 5) {
+  db.exec('BEGIN');
+  try {
+    db.exec(`
+      ALTER TABLE subscribers ADD COLUMN newsletter TEXT;
+      PRAGMA user_version = 5;
+    `);
+    db.exec('COMMIT');
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw err;
+  }
+}
+
 export function tx(fn) {
   db.exec('BEGIN');
   try {

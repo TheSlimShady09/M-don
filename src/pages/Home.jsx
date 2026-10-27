@@ -1,9 +1,10 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLang, useTitle } from '../lib/i18n.jsx';
 import { useProducts } from '../lib/products.js';
 import { api } from '../lib/api.js';
-import { Arrow, DiamondMark, Kilim, Media, Reveal, Wrap, Zigzag } from '../components/ui.jsx';
+import { useToast } from '../lib/toast.jsx';
+import { Arrow, Kilim, Media, Reveal, Wrap, Zigzag } from '../components/ui.jsx';
 import SeasonArt from '../components/SeasonArt.jsx';
 import { SEASONS, seasonOf } from '../../shared/shop.js';
 import { GjirokasterArt, QendisjeArt, ThethArt } from '../components/LookArt.jsx';
@@ -11,7 +12,7 @@ import OutfitArt from '../components/OutfitArt.jsx';
 import CraftArt from '../components/CraftArt.jsx';
 import ProductCard from '../components/ProductCard.jsx';
 import Features from '../components/Features.jsx';
-import Logo from '../components/Logo.jsx';
+import Logo, { Monogram } from '../components/Logo.jsx';
 
 const h2 = 'mt-5 font-serif text-[length:clamp(42px,5.2vw,76px)] font-light leading-[1.02] tracking-[.01em]';
 
@@ -63,24 +64,24 @@ function Categories() {
   );
 }
 
-function Besa() {
+function Story() {
   const { t } = useLang();
   return (
-    <section id="historia" aria-labelledby="besa-title" className="scroll-mt-20 py-[clamp(88px,11vw,168px)] text-center">
+    <section id="historia" aria-labelledby="historia-title" className="scroll-mt-20 py-[clamp(88px,11vw,168px)] text-center">
       <Wrap className="flex flex-col items-center">
         <Zigzag className="w-52" />
-        <p className="eyebrow eyebrow-center mt-14">{t('Fjala jonë')}</p>
-        <Reveal as="h2" id="besa-title" className="mt-6 pl-[.08em] font-serif text-[length:clamp(120px,17vw,252px)] font-light leading-[.9] tracking-[.08em] text-flame">
-          Besa
+        <p className="eyebrow eyebrow-center mt-14">{t('Historia jonë')}</p>
+        <Reveal as="h2" id="historia-title" className="mt-6 flex flex-col items-center font-serif text-[length:clamp(40px,5vw,76px)] font-light leading-none text-white">
+          {t('Si lindi')}
+          <span className="sr-only"> M’DON</span>
+          <Logo className="mt-6 h-auto w-[min(560px,72vw)] text-flame" />
         </Reveal>
-        <p className="mt-5 font-serif text-lg italic text-white/62">
-          <span className="mr-1.5 not-italic text-white">bésë, -a</span> {t('em. f. · Fjala e dhënë, që nuk thyhet.')}
-        </p>
+        <p className="mt-6 font-serif text-lg italic text-white/62">{t('Themeluar në Toronto, me rrënjë në Shqipëri.')}</p>
         <Reveal as="p" className="mt-[clamp(48px,5vw,72px)] max-w-[30ch] font-serif text-[length:clamp(26px,2.6vw,38px)] font-light italic leading-[1.32] text-white">
-          {t('Çdo copë që qepim është një premtim: cilësi që zgjat, dhe një histori që nuk harrohet.')}
+          {t('M’DON lindi në Toronto, për këdo që e mban Shqipërinë me vete kudo që shkon.')}
         </Reveal>
         <Reveal as="p" className="mt-9 max-w-[60ch] text-white/62">
-          {t('M’DON lindi nga një pyetje e thjeshtë: si do të visheshin sot gjyshet tona të Malësisë? Përgjigjen e kërkuam te xhubleta dhe qeleshja, te qilimat e Kukësit dhe te argjendaria e Shkodrës. Pastaj e qepëm në rroba për jetën e sotme.')}
+          {t('Bëjmë veshje moderne për burra, gra dhe fëmijë: xhaketa, hudi, bluza dhe aksesorë, me detaje shqiptare në gjuhën e sotme. Çdo copë pritet dhe qepet në Toronto dhe dërgohet kudo në Kanada.')}
         </Reveal>
         <p className="mb-14 mt-8 caps text-white">{t('Ekipi i M’DON, Toronto')}</p>
         <Zigzag className="w-52" />
@@ -118,21 +119,24 @@ function Season() {
   );
 }
 
-// The four seasonal collections: the fabric of each season and one line about it
+// The four seasonal collections: the fabric of each season, the Albanian custom or place it is drawn from, and one line about it
 const SEASON_CARDS = [
-  { slug: 'pranvere', tag: 'Liri · Pambuk',
-    note: 'Këmisha liri me qëndisje të lehta, dhe verorja kuq e bardhë që varet në degë kur kthehen dallëndyshet.' },
-  { slug: 'vere', tag: 'Liri i bardhë',
-    note: 'Fustane liri të bardhë, të lehta për vapën e bregdetit dhe mbrëmjet e gjata të verës.' },
-  { slug: 'vjeshte', tag: 'Lesh · Kadife',
-    note: 'Pallto leshi me motive qilimi, për ditët kur bien gjethet dhe vilet rrushi.' },
-  { slug: 'dimer', tag: 'Lesh i trashë',
-    note: 'Guna e leshit dhe qeleshja e bardhë, për dimrat e gjatë të malësisë.' },
+  { slug: 'pranvere', tag: 'Liri · Pambuk', sign: 'Verorja · 1 Mars',
+    note: 'Xhaketa bomber me diellin e xhubletës të qëndisur në gjoks, dhe verorja kuq e bardhë, që hiqet kur kthehen dallëndyshet.' },
+  { slug: 'vere', tag: 'Liri i bardhë', sign: 'Bregu i Jonit',
+    note: 'Bluza liri të bardha me një brez qëndisjeje me pika kryq, të lehta për vapën e bregdetit.' },
+  { slug: 'vjeshte', tag: 'Pambuk i trashë', sign: 'Vjelja e rrushit',
+    note: 'Hudi me brez qilimi të Kukësit dhe xhufka në kordonë, për ditët kur bien gjethet dhe vilet rrushi.' },
+  { slug: 'dimer', tag: 'Pupla · Lesh', sign: 'Bjeshkët e Nemuna',
+    note: 'Xhaketa me pupla dhe kapela e bardhë leshi si qeleshja, për dimrat e gjatë të malësisë.' },
 ];
 
 function Seasons() {
-  const { t, pick } = useLang();
+  const { t, pick, lang } = useLang();
   const now = seasonOf();
+  // Wide screens: the four panels sit side by side and the one under the pointer or focus opens up.
+  // At rest the current season is open. Narrower screens: a swipeable row of full cards.
+  const [open, setOpen] = useState(now);
   return (
     <section id="stinet" aria-labelledby="stinet-title" className="scroll-mt-20 pb-[clamp(72px,8vw,120px)] pt-[clamp(88px,11vw,168px)]">
       <Wrap>
@@ -143,32 +147,55 @@ function Seasons() {
           </div>
           <p className="text-white/62">{t('Katër koleksione, një për çdo stinë: materiali, ngjyra dhe tradita që i shkojnë asaj kohe të vitit.')}</p>
         </header>
-        <ul className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-[clamp(16px,2vw,28px)]">
-          {SEASON_CARDS.map(({ slug, tag, note }, i) => (
-            <Reveal as="li" key={slug} delay={(i % 4) * 90}>
-              <Link to={`/katalogu?stina=${slug}`} className="group block border border-crimson transition-colors duration-300 hover:border-flame">
-                <div className="relative overflow-hidden">
-                  <SeasonArt
-                    season={slug}
-                    label={`${pick(SEASONS[slug])}: ${t(note)}`}
-                    className="block aspect-square w-full transition-transform duration-[800ms] ease-[var(--ease-brand)] group-hover:scale-[1.04]"
-                  />
-                  {slug === now && (
-                    <span className="absolute left-2 top-2 bg-flame px-2 py-1 text-[9px] font-medium uppercase tracking-[.16em] text-white sm:left-3 sm:top-3 sm:px-2.5 sm:py-1.5 sm:text-[10px] sm:tracking-[.24em]">
-                      {t('Sezoni i tanishëm')}
-                    </span>
-                  )}
-                </div>
-                {/* Name and fabric side by side, stacked where the four cards get narrow (phones, iPad landscape) */}
-                <div className="flex flex-col items-start gap-1.5 bg-crimson px-3.5 py-3 text-white transition-colors duration-300 group-hover:bg-flame sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-5 sm:py-4 lg:flex-col lg:items-start lg:gap-1.5 xl:flex-row xl:items-center xl:gap-4">
-                  <h3 className="font-serif text-[length:clamp(26px,2.2vw,32px)] font-normal leading-none tracking-[.01em]">{pick(SEASONS[slug])}</h3>
-                  <span className="whitespace-nowrap text-[10px] font-medium uppercase tracking-[.22em] sm:tracking-[.24em]">{t(tag)}</span>
-                </div>
-              </Link>
-              <p className="mt-3 text-[13px] leading-relaxed text-white/62 sm:text-sm">{t(note)}</p>
-            </Reveal>
-          ))}
-        </ul>
+        <Reveal
+          as="ul"
+          onMouseLeave={() => setOpen(now)}
+          className="-mx-[clamp(16px,4vw,56px)] flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-[clamp(16px,4vw,56px)] px-[clamp(16px,4vw,56px)] py-1 [scrollbar-width:none] lg:mx-0 lg:h-[clamp(580px,78vh,720px)] lg:gap-4 lg:overflow-visible lg:p-0"
+        >
+          {SEASON_CARDS.map(({ slug, tag, sign, note }, i) => {
+            const isOpen = open === slug;
+            return (
+              <li
+                key={slug}
+                onMouseEnter={() => setOpen(slug)}
+                onFocus={() => setOpen(slug)}
+                style={{ '--grow': isOpen ? 2.8 : 1 }}
+                className="w-[80%] flex-none snap-start sm:w-[46%] md:w-[36%] lg:w-auto lg:min-w-0 lg:flex-[var(--grow)_1_0%] lg:transition-[flex-grow] lg:duration-700 lg:ease-[var(--ease-brand)]"
+              >
+                <Link to={`/katalogu?stina=${slug}`} className={`group flex h-full flex-col overflow-hidden border bg-ink-2 transition-colors duration-300 hover:border-flame ${isOpen ? 'border-crimson lg:border-flame' : 'border-crimson'}`}>
+                  <div className="relative aspect-square overflow-hidden lg:aspect-auto lg:min-h-0 lg:flex-1">
+                    {/* Closed panels show the garment (left third of the drawing), the open one the whole scene */}
+                    <SeasonArt
+                      season={slug}
+                      label={`${pick(SEASONS[slug])}: ${t(note)}`}
+                      className={`block w-full lg:absolute lg:left-1/2 lg:top-1/2 lg:aspect-square lg:h-full lg:w-auto lg:max-w-none lg:-translate-y-1/2 lg:transition-transform lg:duration-700 lg:ease-[var(--ease-brand)] ${isOpen ? 'lg:-translate-x-1/2' : 'lg:-translate-x-[30%]'}`}
+                    />
+                    {slug === now && (
+                      <span className="absolute left-3 top-3 bg-flame px-2.5 py-1.5 text-[10px] font-medium uppercase tracking-[.24em] text-white">
+                        {t('Sezoni i tanishëm')}
+                      </span>
+                    )}
+                  </div>
+                  <Zigzag className="flex-none opacity-60" />
+                  <div className="flex-none px-5 pb-6 pt-4">
+                    <p className="flex items-baseline gap-3 font-serif text-lg leading-none">
+                      <span className="text-flame [font-variant-numeric:lining-nums]">0{i + 1}</span>
+                      {lang === 'en' && <span lang="sq" className="italic text-white/45">{SEASONS[slug].sq.toLocaleLowerCase('sq')}</span>}
+                    </p>
+                    <h3 className="mt-3 whitespace-nowrap font-serif text-[length:clamp(36px,3vw,46px)] font-light leading-none text-white">{pick(SEASONS[slug])}</h3>
+                    <p className="mt-3.5 whitespace-nowrap text-[10px] font-medium uppercase tracking-[.24em] text-white/62">{t(tag)}</p>
+                    <p className="mt-1 whitespace-nowrap font-serif text-[17px] italic text-white/80">{t(sign)}</p>
+                    {/* Same size open or closed (fixed width, faded out) so the drawing above never jumps */}
+                    <div className={`transition-opacity duration-500 lg:w-[36ch] ${isOpen ? '' : 'lg:opacity-0'}`}>
+                      <p className="mt-4 text-sm leading-relaxed text-white/62 lg:min-h-[6.5em]">{t(note)}</p>
+                      <span className="link-arrow mt-5 text-white">{t('Shiko koleksionin')} <Arrow /></span>
+                    </div>
+                  </div>
+                </Link>
+              </li>
+            );
+          })}
+        </Reveal>
       </Wrap>
     </section>
   );
@@ -210,11 +237,11 @@ function Lookbook() {
 }
 
 const STEPS = [
-  { n: '01', step: 'leshi', title: 'Leshi', text: 'Lesh deleje nga kullotat e Dibrës dhe të Kukësit, i larë dhe i krehur me dorë.', meta: 'Burimi · Dibër, Kukës',
+  { n: '01', step: 'leshi', title: 'Leshi', text: 'Lesh, li dhe pambuk të zgjedhur me kujdes, të përgatitur në fabrikat tona në Toronto.', meta: 'Lesh · Li · Pambuk',
     art: 'Ilustrim: një dele dhe leshi i saj që bëhet lëmsh i kuq' },
-  { n: '02', step: 'qendisja', title: 'Qëndisja', text: 'Motivet e xhubletës dhe të xhamadanit, të qëndisura me dorë nga gratë e Malësisë së Madhe.', meta: 'Deri në 60 orë për një copë',
+  { n: '02', step: 'qendisja', title: 'Qëndisja', text: 'Motivet e xhubletës dhe të xhamadanit, të qëndisura me dorë nga mjeshtrat tanë në Toronto.', meta: 'Deri në 60 orë për një copë',
     art: 'Ilustrim: një gjergjef me një motiv me pika kryq, ende në punë, dhe gjilpëra me pe të kuq' },
-  { n: '03', step: 'prerja', title: 'Prerja', text: 'Siluete të sotme, të prera dhe të qepura në punishten tonë në Toronto.', meta: 'Punishtja · Toronto',
+  { n: '03', step: 'prerja', title: 'Prerja', text: 'Veshje moderne, autoktone shqiptare, të prera dhe të qepura në Toronto për ty.', meta: 'Bërë në Toronto',
     art: 'Ilustrim: kallëpi i një xhamadani mbi tavolinë, me gërshërë, metër dhe gjilpëra me kokë' },
 ];
 
@@ -287,9 +314,13 @@ function Newsletter() {
     }
     setState((s) => ({ ...s, busy: true }));
     try {
-      await api('/subscribers', { method: 'POST', body: { email: email.trim(), lang } });
+      const res = await api('/subscribers', { method: 'POST', body: { email: email.trim(), lang } });
       setEmail('');
-      setState({ note: 'Faleminderit! Tani je pjesë e fisit.', invalid: false, busy: false });
+      setState({
+        note: res?.confirm ? 'Faleminderit! Të dërguam një email: konfirmoje dhe je pjesë e fisit.' : 'Faleminderit! Tani je pjesë e fisit.',
+        invalid: false,
+        busy: false,
+      });
     } catch (err) {
       setState({ note: err.status === 429 ? 'Shumë përpjekje. Provo përsëri pas pak.' : 'Shkruaj një adresë email-i të vlefshme.', invalid: true, busy: false });
     }
@@ -298,7 +329,7 @@ function Newsletter() {
   return (
     <section aria-labelledby="news-title" className="on-red bg-crimson py-[clamp(88px,10vw,144px)] text-center text-white">
       <Wrap className="flex flex-col items-center">
-        <DiamondMark className="mb-9 size-16 text-white" />
+        <Monogram className="mb-8 w-[88px] text-beige" />
         <h2 id="news-title" className="font-serif text-[length:clamp(46px,5.6vw,84px)] font-light leading-none tracking-[.01em]">{t('Bëhu pjesë e fisit')}</h2>
         <p className="mt-5 max-w-[46ch] text-white/90">{t('Merr i pari koleksionet e reja, ftesat për shfaqjet dhe historitë pas çdo motivi.')}</p>
         <form onSubmit={submit} noValidate className="mt-11 flex w-full max-w-[560px] flex-col gap-3 sm:flex-row sm:gap-0">
@@ -325,12 +356,22 @@ function Newsletter() {
 
 export default function Home() {
   useTitle(null);
+  const { t } = useLang();
+  const notify = useToast();
+  // Back from the confirmation link in Brevo's email (newsletter.js sends people here with ?fisi=konfirmuar)
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get('fisi') !== 'konfirmuar') return;
+    notify(t('Email-i u konfirmua. Mirë se erdhe në fis!'));
+    url.searchParams.delete('fisi');
+    window.history.replaceState(null, '', url);
+  }, [notify, t]);
   return (
     <>
       <Hero />
       <Kilim />
       <Categories />
-      <Besa />
+      <Story />
       <Season />
       <Seasons />
       <Wrap aria-hidden="true"><Zigzag /></Wrap>

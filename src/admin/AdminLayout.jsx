@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useAdmin } from './ui.jsx';
-import Logo from '../components/Logo.jsx';
+import { MonogramTile } from '../components/Logo.jsx';
 
 const NAV = [
   ['/admin', 'Pasqyra', <path key="i" d="M4 13h6V4H4Zm10 7h6v-9h-6Zm0-13h6V4h-6ZM4 20h6v-4H4Z" />, true],
@@ -100,7 +100,7 @@ export default function AdminLayout({ children }) {
       {/* Desktop sidebar */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-[248px] flex-col bg-ink pb-6 lg:flex">
         <Link to="/admin" className="block px-6 pb-8 pt-7">
-          <Logo label="M’DON" className="h-10 w-auto text-flame" />
+          <MonogramTile label="M’DON" className="h-16" />
           <span className="mt-2 block caps-xs text-white/50">Paneli i pronarit</span>
         </Link>
         <div className="flex-1">{nav}</div>
@@ -109,7 +109,7 @@ export default function AdminLayout({ children }) {
 
       {/* Mobile top bar */}
       <header className="sticky top-0 z-30 flex h-14 items-center justify-between bg-ink px-4 lg:hidden">
-        <Link to="/admin" aria-label="M’DON, paneli" className="text-flame"><Logo className="h-8 w-auto" /></Link>
+        <Link to="/admin" aria-label="M’DON, paneli" className="text-flame"><MonogramTile className="h-9 align-middle" /></Link>
         <div className="flex items-center gap-3">
           <ThemeToggle theme={theme} onChange={setTheme} compact />
           <button type="button" aria-expanded={open} aria-controls="admin-nav" onClick={() => setOpen((o) => !o)} className="caps text-white">

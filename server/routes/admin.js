@@ -12,6 +12,7 @@ import {
 } from '../auth.js';
 import { CATEGORIES, SEASONS, REGIONS, LABELS, BADGES, ORDER_STATUSES, PAYMENT_METHODS, CHECKOUT_PAYMENTS, PAYMENT_STATUSES, NOT_SOLD } from '../../shared/shop.js';
 import { dashboardUrl } from '../stripe.js';
+import { brevoEnabled, removeSubscriber } from '../newsletter.js';
 
 const TOO_MANY = 'Shumë përpjekje të gabuara. Provo përsëri më vonë.';
 const BAD_LOGIN = 'Email-i ose fjalëkalimi është i gabuar.';
@@ -539,7 +540,10 @@ export default function adminRoutes({ isDev, noLogin = false }) {
   // ---------- Newsletter subscribers ----------
 
   router.get('/subscribers', (req, res) => {
-    res.json(db.prepare('SELECT id, email, lang, created_at FROM subscribers ORDER BY id DESC').all());
+    res.json({
+      brevo: brevoEnabled,
+      subscribers: db.prepare('SELECT id, email, lang, created_at, newsletter FROM subscribers ORDER BY id DESC').all(),
+    });
   });
 
   router.get('/subscribers.csv', (req, res) => {
@@ -554,7 +558,10 @@ export default function adminRoutes({ isDev, noLogin = false }) {
   router.delete('/subscribers/:id', (req, res) => {
     const sub = db.prepare('SELECT email FROM subscribers WHERE id = ?').get(req.params.id);
     db.prepare('DELETE FROM subscribers WHERE id = ?').run(req.params.id);
-    if (sub) audit(req, req.user, 'subscriber_removed', sub.email);
+    if (sub) {
+      audit(req, req.user, 'subscriber_removed', sub.email);
+      removeSubscriber(sub.email);
+    }
     res.json({ ok: true });
   });
 

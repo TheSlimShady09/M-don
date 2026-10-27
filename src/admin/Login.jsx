@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { api } from '../lib/api.js';
 import { Kilim } from '../components/ui.jsx';
 import { RecoveryCodes } from './ui.jsx';
-import Logo from '../components/Logo.jsx';
+import { MonogramTile } from '../components/Logo.jsx';
 
 const input = 'h-12 w-full rounded-none border border-white/25 bg-transparent px-4 text-[15px] text-white outline-none transition-colors placeholder:text-white/40 focus:border-white';
 const codeCls = `${input} text-center font-mono text-xl tracking-[.45em]`;
@@ -16,7 +16,7 @@ function Shell({ title, wide = false, children }) {
       <div className="flex flex-1 items-center justify-center px-4 py-14">
         <div className={`w-full ${wide ? 'max-w-[520px]' : 'max-w-[400px]'}`}>
           <div className="mb-10 flex flex-col items-center text-center">
-            <Logo variant="full" label="M’DON, the brand" className="h-28 w-auto text-flame" />
+            <MonogramTile label="M’DON" className="h-28" />
             <h1 className="mt-6 caps text-white/62">{title}</h1>
           </div>
           {children}

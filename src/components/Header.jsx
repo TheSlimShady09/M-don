@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useLang } from '../lib/i18n.jsx';
 import { useCart } from '../lib/cart.jsx';
 import { Chest, Wrap } from './ui.jsx';
-import Logo from './Logo.jsx';
+import { Monogram } from './Logo.jsx';
 
 const NAV = [
   { to: '/katalogu?k=burra', label: 'Burra', k: 'burra' },
@@ -19,7 +19,7 @@ export function LangSwitch({ big = false }) {
   const { lang, setLang, t } = useLang();
   return (
     <div role="group" aria-label={t('Gjuha')} className={`flex items-center ${big ? 'gap-3' : 'gap-2'}`}>
-      {['sq', 'en'].map((l, i) => (
+      {['en', 'sq'].map((l, i) => (
         <span key={l} className="contents">
           {i > 0 && <span aria-hidden="true" className="text-[11px] text-flame">/</span>}
           <button
@@ -106,13 +106,12 @@ export default function Header() {
             </ul>
           </nav>
 
-          <Link to="/" onClick={toTop} aria-label={t('M’DON, kthehu në krye')} className="block text-flame transition-opacity hover:opacity-85">
-            <Logo className="h-9 w-auto lg:h-11" />
+          <Link to="/" onClick={toTop} aria-label={t('M’DON, kthehu në krye')} className="block transition-opacity hover:opacity-85">
+            <Monogram className="block h-11 text-flame lg:h-14" />
           </Link>
 
           <ul className="flex items-center justify-end gap-[clamp(20px,2.4vw,36px)]">
             <li className="hidden lg:block"><a href="#" className={navLink}>{t('Kërko')}</a></li>
-            <li className="hidden lg:block"><a href="#" className={navLink}>{t('Hyr')}</a></li>
             <li className="hidden lg:block"><LangSwitch /></li>
             <li><CartLink /></li>
           </ul>
@@ -138,7 +137,6 @@ export default function Header() {
             </ul>
             <ul className="mt-10 grid gap-3.5 border-t border-white/14 pt-7 caps text-white/62">
               <li><a href="#">{t('Kërko')}</a></li>
-              <li><a href="#">{t('Hyr')}</a></li>
               <li><a href="#">{t('Gjurmo porosinë')}</a></li>
               <li><a href="#">{t('Ndihmë')}</a></li>
               <li className="mt-3"><LangSwitch big /></li>

@@ -25,3 +25,33 @@ export default function Logo({ variant = 'wordmark', className = '', label }) {
     </svg>
   );
 }
+
+// The script MD monogram (public/brand/mdon-monogram.png, white on transparent), used as a mask so it
+// takes the text colour like the wordmark. Size it by height (h-14) or width (w-20).
+const MONOGRAM = { mask: 'url(/brand/mdon-monogram.png) center / contain no-repeat', WebkitMask: 'url(/brand/mdon-monogram.png) center / contain no-repeat' };
+
+export function Monogram({ className = '', label }) {
+  return (
+    <span
+      role={label ? 'img' : undefined}
+      aria-label={label}
+      aria-hidden={label ? undefined : true}
+      className={`inline-block aspect-[497/529] bg-current ${className}`}
+      style={MONOGRAM}
+    />
+  );
+}
+
+/** The monogram as on the brand image: cream on a red square (dashboard). Size it by height (h-14). */
+export function MonogramTile({ className = '', label }) {
+  return (
+    <span
+      role={label ? 'img' : undefined}
+      aria-label={label}
+      aria-hidden={label ? undefined : true}
+      className={`inline-flex aspect-square items-center justify-center bg-crimson ${className}`}
+    >
+      <Monogram className="h-[74%] text-cream" />
+    </span>
+  );
+}

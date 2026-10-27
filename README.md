@@ -53,7 +53,7 @@ Duhet një aplikacion verifikimi në telefon: **Google Authenticator** ose **Mic
 | Pasqyra | Periudha 7 / 30 / 90 ditë; të ardhurat, porositë, vlera mesatare dhe abonentët me krahasim; grafiku ditor (me periudhën e mëparshme), statuset, pagesat, kategoritë, trevat, ditët e javës, më të shiturat, porositë e fundit. Butoni **Dritë / Errësirë** poshtë majtas. Pa porosi të vërteta, mund ta shikosh me **të dhëna shembull** (nuk ruhen) |
 | Porositë | Lista e porosive me filtër sipas statusit dhe statusin e pagesës (Paguar / Në pritje); hap një porosi për të parë klientin, adresën dhe produktet; ndrysho statusin (E re → Në përgatitje → Dërguar → Dorëzuar). Pagesat në dorëzim dhe me bankë i shënon si **Paguar** vetë; pagesat me kartë i përditëson Stripe, me lidhje **Shih në Stripe** |
 | Produktet | Shto, ndrysho, fshi; emri dhe materiali në shqip/anglisht, çmimi, treva, kategoritë, **stinët** (në cilin koleksion del: pranverë, verë, vjeshtë, dimër), foto; fshih nga dyqani ose vendos te "Më të mirat" |
-| Abonentët | Email-et nga "Bëhu pjesë e fisit", me shkarkim CSV |
+| Abonentët | Email-et nga "Bëhu pjesë e fisit", me shkarkim CSV; kur Brevo është i lidhur, edhe gjendja e secilit atje |
 | Përdoruesit | Dy llogaritë e panelit; pronari shton, rivendos ose heq personin e dytë |
 | Regjistri | Regjistri i sigurisë: hyrjet, tentativat e dështuara, ndryshimet |
 | Cilësimet | Fjalëkalimi, email-i, kodet rezervë, pajisjet ku je i hyrë, dalja |
@@ -87,6 +87,33 @@ Kodin `whsec_...` që të jep vendose te `.env` si `STRIPE_WEBHOOK_SECRET` dhe n
 - Çmimet janë në dollarë kanadezë (CAD), numra të plotë (p.sh. $395). Stripe mban tarifën e vet për çdo pagesë.
 - **Taksat (GST/HST/PST):** tani dyqani nuk shton taksë mbi çmimin. Nëse biznesi regjistrohet për GST/HST, taksa duhet shtuar (p.sh. me Stripe Tax). Pyet kontabilistin.
 - Serveri e kontrollon shumën e paguar me totalin e porosisë. Nëse nuk përputhen, porosia nuk shënohet si e paguar.
+
+## Newsletter (Brevo, falas)
+
+Email-et nga "Bëhu pjesë e fisit" ruhen gjithmonë te paneli (**Abonentët**). Pa Brevo askush nuk merr email.
+Me [Brevo](https://www.brevo.com) (plani falas: rreth 300 email-e në ditë), çdo email i ri kalon vetë atje dhe:
+
+1. Brevo i dërgon **email-in e konfirmimit** (double opt-in). Personi hyn në listë vetëm pasi klikon lidhjen. Kështu e ke pëlqimin, siç e kërkon ligji kanadez kundër spam-it (CASL).
+2. Një **automatizim** në Brevo i dërgon **email-in e mirëseardhjes** sapo hyn në listë.
+3. **Newsletter-at** i shkruan dhe i dërgon nga Brevo. Secili ka vetë lidhjen për t'u çregjistruar.
+
+Si ta lidhësh:
+
+1. Hap llogari falas te Brevo. Vendos adresën e biznesit në Toronto: del në fund të çdo email-i, siç e kërkon CASL.
+2. **SMTP & API → API keys → Generate a new API key**: kopjo çelësin (`xkeysib-...`) dhe vendose te `.env` si `BREVO_API_KEY=...`.
+3. Shkruaj `npm run brevo`. Ky krijon te Brevo listën **Fisi i M’DON** dhe dy email-et me dizajnin e M’DON (konfirmimi dhe mirëseardhja, anglisht + shqip, nga `server/emails.js`), dhe shkruan vetë `BREVO_LIST_ID` e `BREVO_DOI_TEMPLATE_ID` te `.env`. Mund ta nisësh sa herë të duash: përditëson ato që ka krijuar.
+4. Për mirëseardhjen, te Brevo: **Automations → Create an automation → Welcome message**, me nisje *Contact added to list* → **Fisi i M’DON**, dhe email-in **M’DON · Mirëseardhja**. Aktivizoje.
+5. Nise serverin përsëri (`npm run dev`). Në terminal duhet të shkruajë *Newsletter: lidhur me Brevo*.
+6. Provo me email-in tënd nga faqja: vjen email-i i konfirmimit; pas klikimit kthehesh te faqja ("Email-i u konfirmua") dhe vjen ai i mirëseardhjes.
+7. Kur dyqani të jetë online me HTTPS, vendos `PUBLIC_URL` dhe nise `npm run brevo` përsëri: lidhjet në email-e shkojnë te adresa e vërtetë dhe del logoja MD. Online, vendos të tria vlerat `BREVO_*` edhe te Environment në Render.
+8. Adresa në fund të email-eve është *Toronto, Ontario, Canada*. Për adresën e plotë, vendos `MDON_ADDRESS=...` te `.env` dhe nise `npm run brevo` përsëri.
+9. **Nga cili email vijnë:** si parazgjedhje nga email-i i llogarisë Brevo. Për një tjetër: te Brevo **Senders, Domains & Dedicated IPs → Senders → Add a sender**, konfirmo email-in që të dërgon Brevo, vendos `BREVO_SENDER_EMAIL=adresa@...` te `.env` dhe nise `npm run brevo` përsëri. Një adresë me domain-in tënd (p.sh. `info@mdon.ca`, me domain-in të verifikuar te Brevo) bie më rrallë te Spam se një Gmail.
+
+- Gjuha ruhet te çdo kontakt si atribut **GJUHA** (`EN` ose `SQ`; serveri e krijon vetë). Kur dërgon një newsletter, zgjidh kontaktet sipas saj.
+- Në planin falas, Brevo vendos logon e vet në fund të email-eve.
+- Email-et që ishin në panel para se ta lidhësh Brevo kalojnë vetë atje brenda 15 sekondave pas nisjes (marrin edhe ata email-in e konfirmimit).
+- Nëse Brevo nuk përgjigjet, serveri provon përsëri çdo 30 minuta. Te paneli, kolona **Brevo** tregon *Dërguar*, *Në pritje* ose *Refuzuar* (adresë e pavlefshme).
+- Kur heq një email te paneli, hiqet edhe nga lista në Brevo. Kur dikush çregjistrohet nga Brevo, te paneli mbetet, por Brevo nuk i dërgon më asgjë.
 
 ## Ku ruhen të dhënat
 

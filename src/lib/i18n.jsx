@@ -1,16 +1,18 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import EN from './en.js';
 
-const KEY = 'mdon:lang';
+// Only a language the visitor picked is remembered; everyone else gets English.
+// (The old key 'mdon:lang' was written on every visit, so it would keep earlier visitors on Albanian.)
+const KEY = 'mdon:lang-choice';
 const LangContext = createContext(null);
 
 function initialLang() {
   try {
     const q = new URLSearchParams(window.location.search).get('lang');
     if (q === 'en' || q === 'sq') return q;
-    return localStorage.getItem(KEY) === 'en' ? 'en' : 'sq';
+    return localStorage.getItem(KEY) === 'sq' ? 'sq' : 'en';
   } catch {
-    return 'sq';
+    return 'en';
   }
 }
 
@@ -18,16 +20,17 @@ function initialLang() {
 const dollars = (n) => `$${String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
 
 export function LangProvider({ children }) {
-  const [lang, setLang] = useState(initialLang);
+  const [lang, setLangState] = useState(initialLang);
 
-  useEffect(() => {
-    document.documentElement.lang = lang;
-    try { localStorage.setItem(KEY, lang); } catch { /* storage blocked */ }
-  }, [lang]);
+  useEffect(() => { document.documentElement.lang = lang; }, [lang]);
 
   const value = useMemo(() => ({
     lang,
-    setLang,
+    /** The visitor picked a language: use it and remember it */
+    setLang: (l) => {
+      setLangState(l);
+      try { localStorage.setItem(KEY, l); } catch { /* storage blocked */ }
+    },
     /** Albanian in, current language out */
     t: (sq) => (lang === 'en' && EN[sq] !== undefined ? EN[sq] : sq),
     /** Pick from a { sq, en } pair */
