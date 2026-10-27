@@ -4,7 +4,7 @@ import { useLang, useTitle } from '../lib/i18n.jsx';
 import { useProducts } from '../lib/products.js';
 import { api } from '../lib/api.js';
 import { useToast } from '../lib/toast.jsx';
-import { Arrow, Kilim, Media, Reveal, Wrap, Zigzag } from '../components/ui.jsx';
+import { Arrow, Kilim, Reveal, Wrap, Zigzag } from '../components/ui.jsx';
 import SeasonArt from '../components/SeasonArt.jsx';
 import { SEASONS, seasonOf } from '../../shared/shop.js';
 import { GjirokasterArt, QendisjeArt, ThethArt } from '../components/LookArt.jsx';
@@ -27,7 +27,7 @@ function Hero() {
           <Logo className="mx-auto h-auto w-full max-w-[min(1180px,calc((100svh_-_260px)*2.34))]" />
         </h1>
         {/* "Bli tani" bottom right, "Zbulo historinë" bottom left; stacked on phones */}
-        <Link to="/katalogu" className="btn btn-red mt-2 h-[60px] self-end px-11 text-xs max-md:w-full md:col-start-3 md:row-start-3 md:mt-0 md:justify-self-end">{t('Bli tani')}</Link>
+        <Link to="/katalogu" className="btn btn-red mt-2 h-[60px] rounded-full self-end px-11 text-xs max-md:w-full md:col-start-3 md:row-start-3 md:mt-0 md:justify-self-end">{t('Bli tani')}</Link>
         <Link to="/#historia" className="link-arrow mt-5 self-end justify-self-start py-1 text-xs text-white md:col-start-1 md:row-start-3 md:mt-0 md:mb-[22px]">{t('Zbulo historinë')} <Arrow /></Link>
       </Wrap>
     </section>
@@ -93,28 +93,22 @@ function Story() {
 function Season() {
   const { t } = useLang();
   return (
-    <section aria-labelledby="split-title" className="grid md:min-h-[min(92vh,840px)] md:grid-cols-2">
-      <div className="on-red flex items-center bg-crimson px-[clamp(16px,4vw,56px)] pb-[72px] pt-16 text-white md:py-[clamp(64px,8vw,120px)] md:pl-[max(clamp(16px,4vw,56px),calc((100vw-1440px)/2+56px))] md:pr-[clamp(32px,6vw,96px)]">
-        <Reveal className="max-w-[520px]">
+    <section aria-labelledby="split-title" className="on-red bg-crimson py-[clamp(72px,8vw,128px)] text-white">
+      {/* Title on the left, the words and the button on the right; stacked on phones */}
+      <Wrap className="grid gap-y-8 md:grid-cols-[1.25fr_1fr] md:items-end md:gap-x-[clamp(32px,6vw,112px)]">
+        <Reveal>
           <p className="eyebrow eyebrow-onred">{t('Sezoni i ri')}</p>
-          <h2 id="split-title" className="mb-8 mt-7 font-serif text-[length:clamp(60px,7.4vw,120px)] font-light leading-[.95]">
+          <h2 id="split-title" className="mt-7 font-serif text-[length:clamp(60px,7.4vw,120px)] font-light leading-[.95]">
             {t('Gjak i kuq,')}<br /><em>{t('dhé i zi.')}</em>
           </h2>
+        </Reveal>
+        <Reveal delay={120} className="md:pb-3">
           <p className="mb-11 max-w-[42ch] text-white/90">
             {t('Ngjyrat e flamurit, të endura në lesh: xhamadanë të zinj, qëndisma të kuqe dhe qeleshe të bardha si bora e Bjeshkëve të Nemuna.')}
           </p>
           <Link to="/#stinet" className="btn btn-black">{t('Eksploro koleksionin')}</Link>
         </Reveal>
-      </div>
-      {/* Illustration on its own near-black ground: shown whole, never cropped */}
-      <Media
-        src="/img/valle.jpg"
-        alt={t('Ilustrim: një çift kërcen valle me veshje tradicionale shqiptare. Ajo me fustan të bardhë dhe jelek të qëndisur, ai me jelek të kuq dhe qeleshe të bardhë.')}
-        ph={t('Foto: çift në valle me veshje tradicionale')}
-        className="-order-1 aspect-[4/5] md:order-none md:aspect-auto md:min-h-[560px]"
-        imgClassName="object-contain! p-[clamp(16px,3vw,48px)]"
-        style={{ '--ph-bg': '#0D0A05' }}
-      />
+      </Wrap>
     </section>
   );
 }

@@ -121,7 +121,6 @@ Gjithçka që shkruan dyqani ruhet në dosjen **`data/`**: databaza `mdon.db` dh
 
 Kryefaqja nuk ka nevojë për foto, sepse çdo seksion ka vizatimin e vet:
 - Burra / Gra / Fëmijë: veshjet e plota (`src/components/OutfitArt.jsx`)
-- "Gjak i kuq, dhé i zi": ilustrimi i vallesë (`public/img/valle.jpg`)
 - koleksionet e stinëve: një veshje dhe shenjat e stinës për secilën (`src/components/SeasonArt.jsx`, tekstet te `SEASON_CARDS` në `src/pages/Home.jsx`)
 - "Nga duart e mjeshtrave": leshi, qëndisja dhe prerja, të lidhura nga një fije e kuqe (`src/components/CraftArt.jsx`)
 - "Malet na veshin": Thethi, Kalaja e Gjirokastrës dhe një qëndisje e Malësisë (`src/components/LookArt.jsx`)

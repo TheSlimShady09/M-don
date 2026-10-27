@@ -67,7 +67,7 @@ export default function Footer() {
             <h3 className="mb-5 flex items-center gap-2.5 caps-xs text-white/62"><Ornament />{t(col.title)}</h3>
             <ul className="grid gap-1.5">
               {col.links.map(([label, to]) => (
-                <li key={label}><Link to={to} className="inline-block py-1 text-sm text-white/88 transition-colors hover:text-white hover:underline hover:decoration-flame hover:underline-offset-4">{t(label)}</Link></li>
+                <li key={label}><Link to={to} className="inline-block min-w-6 py-1 text-sm text-white/88 transition-colors hover:text-white hover:underline hover:decoration-flame hover:underline-offset-4">{t(label)}</Link></li>
               ))}
             </ul>
           </nav>

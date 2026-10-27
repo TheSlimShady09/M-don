@@ -80,9 +80,6 @@ const EN = {
   'Ngjyrat e flamurit, të endura në lesh: xhamadanë të zinj, qëndisma të kuqe dhe qeleshe të bardha si bora e Bjeshkëve të Nemuna.':
     'The colours of the flag, woven in wool: black xhamadans, red embroidery and qeleshe caps as white as the snow of the Accursed Mountains.',
   'Eksploro koleksionin': 'Explore the collection',
-  'Foto: çift në valle me veshje tradicionale': 'Photo: a couple dancing in traditional dress',
-  'Ilustrim: një çift kërcen valle me veshje tradicionale shqiptare. Ajo me fustan të bardhë dhe jelek të qëndisur, ai me jelek të kuq dhe qeleshe të bardhë.':
-    'Illustration: a couple dancing a traditional Albanian valle. She wears a white dress and an embroidered vest; he wears a red vest and a white qeleshe.',
 
   // Seasons
   'Katër stinë': 'Four seasons',
@@ -169,7 +166,7 @@ const EN = {
   'Kartë, transfertë bankare ose pagesë në dorëzim.': 'Card, bank transfer or cash on delivery.',
 
   // Newsletter
-  'Bëhu pjesë e fisit': 'Join the clan',
+  'Bëhu pjesë e fisit': 'Join the Fis',
   'Merr i pari koleksionet e reja, ftesat për shfaqjet dhe historitë pas çdo motivi.':
     'Be the first to see new collections, invitations to our shows and the stories behind every motif.',
   'Adresa e email-it': 'Email address',
@@ -177,9 +174,9 @@ const EN = {
   'Regjistrohu': 'Subscribe',
   'Mund të çregjistrohesh kurdo.': 'You can unsubscribe at any time.',
   'Shkruaj një adresë email-i të vlefshme.': 'Please enter a valid email address.',
-  'Faleminderit! Tani je pjesë e fisit.': 'Thank you! You are now part of the clan.',
-  'Faleminderit! Të dërguam një email: konfirmoje dhe je pjesë e fisit.': 'Thank you! We’ve sent you an email: confirm it and you’re part of the clan.',
-  'Email-i u konfirmua. Mirë se erdhe në fis!': 'Email confirmed. Welcome to the clan!',
+  'Faleminderit! Tani je pjesë e fisit.': 'Thank you! You are now part of the Fis.',
+  'Faleminderit! Të dërguam një email: konfirmoje dhe je pjesë e fisit.': 'Thank you! We’ve sent you an email: confirm it and you’re part of the Fis.',
+  'Email-i u konfirmua. Mirë se erdhe në fis!': 'Email confirmed. Welcome to the Fis!',
 
   // Footer
   'Më të mirat': 'Best sellers',

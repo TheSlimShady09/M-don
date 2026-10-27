@@ -22,7 +22,7 @@ export default function ProductCard({ p, className = '', style, ref, id, found =
           imgClassName="group-hover:scale-[1.03]"
         />
         {p.badge && (
-          <span className="absolute left-3.5 top-3.5 z-[2] bg-white px-2.5 pb-[5px] pt-1.5 text-[9px] font-medium uppercase tracking-[.26em] text-crimson">
+          <span className="absolute left-3.5 top-3.5 z-[2] bg-white px-2.5 pb-[5px] pt-1.5 text-[10px] font-medium uppercase tracking-[.26em] text-crimson">
             {pick(BADGES[p.badge])}
           </span>
         )}

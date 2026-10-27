@@ -14,7 +14,7 @@ const SANS = "Jost, 'Helvetica Neue', Helvetica, Arial, sans-serif";
 
 export const SUBJECTS = {
   confirm: 'Confirm your email · Konfirmo email-in',
-  welcome: 'Welcome to the clan · Mirë se erdhe në fis',
+  welcome: 'Welcome to the Fis · Mirë se erdhe në fis',
 };
 
 /** Where the links point, the logo and the postal address, from .env (PUBLIC_URL, MDON_EMAIL_LOGO, MDON_ADDRESS) */
@@ -91,7 +91,7 @@ export function confirmEmail({ site, logo, address }) {
   const body = `
     ${eyebrow('One more step')}
     ${heading('Confirm your email')}
-    ${para('Click the button and you&rsquo;re part of the clan: the first to see new collections, invitations to our shows and the stories behind every motif.')}
+    ${para('Click the button and you&rsquo;re part of the Fis: the first to see new collections, invitations to our shows and the stories behind every motif.')}
     ${button('{{ doubleoptin }}', 'Yes, sign me up')}
     ${divider}
     ${eyebrow('Edhe një hap')}
@@ -101,7 +101,7 @@ export function confirmEmail({ site, logo, address }) {
     <p style="margin:40px 0 0;font-family:${SANS};font-size:12px;line-height:1.7;color:${MUTED};">
       Didn&rsquo;t sign up? Just ignore this email.<br>Nuk u regjistrove ti? Thjesht injoroje këtë email.
     </p>`;
-  return layout({ title: SUBJECTS.confirm, preheader: 'One click and you’re part of the clan · Një klik dhe je pjesë e fisit', site, logo, address, body });
+  return layout({ title: SUBJECTS.confirm, preheader: 'One click and you’re part of the Fis · Një klik dhe je pjesë e fisit', site, logo, address, body });
 }
 
 /** Welcome, sent by a Brevo automation once the person is on the list */
@@ -115,7 +115,7 @@ export function welcomeEmail({ site, logo, address }) {
         </a>
       </td>`).join('');
   const body = `
-    ${eyebrow('Welcome to the clan')}
+    ${eyebrow('Welcome to the Fis')}
     ${heading('You&rsquo;re one of us now.')}
     ${para('Modern clothing with an Albanian soul, cut and sewn in Toronto. You&rsquo;ll hear from us first when a new collection drops, when we open the doors to a show, and when there&rsquo;s a story worth telling.')}
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 34px;"><tr>${seasons}</tr></table>

@@ -90,7 +90,7 @@ export default function Catalog() {
               <span className="sr-only">{t('Kërkimi')}: </span>“{term}”
             </h1>
           ) : (
-            <h1 id="page-title" className="mt-[clamp(28px,3vw,48px)] font-serif text-[length:clamp(84px,13vw,196px)] font-light leading-[.88] tracking-[.02em] text-flame">
+            <h1 id="page-title" className="mt-[clamp(28px,3vw,48px)] font-serif text-[length:min(84px,21vw)] sm:text-[length:clamp(84px,13vw,196px)] font-light leading-[.88] tracking-[.02em] text-flame">
               {t(title)}
             </h1>
           )}
@@ -100,7 +100,7 @@ export default function Catalog() {
                 <p>{t('Ajo që gjetëm për kërkimin tënd.')}</p>
                 <p className="mt-4 flex flex-wrap gap-x-7 gap-y-3 caps-xs">
                   <button type="button" onClick={() => openSearch(term)} className="link-arrow text-white">{t('Kërko diçka tjetër')} <Arrow /></button>
-                  <Link to={`/katalogu${href({ term: '' })}`} className="text-white/62 transition-colors hover:text-white">{t('Pastro kërkimin')} ×</Link>
+                  <Link to={`/katalogu${href({ term: '' })}`} className="-my-2 inline-block py-2 text-white/62 transition-colors hover:text-white">{t('Pastro kërkimin')} ×</Link>
                 </p>
               </div>
             ) : (
