@@ -4,6 +4,7 @@ import { useLang } from '../lib/i18n.jsx';
 import Header from './Header.jsx';
 import Footer from './Footer.jsx';
 import { SearchProvider } from './Search.jsx';
+import { applyMode, storedMode } from '../lib/mode.js';
 
 // New page: start at the top. Links like /#stinet: scroll to that section.
 function ScrollManager() {
@@ -20,6 +21,8 @@ function ScrollManager() {
 
 export default function ShopLayout() {
   const { t } = useLang();
+  // The beige mode belongs to the shop; the owner panel keeps its own theme
+  useEffect(() => { applyMode(storedMode()); return () => applyMode('dark'); }, []);
   return (
     <SearchProvider>
       <a href="#main" className="absolute -top-16 left-4 z-[100] bg-white px-4 py-3 text-sm text-ink focus:top-3">{t('Kalo te përmbajtja')}</a>

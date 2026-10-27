@@ -116,11 +116,30 @@
   text-transform: uppercase;
 }
 
+/* Light mode for the shop, in beige: <html data-mode="light">, switched from the header.
+   The dark surfaces turn beige and the white on them turns dark brown. The white sections stay light
+   (a warm white) and the red ones keep white text and black buttons, so the brand red reads the same. */
+[data-mode="light"] {
+  --color-ink: #ECE2D1;
+  --color-ink-2: #E1D3BC;
+  --color-white: #22170F;
+  --color-paper: #F3ECDF;
+  --color-bone: #F8F3EA;
+  --color-rule: #E2D6C3;
+  --color-stone: #62574D;
+  color-scheme: light;
+}
+[data-mode="light"] :is(.bg-white, .bg-crimson, .on-red, .hover\:bg-crimson:hover) {
+  --color-ink: #0E0A0A;
+  --color-white: #FFFFFF;
+}
+[data-mode="light"] .bg-white { --color-white: #FBF8F2; }
+
 @layer base {
   html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
   body {
     background: var(--color-ink);
-    color: rgb(255 255 255 / .88);
+    color: color-mix(in oklab, var(--color-white) 88%, transparent);
     font-family: var(--font-sans);
     font-weight: 300;
     line-height: 1.7;
@@ -144,7 +163,7 @@
     line-height: 1.6;
     letter-spacing: .32em;
     text-transform: uppercase;
-    color: rgb(255 255 255 / .62);
+    color: color-mix(in oklab, var(--color-white) 62%, transparent);
   }
   .eyebrow::before { content: ""; width: 32px; height: 1px; background: var(--color-flame); flex: none; }
   .eyebrow-center { justify-content: center; }
@@ -232,7 +251,7 @@
     letter-spacing: .24em;
     text-transform: uppercase;
     text-align: center;
-    color: var(--ph-cap, rgb(255 255 255 / .4));
+    color: var(--ph-cap, color-mix(in oklab, var(--color-white) 40%, transparent));
   }
   .media-onred { --ph-bg: var(--color-ink); }
   .media-light { --ph-bg: var(--color-paper); --ph-cap: rgb(14 10 10 / .42); }

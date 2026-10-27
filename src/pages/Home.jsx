@@ -157,7 +157,7 @@ function Seasons() {
                 className="w-[80%] flex-none snap-start sm:w-[46%] md:w-[36%] lg:w-auto lg:min-w-0 lg:flex-[var(--grow)_1_0%] lg:transition-[flex-grow] lg:duration-700 lg:ease-[var(--ease-brand)]"
               >
                 <Link to={`/katalogu?stina=${slug}`} className={`group flex h-full flex-col overflow-hidden border bg-ink-2 transition-colors duration-300 hover:border-flame ${isOpen ? 'border-crimson lg:border-flame' : 'border-crimson'}`}>
-                  <div className="relative aspect-square overflow-hidden lg:aspect-auto lg:min-h-0 lg:flex-1">
+                  <div className="relative aspect-square overflow-hidden bg-[#181111] lg:aspect-auto lg:min-h-0 lg:flex-1">
                     {/* Closed panels show the garment (left third of the drawing), the open one the whole scene */}
                     <SeasonArt
                       season={slug}

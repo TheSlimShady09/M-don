@@ -5,6 +5,7 @@ import { useCart } from '../lib/cart.jsx';
 import { Chest, Magnifier, Wrap } from './ui.jsx';
 import { Monogram } from './Logo.jsx';
 import { useSearch } from './Search.jsx';
+import { setMode, useMode } from '../lib/mode.js';
 
 const NAV = [
   { to: '/katalogu?k=burra', label: 'Burra', k: 'burra' },
@@ -35,6 +36,30 @@ export function LangSwitch({ big = false }) {
         </span>
       ))}
     </div>
+  );
+}
+
+/** Dark (the brand's own) or beige light mode. `withLabel` writes it out, for the phone menu. */
+export function ModeSwitch({ withLabel = false }) {
+  const { t } = useLang();
+  const mode = useMode();
+  const light = mode === 'light';
+  return (
+    <button
+      type="button"
+      aria-pressed={light}
+      aria-label={withLabel ? undefined : t('Ngjyrat e çelëta')}
+      title={t('Ngjyrat e çelëta')}
+      onClick={() => setMode(light ? 'dark' : 'light')}
+      className={`inline-flex items-center gap-3 text-white/88 transition-colors hover:text-flame ${withLabel ? 'py-1.5 caps' : '-m-2.5 p-2.5'}`}
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="size-[21px] fill-none stroke-current [stroke-linecap:round] [stroke-width:1.2]">
+        {light
+          ? <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" />
+          : <path d="M12 3.5v2m0 13v2M20.5 12h-2m-13 0h-2m14.5-6-1.4 1.4M7.4 16.6 6 18m12 0-1.4-1.4M7.4 7.4 6 6m6 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />}
+      </svg>
+      {withLabel && t('Ngjyrat e çelëta')}
+    </button>
   );
 }
 
@@ -120,6 +145,7 @@ export default function Header() {
               </button>
             </li>
             <li className="hidden lg:block"><LangSwitch /></li>
+            <li className="hidden lg:block"><ModeSwitch /></li>
             <li><CartLink /></li>
           </ul>
         </Wrap>
@@ -147,6 +173,7 @@ export default function Header() {
               <li><a href="#">{t('Gjurmo porosinë')}</a></li>
               <li><a href="#">{t('Ndihmë')}</a></li>
               <li className="mt-3"><LangSwitch big /></li>
+              <li><ModeSwitch withLabel /></li>
             </ul>
           </Wrap>
         </div>
