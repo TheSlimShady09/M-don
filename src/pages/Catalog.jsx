@@ -1,6 +1,9 @@
-import { Link, useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { useLang, useTitle } from '../lib/i18n.jsx';
 import { useProducts } from '../lib/products.js';
+import { searchProducts } from '../lib/search.js';
+import { useSearch } from '../components/Search.jsx';
 import { CATEGORIES, SEASONS } from '../../shared/shop.js';
 import { Arrow, Kilim, Wrap } from '../components/ui.jsx';
 import ProductCard from '../components/ProductCard.jsx';
@@ -28,16 +31,28 @@ export default function Catalog() {
   const { t, lang, pick } = useLang();
   const [params, setParams] = useSearchParams();
   const { products, loading, error } = useProducts();
+  const openSearch = useSearch();
+  const location = useLocation();
+  const found = location.state?.found;
 
   const k = params.get('k') in CATEGORIES ? params.get('k') : '';
   const stina = params.get('stina') in SEASONS ? params.get('stina') : '';
   const rendit = params.get('rendit') in SORTS ? params.get('rendit') : 'rekomanduar';
-  const title = k ? CATEGORIES[k].sq : stina ? SEASONS[stina].title : 'Katalogu';
-  useTitle(title);
+  const term = (params.get('q') || '').trim().slice(0, 80);
+  const title = term ? 'Kërkimi' : k ? CATEGORIES[k].sq : stina ? SEASONS[stina].title : 'Katalogu';
+  useTitle(term ? `“${term}”` : title);
+
+  // Came from a search result: bring that product into view
+  useEffect(() => {
+    if (!found || loading) return undefined;
+    const timer = setTimeout(() => document.getElementById(`p-${found}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 120);
+    return () => clearTimeout(timer);
+  }, [found, loading, location.key]);
 
   const href = (next) => {
-    const s = { k, stina, rendit, ...next };
+    const s = { k, stina, rendit, term, ...next };
     const q = new URLSearchParams();
+    if (s.term) q.set('q', s.term);
     if (s.k) q.set('k', s.k);
     if (s.stina) q.set('stina', s.stina);
     if (s.rendit !== 'rekomanduar') q.set('rendit', s.rendit);
@@ -45,7 +60,9 @@ export default function Catalog() {
   };
   const update = (next, replace = false) => setParams(href(next).slice(1), { replace, preventScrollReset: true });
 
-  const inCat = products.filter((p) => !k || p.categories.includes(k));
+  // A search keeps its best matches first under "Recommended"
+  const pool = term ? searchProducts(products, term) : products;
+  const inCat = pool.filter((p) => !k || p.categories.includes(k));
   const present = Object.keys(SEASONS).filter((r) => r === stina || inCat.some((p) => p.seasons.includes(r)));
   const list = inCat
     .filter((p) => !stina || p.seasons.includes(stina))
@@ -64,15 +81,31 @@ export default function Catalog() {
           <nav aria-label={t('Ku ndodhesh')}>
             <ol className="flex flex-wrap gap-2.5 caps-xs tracking-[.28em] text-white/62 [&>li+li]:before:mr-2.5 [&>li+li]:before:text-flame [&>li+li]:before:content-['/']">
               <li><Link to="/" className="inline-block py-1 hover:text-white">{t('Kryefaqja')}</Link></li>
-              <li aria-current={k || stina ? undefined : 'page'} className={k || stina ? '' : 'text-white'}><Link to="/katalogu" className="inline-block py-1 hover:text-white">{t('Katalogu')}</Link></li>
-              {(k || stina) && <li aria-current="page" className="text-white">{t(title)}</li>}
+              <li aria-current={k || stina || term ? undefined : 'page'} className={k || stina || term ? '' : 'text-white'}><Link to="/katalogu" className="inline-block py-1 hover:text-white">{t('Katalogu')}</Link></li>
+              {(k || stina || term) && <li aria-current="page" className="text-white">{t(title)}</li>}
             </ol>
           </nav>
-          <h1 id="page-title" className="mt-[clamp(28px,3vw,48px)] font-serif text-[length:clamp(84px,13vw,196px)] font-light leading-[.88] tracking-[.02em] text-flame">
-            {t(title)}
-          </h1>
+          {term ? (
+            <h1 id="page-title" className="mt-[clamp(28px,3vw,48px)] break-words font-serif text-[length:clamp(56px,9vw,136px)] font-light leading-[.95] text-flame">
+              <span className="sr-only">{t('Kërkimi')}: </span>“{term}”
+            </h1>
+          ) : (
+            <h1 id="page-title" className="mt-[clamp(28px,3vw,48px)] font-serif text-[length:clamp(84px,13vw,196px)] font-light leading-[.88] tracking-[.02em] text-flame">
+              {t(title)}
+            </h1>
+          )}
           <div className="mt-[clamp(24px,3vw,40px)] flex flex-wrap items-end justify-between gap-x-12 gap-y-7">
-            <p className="max-w-[46ch] text-white/62">{t(DESCRIPTIONS[k || stina])}</p>
+            {term ? (
+              <div className="max-w-[46ch] text-white/62">
+                <p>{t('Ajo që gjetëm për kërkimin tënd.')}</p>
+                <p className="mt-4 flex flex-wrap gap-x-7 gap-y-3 caps-xs">
+                  <button type="button" onClick={() => openSearch(term)} className="link-arrow text-white">{t('Kërko diçka tjetër')} <Arrow /></button>
+                  <Link to={`/katalogu${href({ term: '' })}`} className="text-white/62 transition-colors hover:text-white">{t('Pastro kërkimin')} ×</Link>
+                </p>
+              </div>
+            ) : (
+              <p className="max-w-[46ch] text-white/62">{t(DESCRIPTIONS[k || stina])}</p>
+            )}
             <nav aria-label={t('Kategoritë')} className="flex w-full gap-[clamp(20px,2.6vw,36px)] overflow-x-auto [scrollbar-width:none] sm:w-auto">
               {TABS.map(([key, label]) => (
                 <Link
@@ -126,12 +159,27 @@ export default function Catalog() {
           {error && <p className="py-24 text-center text-stone">{t('Katalogu nuk u ngarkua. Rifresko faqen.')}</p>}
 
           {!loading && !error && list.length > 0 && (
-            <ul key={`${k}|${stina}|${rendit}`} className="grid grid-cols-2 gap-x-3 gap-y-10 md:grid-cols-3 md:gap-x-[clamp(16px,1.8vw,28px)] md:gap-y-[clamp(40px,4vw,64px)] xl:grid-cols-4">
-              {list.map((p, i) => <ProductCard key={p.id} p={p} className="rise" style={{ '--i': Math.min(i, 11) }} />)}
+            <ul key={`${term}|${k}|${stina}|${rendit}`} className="grid grid-cols-2 gap-x-3 gap-y-10 md:grid-cols-3 md:gap-x-[clamp(16px,1.8vw,28px)] md:gap-y-[clamp(40px,4vw,64px)] xl:grid-cols-4">
+              {list.map((p, i) => (
+                <ProductCard key={p.id} id={`p-${p.id}`} found={p.id === found} p={p} className="rise" style={{ '--i': Math.min(i, 11) }} />
+              ))}
             </ul>
           )}
 
-          {!loading && !error && list.length === 0 && (
+          {!loading && !error && term && inCat.length === 0 && (
+            <div className="py-[clamp(48px,8vw,96px)] text-center text-stone">
+              <p className="mb-2.5 break-words font-serif text-[length:clamp(32px,3.4vw,44px)] font-light text-ink">{t('Asnjë rezultat për')} “{term}”</p>
+              <p>{t('Provo një fjalë tjetër, si lesh, xhamadan ose dimër.')}</p>
+              <div className="mt-7 flex flex-wrap justify-center gap-x-10 gap-y-4">
+                <button type="button" onClick={() => openSearch(term)} className="link-arrow text-ink">{t('Kërko diçka tjetër')} <Arrow /></button>
+                {k
+                  ? <Link to={`/katalogu${href({ k: '', stina: '' })}`} className="link-arrow text-ink">{t('Kërko në të gjitha kategoritë')} <Arrow /></Link>
+                  : <Link to="/katalogu" className="link-arrow text-ink">{t('Shiko gjithë katalogun')} <Arrow /></Link>}
+              </div>
+            </div>
+          )}
+
+          {!loading && !error && list.length === 0 && !(term && inCat.length === 0) && (
             <div className="py-[clamp(48px,8vw,96px)] text-center text-stone">
               <p className="mb-2.5 font-serif text-[length:clamp(32px,3.4vw,44px)] font-light text-ink">{t('Asnjë produkt këtu, ende.')}</p>
               <p>{t('Nuk ka ende produkte për këtë stinë në këtë kategori.')}</p>

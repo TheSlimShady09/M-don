@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useLang } from '../lib/i18n.jsx';
 import Header from './Header.jsx';
 import Footer from './Footer.jsx';
+import { SearchProvider } from './Search.jsx';
 
 // New page: start at the top. Links like /#stinet: scroll to that section.
 function ScrollManager() {
@@ -20,7 +21,7 @@ function ScrollManager() {
 export default function ShopLayout() {
   const { t } = useLang();
   return (
-    <>
+    <SearchProvider>
       <a href="#main" className="absolute -top-16 left-4 z-[100] bg-white px-4 py-3 text-sm text-ink focus:top-3">{t('Kalo te përmbajtja')}</a>
       <ScrollManager />
       <Header />
@@ -28,6 +29,6 @@ export default function ShopLayout() {
         <Outlet />
       </main>
       <Footer />
-    </>
+    </SearchProvider>
   );
 }

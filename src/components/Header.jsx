@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLang } from '../lib/i18n.jsx';
 import { useCart } from '../lib/cart.jsx';
-import { Chest, Wrap } from './ui.jsx';
+import { Chest, Magnifier, Wrap } from './ui.jsx';
 import { Monogram } from './Logo.jsx';
+import { useSearch } from './Search.jsx';
 
 const NAV = [
   { to: '/katalogu?k=burra', label: 'Burra', k: 'burra' },
@@ -55,6 +56,7 @@ function CartLink() {
 
 export default function Header() {
   const { t } = useLang();
+  const openSearch = useSearch();
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const activeK = location.pathname === '/katalogu' ? new URLSearchParams(location.search).get('k') : null;
@@ -111,7 +113,12 @@ export default function Header() {
           </Link>
 
           <ul className="flex items-center justify-end gap-[clamp(20px,2.4vw,36px)]">
-            <li className="hidden lg:block"><a href="#" className={navLink}>{t('Kërko')}</a></li>
+            <li className="hidden lg:block"><button type="button" onClick={() => openSearch()} className={navLink}>{t('Kërko')}</button></li>
+            <li className="lg:hidden">
+              <button type="button" onClick={() => openSearch()} aria-label={t('Kërko')} className="-m-2.5 inline-flex p-2.5 text-white/88 transition-colors hover:text-flame">
+                <Magnifier className="size-[25px]" />
+              </button>
+            </li>
             <li className="hidden lg:block"><LangSwitch /></li>
             <li><CartLink /></li>
           </ul>
@@ -136,7 +143,7 @@ export default function Header() {
               ))}
             </ul>
             <ul className="mt-10 grid gap-3.5 border-t border-white/14 pt-7 caps text-white/62">
-              <li><a href="#">{t('Kërko')}</a></li>
+              <li><button type="button" onClick={() => { setOpen(false); openSearch(); }} className="caps">{t('Kërko')}</button></li>
               <li><a href="#">{t('Gjurmo porosinë')}</a></li>
               <li><a href="#">{t('Ndihmë')}</a></li>
               <li className="mt-3"><LangSwitch big /></li>

@@ -94,6 +94,16 @@ export function Chest({ className = '' }) {
   );
 }
 
+/** Search glass, drawn with the same line as the chest */
+export function Magnifier({ className = 'size-6' }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={`fill-none stroke-current [stroke-linecap:round] [stroke-width:1.2] ${className}`}>
+      <circle cx="10.5" cy="10.5" r="6.5" />
+      <path d="M15.3 15.3 20.5 20.5" />
+    </svg>
+  );
+}
+
 /** Nested kilim diamond used as a mark */
 export function DiamondMark({ className = '' }) {
   return (

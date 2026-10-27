@@ -3,15 +3,16 @@ import { useCart } from '../lib/cart.jsx';
 import { BADGES, CATEGORIES, LABELS, REGIONS } from '../../shared/shop.js';
 import { Media } from './ui.jsx';
 
-export default function ProductCard({ p, className = '', style, ref }) {
+export default function ProductCard({ p, className = '', style, ref, id, found = false }) {
   const { t, pick, pname, pmaterial, price } = useLang();
   const { add } = useCart();
   const name = pname(p);
   const kind = p.label ? pick(LABELS[p.label]) : pick(CATEGORIES[p.categories[0]]);
 
   return (
-    <li ref={ref} className={`group ${className}`} style={style}>
+    <li ref={ref} id={id} className={`group ${className}`} style={style}>
       <div className="relative overflow-hidden">
+        {found && <span aria-hidden="true" className="found-ring" />}
         <Media
           src={p.image}
           ph={`${t('Foto')}: ${name.toLowerCase()}`}
