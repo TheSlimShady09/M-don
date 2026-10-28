@@ -21,7 +21,9 @@ const EN = {
   'Gjurmo porosinë': 'Track order',
   'Ndihmë': 'Help',
   'Menu': 'Menu',
-  'Ngjyrat e çelëta': 'Light mode',
+  'Pamja': 'Appearance',
+  'E errët': 'Dark',
+  'E çelët': 'Light',
 
   // Search
   'Kërko në dyqan': 'Search the shop',

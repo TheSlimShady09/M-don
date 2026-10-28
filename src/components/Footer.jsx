@@ -3,7 +3,7 @@ import { useLang } from '../lib/i18n.jsx';
 import { useShopConfig } from '../lib/config.js';
 import { PAYMENT_METHODS, SEASONS, SHIPPING_FREE_FROM, seasonOf } from '../../shared/shop.js';
 import { Arrow, Kilim, Wrap } from './ui.jsx';
-import { LangSwitch } from './Header.jsx';
+import { LangSwitch, ModeSwitch } from './Header.jsx';
 import { QendisjeBand } from './LookArt.jsx';
 import Logo from './Logo.jsx';
 
@@ -92,8 +92,9 @@ export default function Footer() {
           <li><a href="#" className="inline-block py-1 hover:text-white">{t('Kushtet')}</a></li>
           <li><a href="#" className="inline-block py-1 hover:text-white">{t('Privatësia')}</a></li>
         </ul>
-        <div className="flex items-center gap-8 md:ml-auto">
+        <div className="flex flex-wrap items-center gap-x-8 gap-y-3 md:ml-auto">
           <LangSwitch />
+          <ModeSwitch />
           <button type="button" onClick={toTop} className="inline-flex min-h-6 items-center gap-2 caps-xs tracking-[.26em] text-white transition-colors hover:text-flame">
             {t('Kthehu lart')} <span aria-hidden="true">↑</span>
           </button>
