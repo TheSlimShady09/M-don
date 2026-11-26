@@ -7,6 +7,7 @@ import publicRoutes from './routes/public.js';
 import adminRoutes from './routes/admin.js';
 import { stripeEnabled, WEBHOOK_SECRET, handleWebhook, syncPending } from './stripe.js';
 import { brevoEnabled, syncSubscribers } from './newsletter.js';
+import { audit, createUser, passwordProblem, userCount, validEmail } from './auth.js';
 
 const isDev = process.argv.includes('--dev');
 const PORT = Number(process.env.PORT) || (isDev ? 3001 : 3000);
@@ -15,6 +16,20 @@ const HOST = process.env.HOST || (isDev ? '127.0.0.1' : '0.0.0.0');
 // Preview without sign-in (npm run pa-hyrje): only in development and only on this computer
 const noLogin = isDev && process.argv.includes('--pa-hyrje') && ['127.0.0.1', 'localhost', '::1'].includes(HOST);
 if (noLogin) console.warn('\n  KUJDES: paneli është hapur PA HYRJE (vetëm në këtë kompjuter). Për ta mbyllur: ndal serverin dhe nis npm run dev\n');
+
+// First owner online without a terminal: set OWNER_EMAIL and OWNER_PASSWORD in the host's settings.
+// Only while there is no account at all; the password is temporary (a new one is asked at the first
+// sign-in, then the 2FA app is linked). Remove both settings afterwards.
+if (userCount() === 0 && process.env.OWNER_EMAIL && process.env.OWNER_PASSWORD) {
+  const email = process.env.OWNER_EMAIL.trim().toLowerCase();
+  const problem = validEmail(email) ? passwordProblem(process.env.OWNER_PASSWORD, email) : 'OWNER_EMAIL nuk është email i vlefshëm.';
+  if (problem) console.error(`\n  Llogaria e pronarit NUK u krijua: ${problem}\n`);
+  else {
+    const user = createUser({ email, password: process.env.OWNER_PASSWORD, role: 'pronar', mustChange: true });
+    audit({ ip: 'server' }, user, 'user_added', 'Llogaria e pronarit u krijua nga OWNER_EMAIL / OWNER_PASSWORD');
+    console.log(`\n  Llogaria e pronarit u krijua: ${email}. Hyr te /admin; tani mund t'i fshish OWNER_EMAIL dhe OWNER_PASSWORD.\n`);
+  }
+}
 
 const app = express();
 app.disable('x-powered-by');

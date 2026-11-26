@@ -24,6 +24,11 @@ services:
       # The address customers use, e.g. https://mdon.onrender.com or your own domain
       - key: PUBLIC_URL
         sync: false
+      # First owner account without a terminal: fill both, sign in at /admin, then delete both
+      - key: OWNER_EMAIL
+        sync: false
+      - key: OWNER_PASSWORD
+        sync: false
       # Optional: card payments (see README → Pagesat me kartë)
       - key: STRIPE_SECRET_KEY
         sync: false

@@ -270,10 +270,14 @@ export function SignIn({ setup = false, initialStage, notice: initialNotice, onD
 export function NoOwner() {
   return (
     <Shell title="Paneli i pronarit">
-      <p className="text-center text-white/80">
-        Llogaria e pronarit nuk është krijuar ende. Në kompjuterin ku punon serveri, hap terminalin te dosja e projektit dhe shkruaj:
-      </p>
-      <p className="mt-5 bg-white/5 px-4 py-3 text-center font-mono text-sm text-white">npm run pronari</p>
+      <p className="text-center text-white/80">Llogaria e pronarit nuk është krijuar ende në këtë server.</p>
+      <ol className="mt-6 grid list-decimal gap-3 pl-5 text-sm text-white/80">
+        <li>Te Render, hap shërbimin <strong className="font-medium text-white">mdon</strong> → <strong className="font-medium text-white">Environment</strong>.</li>
+        <li>Shto <code className="bg-white/5 px-1.5 font-mono text-white">OWNER_EMAIL</code> (email-i yt) dhe <code className="bg-white/5 px-1.5 font-mono text-white">OWNER_PASSWORD</code> (një fjalëkalim i përkohshëm, të paktën 12 shkronja), pastaj <strong className="font-medium text-white">Save</strong>.</li>
+        <li>Pas rinisjes, rifresko këtë faqe dhe hyr. Do të të kërkohet një fjalëkalim i ri dhe lidhja e aplikacionit 2FA.</li>
+        <li>Në fund fshi të dyja nga Environment.</li>
+      </ol>
+      <p className="mt-6 text-center text-xs text-white/50">Ose, në terminalin e serverit: <span className="font-mono text-white/80">npm run pronari</span></p>
     </Shell>
   );
 }
