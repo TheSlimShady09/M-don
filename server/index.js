@@ -20,12 +20,21 @@ if (noLogin) console.warn('\n  KUJDES: paneli është hapur PA HYRJE (vetëm në
 // First owner online without a terminal: set OWNER_EMAIL and OWNER_PASSWORD in the host's settings.
 // Only while there is no account at all; the password is temporary (a new one is asked at the first
 // sign-in, then the 2FA app is linked). Remove both settings afterwards.
-if (userCount() === 0 && process.env.OWNER_EMAIL && process.env.OWNER_PASSWORD) {
-  const email = process.env.OWNER_EMAIL.trim().toLowerCase();
-  const problem = validEmail(email) ? passwordProblem(process.env.OWNER_PASSWORD, email) : 'OWNER_EMAIL nuk është email i vlefshëm.';
-  if (problem) console.error(`\n  Llogaria e pronarit NUK u krijua: ${problem}\n`);
+// What went wrong is also shown on /admin (no secrets: only the rule that failed), since hosts hide the logs.
+let ownerSetupProblem = null;
+if (userCount() === 0 && (process.env.OWNER_EMAIL || process.env.OWNER_PASSWORD)) {
+  const email = String(process.env.OWNER_EMAIL || '').trim().toLowerCase();
+  const password = String(process.env.OWNER_PASSWORD || '').trim();
+  const problem = !email ? 'Mungon OWNER_EMAIL.'
+    : !password ? 'Mungon OWNER_PASSWORD.'
+      : !validEmail(email) ? 'OWNER_EMAIL nuk është email i vlefshëm.'
+        : passwordProblem(password, email);
+  if (problem) {
+    ownerSetupProblem = `OWNER_PASSWORD / OWNER_EMAIL: ${problem}`;
+    console.error(`\n  Llogaria e pronarit NUK u krijua: ${problem}\n`);
+  }
   else {
-    const user = createUser({ email, password: process.env.OWNER_PASSWORD, role: 'pronar', mustChange: true });
+    const user = createUser({ email, password, role: 'pronar', mustChange: true });
     audit({ ip: 'server' }, user, 'user_added', 'Llogaria e pronarit u krijua nga OWNER_EMAIL / OWNER_PASSWORD');
     console.log(`\n  Llogaria e pronarit u krijua: ${email}. Hyr te /admin; tani mund t'i fshish OWNER_EMAIL dhe OWNER_PASSWORD.\n`);
   }
@@ -85,7 +94,7 @@ app.use('/api', (req, res, next) => {
 
 app.use(express.json({ limit: '100kb' }));
 
-app.use('/api/admin', (req, res, next) => { res.set('Cache-Control', 'no-store'); next(); }, adminRoutes({ isDev, noLogin }));
+app.use('/api/admin', (req, res, next) => { res.set('Cache-Control', 'no-store'); next(); }, adminRoutes({ isDev, noLogin, ownerSetupProblem }));
 app.use('/api', publicRoutes);
 app.use('/api', (req, res) => res.status(404).json({ error: 'Nuk u gjet.' }));
 app.use('/uploads', express.static(UPLOAD_DIR, { maxAge: '7d' }));

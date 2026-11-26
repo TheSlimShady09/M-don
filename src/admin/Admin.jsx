@@ -86,7 +86,7 @@ export default function Admin() {
   if (!session) return <div className="min-h-screen bg-ink" />;
   if (!session.loggedIn) {
     if (session.setupNeeded && !session.stage) {
-      return session.setupAllowed ? <SignIn setup onDone={refresh} /> : <NoOwner />;
+      return session.setupAllowed ? <SignIn setup onDone={refresh} /> : <NoOwner problem={session.setupProblem} />;
     }
     return <SignIn key={notice} initialStage={session.stage} notice={notice} onDone={() => { setNotice(''); refresh(); }} />;
   }

@@ -267,10 +267,15 @@ export function SignIn({ setup = false, initialStage, notice: initialNotice, onD
   return <PasswordStep setup={setup} notice={notice} onNext={setStage} />;
 }
 
-export function NoOwner() {
+export function NoOwner({ problem }) {
   return (
     <Shell title="Paneli i pronarit">
       <p className="text-center text-white/80">Llogaria e pronarit nuk është krijuar ende në këtë server.</p>
+      {problem && (
+        <p role="alert" className={`${note} mt-5`}>
+          <strong className="font-medium">Nuk u krijua:</strong> {problem} Ndreqe te Environment dhe ruaje përsëri.
+        </p>
+      )}
       <ol className="mt-6 grid list-decimal gap-3 pl-5 text-sm text-white/80">
         <li>Te Render, hap shërbimin <strong className="font-medium text-white">mdon</strong> → <strong className="font-medium text-white">Environment</strong>.</li>
         <li>Shto <code className="bg-white/5 px-1.5 font-mono text-white">OWNER_EMAIL</code> (email-i yt) dhe <code className="bg-white/5 px-1.5 font-mono text-white">OWNER_PASSWORD</code> (një fjalëkalim i përkohshëm, të paktën 12 shkronja), pastaj <strong className="font-medium text-white">Save</strong>.</li>

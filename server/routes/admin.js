@@ -18,7 +18,7 @@ import { visitStats } from '../visits.js';
 const TOO_MANY = 'Shumë përpjekje të gabuara. Provo përsëri më vonë.';
 const BAD_LOGIN = 'Email-i ose fjalëkalimi është i gabuar.';
 
-export default function adminRoutes({ isDev, noLogin = false }) {
+export default function adminRoutes({ isDev, noLogin = false, ownerSetupProblem = null }) {
   const router = Router();
   const secure = !isDev;
   const opts = { secure };
@@ -44,6 +44,8 @@ export default function adminRoutes({ isDev, noLogin = false }) {
       setupNeeded: n === 0,
       // First account from the browser only on your own computer during development; online: npm run pronari
       setupAllowed: n === 0 && isDev,
+      // Why OWNER_EMAIL / OWNER_PASSWORD did not create the account (only while there is none)
+      setupProblem: n === 0 ? ownerSetupProblem : null,
       idleMinutes: IDLE_MINUTES,
       preview: Boolean(noLogin && found),
     });
