@@ -127,6 +127,30 @@ export const btnDangerSolid = 'inline-flex h-11 items-center justify-center gap-
 export const btnGhost = 'inline-flex h-11 items-center justify-center gap-2 border border-line bg-surface px-5 text-[13px] font-medium tracking-[.06em] text-fg transition-colors hover:border-fg disabled:opacity-50';
 export const btnDanger = 'inline-flex h-11 items-center justify-center gap-2 px-3 text-[13px] font-medium tracking-[.06em] text-accent hover:underline underline-offset-4 disabled:opacity-50';
 
+/** Password field with a "Shfaq / Fshih" button that reveals what was typed */
+export function PasswordInput({ className = '', ...rest }) {
+  const [shown, setShown] = useState(false);
+  return (
+    <div className="relative">
+      <input {...rest} type={shown ? 'text' : 'password'} spellCheck={false} autoCapitalize="off" className={`${className} pr-[84px]`} />
+      <button
+        type="button"
+        onClick={() => setShown((s) => !s)}
+        aria-pressed={shown}
+        aria-label={shown ? 'Fshih fjalëkalimin' : 'Shfaq fjalëkalimin'}
+        className="absolute inset-y-0 right-0 inline-flex items-center gap-1.5 px-3 text-[11px] font-medium uppercase tracking-[.14em] opacity-70 transition-opacity hover:opacity-100"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+          <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" />
+          <circle cx="12" cy="12" r="3" />
+          {shown && <path d="M4 4l16 16" />}
+        </svg>
+        {shown ? 'Fshih' : 'Shfaq'}
+      </button>
+    </div>
+  );
+}
+
 export function ErrorNote({ children }) {
   if (!children) return null;
   return <p role="alert" className="border-l-2 border-accent bg-sunken px-4 py-3 text-sm text-fg">{children}</p>;
@@ -187,7 +211,7 @@ export function ConfirmDialog({ title, text, confirmLabel = 'Konfirmo', danger =
         <div className="mt-4 grid gap-4">
           <div>
             <label htmlFor="cf-pw" className={labelCls}>Fjalëkalimi yt</label>
-            <input id="cf-pw" type="password" autoComplete="current-password" autoFocus required value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} className={field} />
+            <PasswordInput id="cf-pw" autoComplete="current-password" autoFocus required value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} className={field} />
           </div>
           <div>
             <label htmlFor="cf-code" className={labelCls}>Kodi nga aplikacioni (ose kod rezervë)</label>

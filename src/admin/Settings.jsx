@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
-  Card, ConfirmDialog, ErrorNote, PageHeader, RecoveryCodes, btnDanger, btnGhost, btnPrimary, codeInput, deviceName, field, labelCls, timeAgo,
+  Card, ConfirmDialog, ErrorNote, PageHeader, PasswordInput, RecoveryCodes, btnDanger, btnGhost, btnPrimary, codeInput, deviceName, field, labelCls, timeAgo,
   useAdmin, useAdminApi,
 } from './ui.jsx';
 
@@ -34,16 +34,16 @@ function PasswordCard() {
         <input type="email" autoComplete="username" value={email || ''} readOnly hidden />
         <div>
           <label htmlFor="pw-current" className={labelCls}>Fjalëkalimi aktual</label>
-          <input id="pw-current" type="password" autoComplete="current-password" required value={f.current} onChange={set('current')} className={field} />
+          <PasswordInput id="pw-current" autoComplete="current-password" required value={f.current} onChange={set('current')} className={field} />
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="pw-next" className={labelCls}>I riu (të paktën 12 shkronja)</label>
-            <input id="pw-next" type="password" autoComplete="new-password" required value={f.next} onChange={set('next')} className={field} />
+            <PasswordInput id="pw-next" autoComplete="new-password" required value={f.next} onChange={set('next')} className={field} />
           </div>
           <div>
             <label htmlFor="pw-again" className={labelCls}>Përsërite të riun</label>
-            <input id="pw-again" type="password" autoComplete="new-password" required value={f.again} onChange={set('again')} className={field} />
+            <PasswordInput id="pw-again" autoComplete="new-password" required value={f.again} onChange={set('again')} className={field} />
           </div>
         </div>
         <div>
@@ -92,7 +92,7 @@ function EmailCard() {
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="em-pw" className={labelCls}>Fjalëkalimi aktual</label>
-            <input id="em-pw" type="password" autoComplete="current-password" required value={f.password} onChange={set('password')} className={field} />
+            <PasswordInput id="em-pw" autoComplete="current-password" required value={f.password} onChange={set('password')} className={field} />
           </div>
           <div>
             <label htmlFor="em-code" className={labelCls}>Kodi nga aplikacioni</label>

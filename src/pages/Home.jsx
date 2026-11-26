@@ -9,7 +9,6 @@ import SeasonArt from '../components/SeasonArt.jsx';
 import { SEASONS, seasonOf } from '../../shared/shop.js';
 import { GjirokasterArt, QendisjeArt, ThethArt } from '../components/LookArt.jsx';
 import OutfitArt from '../components/OutfitArt.jsx';
-import CraftArt from '../components/CraftArt.jsx';
 import ProductCard from '../components/ProductCard.jsx';
 import Features from '../components/Features.jsx';
 import Logo, { Monogram } from '../components/Logo.jsx';
@@ -19,12 +18,16 @@ const h2 = 'mt-5 font-serif text-[length:clamp(42px,5.2vw,76px)] font-light lead
 function Hero() {
   const { t } = useLang();
   return (
-    <section aria-labelledby="hero-title" className="flex min-h-[calc(100svh-65px)] overflow-hidden pb-[clamp(40px,5vw,72px)] pt-6 lg:min-h-[calc(100svh-77px)] lg:pt-9">
+    // on-red keeps the words white over the photo in light mode too
+    <section aria-labelledby="hero-title" className="on-red relative isolate flex min-h-[calc(100svh-65px)] overflow-hidden bg-ink pb-[clamp(40px,5vw,72px)] pt-6 lg:min-h-[calc(100svh-77px)] lg:pt-9">
+      {/* Test: the 342-diamond eagle photo behind the logo, darkened so the red letters stay legible */}
+      <img src="/img/shqiponja-342.jpg" alt="" fetchPriority="high" className="absolute inset-0 -z-10 size-full object-cover [filter:brightness(1.12)_contrast(1.06)]" />
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,rgba(14,10,10,.3),rgba(14,10,10,.05)_45%,rgba(14,10,10,.55))]" />
       <Wrap className="grid flex-1 grid-cols-1 grid-rows-[auto_1fr_auto] md:grid-cols-[1fr_minmax(240px,24vw)_1fr] md:gap-x-[clamp(24px,4vw,72px)]">
         <p className="col-span-full caps text-white md:text-xs">{t('Rrënjë të lashta.')}<br />{t('Vija të reja.')}</p>
-        <h1 id="hero-title" className="col-span-full my-[clamp(20px,3vw,44px)] self-center text-flame">
+        <h1 id="hero-title" className="col-span-full my-[clamp(20px,3vw,44px)] self-center text-white">
           <span className="sr-only">M’DON</span>
-          <Logo className="mx-auto h-auto w-full max-w-[min(1180px,calc((100svh_-_260px)*2.34))]" />
+          <Logo className="mx-auto h-auto w-[80%] max-w-[min(760px,calc((100svh_-_260px)*1.6))]" />
         </h1>
         {/* "Bli tani" bottom right, "Zbulo historinë" bottom left; stacked on phones */}
         <Link to="/katalogu" className="btn btn-red mt-2 h-[60px] rounded-full self-end px-11 text-xs max-md:w-full md:col-start-3 md:row-start-3 md:mt-0 md:justify-self-end">{t('Bli tani')}</Link>
@@ -34,10 +37,57 @@ function Hero() {
   );
 }
 
+// The brand opens at midnight, Toronto time; until then the winter collection is on pre-order (the 342-diamond shirt is not for sale)
+const PREORDER_END = new Date('2026-12-11T00:00:00-05:00');
+const UNITS = [['Ditë', 86400000], ['Orë', 3600000], ['Minuta', 60000], ['Sekonda', 1000]];
+
+function PreOrder() {
+  const { t, lang } = useLang();
+  const [now, setNow] = useState(() => Date.now());
+  const left = Math.max(0, PREORDER_END - now);
+  useEffect(() => {
+    if (!left) return undefined;
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, [left > 0]); // eslint-disable-line react-hooks/exhaustive-deps
+  const date = PREORDER_END.toLocaleDateString(lang === 'en' ? 'en-CA' : 'sq-AL', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Toronto' });
+  let rest = left;
+  const parts = UNITS.map(([label, ms]) => { const n = Math.floor(rest / ms); rest -= n * ms; return [label, n]; });
+  return (
+    <section aria-labelledby="preorder-title" className="border-b border-white/14 py-[clamp(48px,6vw,88px)]">
+      <Wrap className="grid items-center gap-x-16 gap-y-10 lg:grid-cols-[1fr_auto]">
+        <div>
+          <p className="eyebrow">{t('Së shpejti · Para-porosi')}</p>
+          <h2 id="preorder-title" className="mt-5 font-serif text-[length:clamp(36px,4.4vw,64px)] font-light leading-[1.02] text-white">
+            {left ? <>{t('Marka')} <em className="text-flame">{t('po vjen.')}</em></> : <>M’DON <em className="text-flame">{t('ka ardhur.')}</em></>}
+          </h2>
+          <p className="mt-4 max-w-[48ch] text-white/62">
+            {left ? `${t('M’DON hapet më')} ${date}. ${t('Bëj para-porosinë tani dhe merre ndër të parët.')}` : t('Faleminderit që na pritët. Dyqani është i hapur.')}
+          </p>
+          <Link to="/katalogu?stina=dimer" className="link-arrow mt-7 text-white">{t(left ? 'Bëj para-porosi' : 'Bli tani')} <Arrow /></Link>
+        </div>
+        {left > 0 && (
+          <div>
+            <p className="sr-only">{`${parts[0][1]} ${t('ditë')}, ${parts[1][1]} ${t('orë')} ${t('deri në hapje')}`}</p>
+            <ol aria-hidden="true" className="grid grid-cols-4 gap-2 sm:gap-3">
+              {parts.map(([label, n]) => (
+                <li key={label} className="flex min-w-[clamp(68px,9vw,112px)] flex-col items-center border border-crimson bg-ink-2 px-2 pb-3 pt-4">
+                  <span className="font-serif text-[length:clamp(40px,5vw,72px)] font-light leading-none text-white [font-variant-numeric:lining-nums_tabular-nums]">{String(n).padStart(2, '0')}</span>
+                  <span className="mt-2.5 text-[10px] font-medium uppercase tracking-[.24em] text-white/62">{t(label)}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
+      </Wrap>
+    </section>
+  );
+}
+
 const CATS = [
-  { k: 'burra', name: 'Burra', art: 'Ilustrim: qeleshe e bardhë, këmishë e bardhë, xhamadan i zi me gajtan të kuq dhe brez i kuq', text: 'Xhamadani i qëndisur, në prerje të sotme.' },
-  { k: 'gra', name: 'Gra', art: 'Ilustrim: xhubletë e zezë me përparëse të qëndisur, brez të kuq dhe gjerdan me monedha', text: 'Qëndisma e Malësisë mbi linja të pastra.' },
-  { k: 'femije', name: 'Fëmijë', art: 'Ilustrim: një djalë dhe një vajzë me jelekë të kuq të qëndisur', text: 'Trashëgimia jonë, në masa të vogla.' },
+  { k: 'burra', name: 'Burra', art: 'Ilustrim: hudi e zezë me shqiponjë të kuqe në gjoks, xhinse dhe atlete të bardha', text: 'Hudi, xhinse dhe xhaketa për çdo ditë.' },
+  { k: 'gra', name: 'Gra', art: 'Ilustrim: xhaketë e zezë mbi bluzë të bardhë, pantallona të gjera të kuqe dhe atlete të bardha', text: 'Linja të pastra, me një detaj shqiptar.' },
+  { k: 'femije', name: 'Fëmijë', art: 'Ilustrim: një djalë me hudi të kuqe dhe një vajzë me xhaketë të kuqe', text: 'I njëjti stil, në masa të vogla.' },
 ];
 
 function Categories() {
@@ -202,12 +252,12 @@ function Lookbook() {
     <section id="lookbook" aria-labelledby="look-title" className="scroll-mt-20 pb-[clamp(88px,11vw,168px)] pt-[clamp(72px,8vw,120px)]">
       <Wrap className="grid items-start gap-[clamp(20px,3vw,48px)] md:grid-cols-2 lg:grid-cols-[5fr_4fr_3fr]">
         <div className="flex flex-col md:col-span-2 lg:col-span-1">
-          <p className="eyebrow">{t('Lookbook · Vjeshtë 2026')}</p>
+          <p className="eyebrow">{t('Lookbook · Dimër 2026')}</p>
           <h2 id="look-title" className="mt-6 font-serif text-[length:clamp(60px,7.2vw,116px)] font-light leading-[.92] text-white">
             {t('Malet')}<br /><em className="text-flame">{t('na veshin.')}</em>
           </h2>
           <p className="mb-10 mt-7 max-w-[36ch] text-white/62 lg:mb-[clamp(48px,6vw,88px)]">
-            {t('Thethi, Gjirokastra dhe qëndisja e Malësisë: vendet dhe duart që frymëzuan koleksionin e vjeshtës.')}
+            {t('Thethi, Gjirokastra dhe qëndisja e Malësisë: vendet dhe duart që frymëzuan koleksionin e dimrit.')}
           </p>
           <Reveal as="figure" className="md:hidden lg:block">
             <ThethArt label={t('Ilustrim i luginës së Thethit, me kishën, kullën dhe Bjeshkët e Nemuna')} className="block aspect-[4/3] w-full" />
@@ -230,42 +280,46 @@ function Lookbook() {
   );
 }
 
-const STEPS = [
-  { n: '01', step: 'leshi', title: 'Leshi', text: 'Lesh, li dhe pambuk të zgjedhur me kujdes, të përgatitur në fabrikat tona në Toronto.', meta: 'Lesh · Li · Pambuk',
-    art: 'Ilustrim: një dele dhe leshi i saj që bëhet lëmsh i kuq' },
-  { n: '02', step: 'qendisja', title: 'Qëndisja', text: 'Motivet e xhubletës dhe të xhamadanit, të qëndisura me dorë nga mjeshtrat tanë në Toronto.', meta: 'Deri në 60 orë për një copë',
-    art: 'Ilustrim: një gjergjef me një motiv me pika kryq, ende në punë, dhe gjilpëra me pe të kuq' },
-  { n: '03', step: 'prerja', title: 'Prerja', text: 'Veshje moderne, autoktone shqiptare, të prera dhe të qepura në Toronto për ty.', meta: 'Bërë në Toronto',
-    art: 'Ilustrim: kallëpi i një xhamadani mbi tavolinë, me gërshërë, metër dhe gjilpëra me kokë' },
+// The facts under the eagle photo: figure, then what it counts
+const EAGLE_FACTS = [
+  { n: '342', text: 'diamante të vegjël' },
+  { n: '1', text: 'shqiponjë dykrenore, në shpinë' },
+  { n: '100%', text: 'xhins, prerë dhe qepur në Toronto' },
 ];
 
-function Craft() {
+function Eagle() {
   const { t } = useLang();
   return (
-    // overflow-hidden: the red thread runs on past the drawings to the edges of the page
-    <section id="mjeshtria" aria-labelledby="craft-title" className="scroll-mt-20 overflow-hidden bg-white pb-[clamp(80px,9vw,136px)] pt-[clamp(88px,11vw,168px)] text-ink">
+    <section id="shqiponja" aria-labelledby="eagle-title" className="scroll-mt-20 pb-[clamp(80px,9vw,136px)] pt-[clamp(88px,11vw,168px)]">
       <Wrap>
-        <header className="mb-[clamp(44px,5vw,72px)] flex flex-col items-center text-center">
-          <p className="eyebrow eyebrow-center eyebrow-light">{t('Mjeshtëria')}</p>
-          <h2 id="craft-title" className={h2}>{t('Nga duart e mjeshtrave')}</h2>
-          <p className="mt-6 max-w-[46ch] text-stone">{t('Çdo veshje kalon nëpër tri duar përpara se të vijë te ti.')}</p>
+        <header className="mb-[clamp(40px,5vw,64px)] grid items-end gap-x-16 gap-y-6 lg:grid-cols-[1fr_minmax(0,420px)]">
+          <div>
+            <p className="eyebrow">{t('Versioni premium')}</p>
+            <h2 id="eagle-title" className={`${h2} text-white`}>{t('Shqiponja,')} <em className="text-flame">{t('342 diamante')}</em></h2>
+          </div>
+          <p className="text-white/62">
+            {t('Copa më e veçantë e M’DON. Në shpinë të këmishës xhins, shqiponja dykrenore e flamurit, e bërë me 342 diamante të vegjël që kapin dritën në çdo lëvizje. Një simbol i lashtë, në versionin më premium të markës sonë.')}
+          </p>
         </header>
-        <ol className="grid gap-14 md:grid-cols-3 md:gap-[clamp(24px,3vw,56px)]">
-          {STEPS.map(({ n, step, title, text, meta, art }, i) => (
-            <Reveal as="li" key={n} delay={i * 120}>
-              <CraftArt step={step} label={t(art)} className="block aspect-[4/3] w-full" />
-              <div className="mt-7 flex items-baseline gap-4 border-t border-crimson pt-5">
-                <span aria-hidden="true" className="font-serif text-[length:clamp(48px,4.4vw,68px)] font-light leading-none text-flame [font-variant-numeric:lining-nums]">{n}</span>
-                <h3 className="font-serif text-[34px] font-normal leading-[1.1]">{t(title)}</h3>
-              </div>
-              <p className="mt-3.5 max-w-[38ch] text-stone">{t(text)}</p>
-              <p className="mt-5 caps-xs tracking-[.28em] text-crimson">{t(meta)}</p>
-            </Reveal>
+        <Reveal as="figure">
+          <img
+            src="/img/shqiponja-342.jpg"
+            width="1560"
+            height="878"
+            loading="lazy"
+            alt={t('Një burrë me shpinë nga ne, brenda një kutie xhami me akull, me këmishë xhins që ka në shpinë shqiponjën dykrenore prej diamantesh')}
+            className="block aspect-[4/5] w-full object-cover sm:aspect-[16/9]"
+          />
+          <figcaption className="mt-3.5 caps-xs text-white/62">{t('Këmisha Shqiponja, xhins me 342 diamante')}</figcaption>
+        </Reveal>
+        <ul className="mt-[clamp(40px,5vw,64px)] grid gap-8 border-t border-white/14 pt-8 sm:grid-cols-3">
+          {EAGLE_FACTS.map(({ n, text }) => (
+            <li key={n} className="flex items-baseline gap-4">
+              <span className="font-serif text-[length:clamp(44px,4.4vw,68px)] font-light leading-none text-flame [font-variant-numeric:lining-nums]">{n}</span>
+              <span className="text-white/80">{t(text)}</span>
+            </li>
           ))}
-        </ol>
-        <p className="mt-[clamp(48px,6vw,80px)] text-center font-serif text-[length:clamp(22px,2vw,28px)] font-light italic text-stone">
-          {t('Një fije e kuqe, nga delja deri te ti.')}
-        </p>
+        </ul>
       </Wrap>
     </section>
   );
@@ -363,6 +417,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <PreOrder />
       <Kilim />
       <Categories />
       <Story />
@@ -370,7 +425,7 @@ export default function Home() {
       <Seasons />
       <Wrap aria-hidden="true"><Zigzag /></Wrap>
       <Lookbook />
-      <Craft />
+      <Eagle />
       <BestSellers />
       <Features />
       <Newsletter />

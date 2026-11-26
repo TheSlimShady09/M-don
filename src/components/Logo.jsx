@@ -42,16 +42,16 @@ export function Monogram({ className = '', label }) {
   );
 }
 
-/** The monogram as on the brand image: cream on a red square (dashboard). Size it by height (h-14). */
+/** The monogram in red inside a dark square with a red frame (admin panel). Size it by height (h-14). */
 export function MonogramTile({ className = '', label }) {
   return (
     <span
       role={label ? 'img' : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}
-      className={`inline-flex aspect-square items-center justify-center bg-crimson ${className}`}
+      className={`inline-flex aspect-square items-center justify-center border border-crimson bg-[#0E0A0A] ${className}`}
     >
-      <Monogram className="h-[74%] text-cream" />
+      <Monogram className="h-[74%] text-flame" />
     </span>
   );
 }

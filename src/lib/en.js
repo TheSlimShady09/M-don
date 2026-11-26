@@ -58,14 +58,14 @@ const EN = {
   // Categories
   'Kategoritë': 'Categories',
   'Shiko': 'Shop',
-  'Ilustrim: qeleshe e bardhë, këmishë e bardhë, xhamadan i zi me gajtan të kuq dhe brez i kuq':
-    'Illustration: a white qeleshe, white shirt, black xhamadan with red braid and a red sash',
-  'Xhamadani i qëndisur, në prerje të sotme.': 'The embroidered xhamadan, in a modern cut.',
-  'Ilustrim: xhubletë e zezë me përparëse të qëndisur, brez të kuq dhe gjerdan me monedha':
-    'Illustration: a black xhubleta with an embroidered apron, red belt and a coin necklace',
-  'Qëndisma e Malësisë mbi linja të pastra.': 'Malësia embroidery on clean lines.',
-  'Ilustrim: një djalë dhe një vajzë me jelekë të kuq të qëndisur': 'Illustration: a boy and a girl in embroidered red vests',
-  'Trashëgimia jonë, në masa të vogla.': 'Our heritage, in small sizes.',
+  'Ilustrim: hudi e zezë me shqiponjë të kuqe në gjoks, xhinse dhe atlete të bardha':
+    'Illustration: a black hoodie with a red eagle on the chest, jeans and white sneakers',
+  'Hudi, xhinse dhe xhaketa për çdo ditë.': 'Hoodies, denim and jackets for every day.',
+  'Ilustrim: xhaketë e zezë mbi bluzë të bardhë, pantallona të gjera të kuqe dhe atlete të bardha':
+    'Illustration: a black blazer over a white tee, red wide-leg trousers and white sneakers',
+  'Linja të pastra, me një detaj shqiptar.': 'Clean lines, with one Albanian detail.',
+  'Ilustrim: një djalë me hudi të kuqe dhe një vajzë me xhaketë të kuqe': 'Illustration: a boy in a red hoodie and a girl in a red blazer',
+  'I njëjti stil, në masa të vogla.': 'The same style, in small sizes.',
 
   // Our story
   'Si lindi': 'The birth of',
@@ -108,11 +108,11 @@ const EN = {
     'Down jackets and a white wool beanie like the qeleshe, for the long highland winters.',
 
   // Lookbook
-  'Lookbook · Vjeshtë 2026': 'Lookbook · Autumn 2026',
+  'Lookbook · Dimër 2026': 'Lookbook · Winter 2026',
   'Malet': 'The mountains',
   'na veshin.': 'dress us.',
-  'Thethi, Gjirokastra dhe qëndisja e Malësisë: vendet dhe duart që frymëzuan koleksionin e vjeshtës.':
-    'Theth, Gjirokastra and the embroidery of Malësia: the places and hands behind the autumn collection.',
+  'Thethi, Gjirokastra dhe qëndisja e Malësisë: vendet dhe duart që frymëzuan koleksionin e dimrit.':
+    'Theth, Gjirokastra and the embroidery of Malësia: the places and hands behind the winter collection.',
   'Ilustrim i luginës së Thethit, me kishën, kullën dhe Bjeshkët e Nemuna':
     'Illustration of the Theth valley, with its church, a stone tower and the Accursed Mountains',
   'Thethi, Bjeshkët e Nemuna': 'Theth, Accursed Mountains',
@@ -123,6 +123,36 @@ const EN = {
     'Illustration of a geometric Malësia embroidery in red and white cross-stitch',
   'Qëndisje e Malësisë, detaj': 'Malësia embroidery, detail',
   'Shiko lookbook-un': 'View the lookbook',
+
+  // Pre-order countdown
+  'Së shpejti · Para-porosi': 'Coming soon · Pre-order',
+  'Marka': 'The brand',
+  'po vjen.': 'is coming.',
+  'ka ardhur.': 'is here.',
+  'M’DON hapet më': 'M’DON opens on',
+  'Bëj para-porosinë tani dhe merre ndër të parët.': 'Pre-order now and be among the first to get it.',
+  'Faleminderit që na pritët. Dyqani është i hapur.': 'Thank you for waiting. The shop is open.',
+  'Bëj para-porosi': 'Pre-order now',
+  'Ditë': 'Days',
+  'Orë': 'Hours',
+  'Minuta': 'Minutes',
+  'Sekonda': 'Seconds',
+  'ditë': 'days',
+  'orë': 'hours',
+  'deri në hapje': 'until opening',
+
+  // Premium: the 342-diamond eagle
+  'Versioni premium': 'The premium edition',
+  'Shqiponja,': 'The eagle,',
+  '342 diamante': '342 diamonds',
+  'Copa më e veçantë e M’DON. Në shpinë të këmishës xhins, shqiponja dykrenore e flamurit, e bërë me 342 diamante të vegjël që kapin dritën në çdo lëvizje. Një simbol i lashtë, në versionin më premium të markës sonë.':
+    'The most special piece M’DON makes. On the back of the denim shirt, the double-headed eagle of the flag, made with 342 small diamonds that catch the light with every move. An ancient symbol, in the most premium edition of our brand.',
+  'Një burrë me shpinë nga ne, brenda një kutie xhami me akull, me këmishë xhins që ka në shpinë shqiponjën dykrenore prej diamantesh':
+    'A man with his back to us inside an icy glass box, in a denim shirt with the double-headed eagle in diamonds on the back',
+  'Këmisha Shqiponja, xhins me 342 diamante': 'The Eagle shirt, denim with 342 diamonds',
+  'diamante të vegjël': 'small diamonds',
+  'shqiponjë dykrenore, në shpinë': 'double-headed eagle, on the back',
+  'xhins, prerë dhe qepur në Toronto': 'denim, cut and sewn in Toronto',
 
   // Craft
   'Mjeshtëria': 'Craft',

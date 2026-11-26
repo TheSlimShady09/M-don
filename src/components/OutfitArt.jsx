@@ -1,11 +1,9 @@
-// Category illustrations (Burra, Gra, Fëmijë): full outfits drawn as if worn by an invisible model,
+// Category illustrations (Burra, Gra, Fëmijë): full modern outfits drawn as if worn by an invisible model,
 // the way fashion shops photograph clothes. Every figure is drawn at adult size around x = 160 in a
 // 320 × 400 frame; children are the same outfits scaled down.
-import { useId } from 'react';
-import { BONE, INK, RED, RULE, STONE, range, spiral } from './artkit.js';
+import { BONE, INK, RED, STONE } from './artkit.js';
 
 const BLACK = '#0B0808';
-const SHIRT_IN = '#D9D1CF';   // inside of a white collar
 const EDGE = { stroke: BONE, strokeOpacity: 0.38, strokeWidth: 0.6 };
 
 /** Draws the children twice: as given (left side) and mirrored onto the right side */
@@ -16,127 +14,79 @@ const Mirror = ({ children }) => (
   </>
 );
 
-function Qeleshe() {
+const DENIM = '#2A3442';
+
+/** Low white sneakers, one per foot, centred on x */
+function Sneakers({ x = 138.5 }) {
   return (
-    <>
-      <path d="M134 76 C134 46 145 32 160 32 C175 32 186 46 186 76 Z" fill={BONE} />
-      <path d="M141 72 C141 54 148 42 157 37" fill="none" stroke={STONE} strokeOpacity=".35" strokeWidth="1.1" strokeLinecap="round" />
-      <ellipse cx="160" cy="76" rx="26" ry="4.5" fill={RULE} stroke={STONE} strokeWidth=".6" />
-    </>
+    <Mirror>
+      <path d={`M${x - 16} 352 h32 l2 9 q0 7 -7 7 h-25 q-6 0 -6 -6 Z`} fill={BONE} stroke={STONE} strokeWidth=".6" />
+      <path d={`M${x - 16} 363 h34`} stroke={STONE} strokeWidth=".7" />
+      <path d={`M${x - 6} 355 l6 0 M${x - 5} 358 l6 0`} stroke={STONE} strokeOpacity=".7" strokeWidth=".6" />
+    </Mirror>
   );
 }
 
-/** Men's outfit: qeleshe, white shirt, embroidered xhamadan, sash, trousers with a braid down the side */
-function Man({ vest = BLACK, trim = RED, sash = RED, cap = true }) {
+/** Small double-headed eagle, the M'DON chest mark (one half, mirrored) */
+function Eagle({ fill = RED }) {
+  return (
+    <Mirror>
+      <path d="M160 126 L157.5 122.5 L154.5 123 L156 126.5 L153.5 129 L145 125.5 L148 132 L144 133 L150 137 L147 140.5 L155 139.5 L157 146 L160 146 Z" fill={fill} />
+    </Mirror>
+  );
+}
+
+/** Men's outfit: hoodie with the eagle on the chest, straight jeans, white sneakers */
+function Man({ hoodie = BLACK, rib = '#1A1414', jeans = DENIM, mark = RED }) {
   return (
     <g>
-      {cap && <Qeleshe />}
-      <path d="M118 108 Q160 98 202 108 L206 204 L114 204 Z" fill={BONE} />
+      <path d="M121 212 Q160 222 199 212 L196 354 L167 354 L161 240 L159 240 L153 354 L124 354 Z" fill={jeans} {...EDGE} />
       <Mirror>
-        <path d="M119 106 C105 110 99 122 98 136 L92 232 L109 234 L116 148 Z" fill={BONE} stroke={STONE} strokeWidth=".6" />
-        <path d="M101 158 L104 204 M112 170 L111 214" stroke={STONE} strokeOpacity=".35" strokeWidth=".6" />
-        <path d="M92.4 226 L109.4 228 L109 234 L92 232 Z" fill={trim} />
+        <path d="M122 216 L125 352" stroke={BONE} strokeOpacity=".22" strokeWidth=".7" strokeDasharray="2 2" />
+        <path d="M140 262 Q138 300 139 350" stroke={BONE} strokeOpacity=".1" strokeWidth=".8" fill="none" />
       </Mirror>
-      <path d="M118 210 Q160 220 202 210 L196 356 L167 356 L161 236 L159 236 L153 356 L124 356 Z" fill={BLACK} {...EDGE} />
+      <Sneakers />
       <Mirror>
-        <path d="M121.5 224 L127 350" stroke={trim} strokeWidth="1.2" />
-        <path d="M140 250 L139 352" stroke={BONE} strokeOpacity=".1" strokeWidth=".8" />
-        <path d="M123 356 h31 v6 q0 6 -6 6 h-19 q-6 0 -6 -6 Z" fill={BLACK} {...EDGE} />
-        <path d="M128 360 h20" stroke={trim} strokeWidth="1" />
-        <path d="M146 101 L124 106 C124 120 121 132 117 142 L116 196 Q134 204 156 200 L154 138 C152 124 149 112 146 101 Z" fill={vest} {...EDGE} />
-        <g fill="none" stroke={trim} strokeLinecap="round">
-          <path d="M147.5 108 C150.5 120 152 130 151 139 L152 195 Q134 198 120 193" strokeWidth="1.6" />
-          <path d={spiral(134, 128, 8, 1.7, 0, 1)} strokeWidth="1.4" />
-          <path d={spiral(135, 165, 7, 1.6, Math.PI, 1)} strokeWidth="1.3" />
-          <path d={spiral(125, 186, 4.5, 1.4, -Math.PI / 2, 1)} strokeWidth="1.1" />
-          <path d="M121 146 L121 180" strokeWidth=".8" strokeDasharray="1.5 2.5" />
-        </g>
+        <path d="M120 106 C105 110 99 122 98 138 L93 226 L111 228 L118 150 Z" fill={hoodie} {...EDGE} />
+        <path d="M93 226 L111 228 L110.5 237 L92.5 235 Z" fill={rib} {...EDGE} />
+        <path d="M104 160 L102 214" stroke={BONE} strokeOpacity=".08" strokeWidth=".8" />
       </Mirror>
-      <ellipse cx="160" cy="101" rx="13" ry="4.5" fill={SHIRT_IN} stroke={STONE} strokeWidth=".5" />
-      <path d="M147 102 Q160 109 173 102 M160 106 V146" stroke={STONE} strokeWidth=".6" fill="none" />
-      {/* Sash (brez) with its ends hanging on the left */}
-      <path d="M121 211 L115 248 L123 249 L128 213 Z M129 212 L127 246 L134 246 L135 213 Z" fill={sash} {...EDGE} />
-      {range(115.5, 122.5, 1.75).map((x) => <line key={x} x1={x} y1="248.5" x2={x - 0.4} y2="255" stroke={sash} strokeWidth=".7" />)}
-      {range(127.5, 133.5, 1.5).map((x) => <line key={x} x1={x} y1="246" x2={x} y2="252" stroke={sash} strokeWidth=".7" />)}
-      <path d="M115 194 Q160 206 205 194 L205 212 Q160 224 115 212 Z" fill={sash} {...EDGE} />
-      <path d="M115 200 Q160 212 205 200 M115 206 Q160 218 205 206" stroke={INK} strokeOpacity=".7" strokeWidth=".7" fill="none" />
+      <path d="M118 106 Q160 98 202 106 L207 208 Q160 216 113 208 Z" fill={hoodie} {...EDGE} />
+      {/* The hood, lying flat behind the neck */}
+      <path d="M134 107 C135 90 146 84 160 84 C174 84 185 90 186 107 Q160 98 134 107 Z" fill={rib} {...EDGE} />
+      <path d="M140 104 Q160 112 180 104" fill="none" stroke={BONE} strokeOpacity=".2" strokeWidth=".7" />
+      <path d="M151 107 L150 140 M169 107 L170 140" stroke={BONE} strokeWidth="1.1" strokeLinecap="round" />
+      <Eagle fill={mark} />
+      {/* Kangaroo pocket */}
+      <path d="M134 168 L186 168 L193 199 Q160 205 127 199 Z" fill="none" stroke={BONE} strokeOpacity=".22" strokeWidth=".8" />
+      <path d="M113 204 Q160 212 207 204 L207 216 Q160 224 113 216 Z" fill={rib} {...EDGE} />
     </g>
   );
 }
 
-/** Coins of a gjerdan (coin necklace) spaced along a curve */
-function Gjerdan() {
-  const coins = (sag, r, n) => Array.from({ length: n }, (_, i) => {
-    const t = (i + 0.5) / n;
-    const x = 146 + 28 * t;
-    const y = 100 + sag * 4 * t * (1 - t);
-    return <circle key={`${sag}-${i}`} cx={x} cy={y} r={r} fill={BONE} stroke={STONE} strokeWidth=".4" />;
-  });
-  return (
-    <>
-      <path d="M146 100 Q160 136 174 100" fill="none" stroke={BONE} strokeOpacity=".7" strokeWidth=".5" />
-      {coins(17, 1.7, 7)}
-      <path d="M144 101 Q160 150 176 101" fill="none" stroke={BONE} strokeOpacity=".7" strokeWidth=".5" />
-      {coins(25, 2.4, 8)}
-    </>
-  );
-}
-
-/** Women's outfit: modern xhubleta with an embroidered apron, a wide belt and wide-sleeved blouse */
-function Woman({ uid, bodice = BLACK, skirt = BLACK, apron = RED, belt = RED, trim = RED, cuff = RED, pattern = BLACK, necklace = true }) {
-  const clip = `${uid}-skirt`;
-  const light = skirt !== BLACK;
-  const line = light ? STONE : BONE;
-  const hemY = (x) => { const t = (x - 72) / 176; return 354 + 32 * t * (1 - t); };
-  const skirtPath = 'M124 186 Q160 194 196 186 C206 240 226 300 248 354 Q160 370 72 354 C94 300 114 240 124 186 Z';
+/** Women's outfit: open blazer over a white tee, wide-leg trousers, white sneakers */
+function Woman({ blazer = BLACK, trousers = RED, top = BONE }) {
   return (
     <g>
+      <path d="M120 214 Q160 222 200 214 L214 354 L166 356 L161 254 L159 254 L154 356 L106 354 Z" fill={trousers} {...EDGE} />
       <Mirror>
-        <path d="M121 104 C107 108 99 120 97 138 L82 230 L114 236 L119 150 Z" fill={BONE} stroke={STONE} strokeWidth=".6" />
-        <path d="M100 160 L95 214 M110 168 L106 222" stroke={STONE} strokeOpacity=".35" strokeWidth=".6" />
-        <path d="M83.6 220 L115.2 225 L114 236 L82 230 Z" fill={cuff} />
-        {[92, 100, 108].map((x, i) => <path key={x} d={`M${x} ${225.5 + i * 1.3} l2.5 2.5 -2.5 2.5 -2.5 -2.5 Z`} fill={BONE} />)}
+        <path d="M134 232 L131 352" stroke={INK} strokeOpacity=".3" strokeWidth=".8" />
       </Mirror>
-      <path d="M122 104 Q160 94 198 104 L196 182 L124 182 Z" fill={BONE} />
-      <clipPath id={clip}><path d={skirtPath} /></clipPath>
-      <path d={skirtPath} fill={skirt} />
-      <g clipPath={`url(#${clip})`}>
-        {range(238, 330, 9).map((y) => <path key={y} d={`M0 ${y} Q160 ${y + 14} 320 ${y}`} fill="none" stroke={line} strokeOpacity=".32" strokeWidth=".8" />)}
-        {/* Embroidered band that follows the curve of the hem */}
-        <path d="M60 336 Q160 354 260 336 L260 380 L60 380 Z" fill={trim} />
-        <path d={`M72 ${hemY(72) - 9} ${range(72, 248, 6).map((x, i) => `L${x} ${(hemY(x) - 9 + (i % 2 ? -3 : 3)).toFixed(1)}`).join(' ')}`} fill="none" stroke={light ? INK : BONE} strokeWidth=".9" />
-      </g>
-      <path d={skirtPath} fill="none" {...EDGE} />
-      {range(76, 244, 5).map((x) => <line key={x} x1={x} y1={hemY(x)} x2={x} y2={hemY(x) + 7} stroke={light ? STONE : BONE} strokeOpacity=".55" strokeWidth=".7" />)}
-      {/* Apron (përparja) */}
-      <path d="M140 190 L180 190 L185 316 L135 316 Z" fill={apron} {...EDGE} />
-      {range(206, 296, 18).map((y) => (
-        <g key={y}>
-          <path d={`M160 ${y - 7} l7 7 -7 7 -7 -7 Z`} fill="none" stroke={pattern} strokeWidth="1.1" />
-          <path d={`M160 ${y - 2.5} l2.5 2.5 -2.5 2.5 -2.5 -2.5 Z`} fill={BONE} />
-        </g>
-      ))}
-      <path d="M146 198 L144.5 304 M174 198 L175.5 304" stroke={BONE} strokeWidth=".8" strokeDasharray="1.5 2.5" />
-      <path d={`M136 306 ${range(136, 184, 4).map((x, i) => `L${x} ${i % 2 ? 302 : 309}`).join(' ')}`} fill="none" stroke={pattern} strokeWidth="1" />
-      {range(136, 184, 2.5).map((x) => <line key={x} x1={x} y1="316" x2={x} y2="325" stroke={apron} strokeWidth=".8" />)}
-      {/* Fitted bodice with embroidery down the V */}
+      <Sneakers x={131} />
+      <path d="M136 100 Q160 94 184 100 L183 214 L137 214 Z" fill={top} />
+      <path d="M147 100 Q160 108 173 100" fill="none" stroke={STONE} strokeWidth=".6" />
+      {/* Thin chain with a small diamond */}
+      <path d="M146 101 Q160 124 174 101" fill="none" stroke={BONE} strokeOpacity=".8" strokeWidth=".5" />
+      <path d="M160 110 l3 3.5 -3 3.5 -3 -3.5 Z" fill={RED} />
       <Mirror>
-        <path d="M143 96 L122 104 C122 128 124 152 126 182 L160 182 L160 138 Z" fill={bodice} {...EDGE} />
-        <g fill="none" stroke={trim} strokeLinecap="round">
-          <path d="M145.5 102 L159 134" strokeWidth="1.5" />
-          <path d={spiral(137, 124, 6.5, 1.6, 0, 1)} strokeWidth="1.2" />
-          <path d={spiral(140, 158, 5.5, 1.5, Math.PI, 1)} strokeWidth="1.1" />
-          <path d="M130 108 L130 176" strokeWidth=".8" strokeDasharray="1.5 2.5" />
-        </g>
+        <path d="M121 104 C107 108 100 120 98 138 L90 226 L109 228 L117 150 Z" fill={blazer} {...EDGE} />
+        <path d="M90.5 221 L109.5 223" stroke={BONE} strokeOpacity=".25" strokeWidth=".7" />
+        <path d="M142 97 L120 104 C119 140 117 180 116 230 Q132 234 148 232 L147 170 L140 132 Z" fill={blazer} {...EDGE} />
+        {/* Lapel */}
+        <path d="M142 97 L131 109 L135 112 L130 116 L140 134 L146 118 Z" fill={blazer} stroke={BONE} strokeOpacity=".45" strokeWidth=".7" />
+        <path d="M124 188 L140 188" stroke={BONE} strokeOpacity=".25" strokeWidth=".7" />
       </Mirror>
-      <ellipse cx="160" cy="99" rx="17" ry="4.5" fill={SHIRT_IN} stroke={STONE} strokeWidth=".5" />
-      {necklace && <Gjerdan />}
-      {/* Wide woven belt (shoka) */}
-      <path d="M123 178 Q160 186 197 178 L198 194 Q160 202 122 194 Z" fill={belt} {...EDGE} />
-      {range(130, 190, 10).map((x) => {
-        const y = 186 + 8 * (1 - ((x - 160) / 37) ** 2) * 0.5;
-        return <path key={x} d={`M${x} ${y - 3.5} l3.5 3.5 -3.5 3.5 -3.5 -3.5 Z`} fill={belt === BLACK ? RED : INK} />;
-      })}
+      <circle cx="144" cy="176" r="1.8" fill={BONE} fillOpacity=".7" />
     </g>
   );
 }
@@ -146,8 +96,8 @@ const SCENES = {
   gra: { figures: [{ kind: 'woman', x: 160, s: 1 }] },
   femije: {
     figures: [
-      { kind: 'man', x: 104, s: 0.66, props: { vest: RED, trim: BONE, sash: BLACK } },
-      { kind: 'woman', x: 218, s: 0.66, props: { bodice: RED, skirt: BONE, apron: BLACK, belt: BLACK, trim: BONE, cuff: RED, pattern: RED, necklace: false } },
+      { kind: 'man', x: 104, s: 0.66, props: { hoodie: RED, rib: '#7E1A1E', mark: BONE } },
+      { kind: 'woman', x: 218, s: 0.66, props: { blazer: RED, trousers: BLACK } },
     ],
   },
 };
@@ -155,7 +105,6 @@ const SCENES = {
 const FLOOR = 372;
 
 export default function OutfitArt({ kind, label, className = '' }) {
-  const uid = useId().replace(/:/g, '');
   const { figures } = SCENES[kind];
   return (
     <svg viewBox="0 0 320 400" role="img" aria-label={label} className={className} preserveAspectRatio="xMidYMid slice">
@@ -170,11 +119,11 @@ export default function OutfitArt({ kind, label, className = '' }) {
       </g>
       <line x1="0" y1={FLOOR} x2="320" y2={FLOOR} stroke={BONE} strokeOpacity=".12" />
       {figures.map(({ kind: k, x, s }) => (
-        <ellipse key={`shadow-${x}`} cx={x} cy={FLOOR - 1} rx={(k === 'woman' ? 92 : 50) * s} ry={5 * s} fill="#000" opacity=".5" />
+        <ellipse key={`shadow-${x}`} cx={x} cy={FLOOR - 1} rx={(k === 'woman' ? 62 : 50) * s} ry={5 * s} fill="#000" opacity=".5" />
       ))}
       {figures.map(({ kind: k, x, s, props = {} }) => (
         <g key={x} transform={`translate(${x - 160 * s} ${FLOOR - FLOOR * s}) scale(${s})`}>
-          {k === 'man' ? <Man {...props} /> : <Woman uid={`${uid}-${x}`} {...props} />}
+          {k === 'man' ? <Man {...props} /> : <Woman {...props} />}
         </g>
       ))}
     </svg>

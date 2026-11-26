@@ -9,7 +9,7 @@ import Logo from './Logo.jsx';
 
 const COLUMNS = [
   { title: 'Bli', links: [['Burra', '/katalogu?k=burra'], ['Gra', '/katalogu?k=gra'], ['Fëmijë', '/katalogu?k=femije'], ['Koleksionet e stinëve', '/#stinet'], ['Të rejat', '/katalogu?rendit=te-rejat']] },
-  { title: 'M’DON', links: [['Historia jonë', '/#historia'], ['Mjeshtrit', '/#mjeshtria'], ['Lookbook', '/#lookbook'], ['Më të mirat', '/#me-te-mirat']] },
+  { title: 'M’DON', links: [['Historia jonë', '/#historia'], ['Versioni premium', '/#shqiponja'], ['Lookbook', '/#lookbook'], ['Më të mirat', '/#me-te-mirat']] },
   { title: 'Ndihmë', links: [['Shporta', '/shporta'], ['Dërgesat dhe kthimet', '/#sherbimet'], ['Mënyrat e pagesës', '/#sherbimet']] },
 ];
 // The brand's profiles: replace '#' with the real addresses

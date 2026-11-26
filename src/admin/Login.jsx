@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/api.js';
 import { Kilim } from '../components/ui.jsx';
-import { RecoveryCodes } from './ui.jsx';
+import { PasswordInput, RecoveryCodes } from './ui.jsx';
 import { MonogramTile } from '../components/Logo.jsx';
 
 const input = 'h-12 w-full rounded-none border border-white/25 bg-transparent px-4 text-[15px] text-white outline-none transition-colors placeholder:text-white/40 focus:border-white';
@@ -77,12 +77,12 @@ function PasswordStep({ setup, notice, onNext }) {
         </div>
         <div>
           <label htmlFor="li-pw" className={label}>{setup ? 'Fjalëkalimi (të paktën 12 shkronja)' : 'Fjalëkalimi'}</label>
-          <input id="li-pw" type="password" autoComplete={setup ? 'new-password' : 'current-password'} required value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} className={input} />
+          <PasswordInput id="li-pw" autoComplete={setup ? 'new-password' : 'current-password'} required value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} className={input} />
         </div>
         {setup && (
           <div>
             <label htmlFor="li-again" className={label}>Përsërite fjalëkalimin</label>
-            <input id="li-again" type="password" autoComplete="new-password" required value={f.again} onChange={(e) => setF({ ...f, again: e.target.value })} className={input} />
+            <PasswordInput id="li-again" autoComplete="new-password" required value={f.again} onChange={(e) => setF({ ...f, again: e.target.value })} className={input} />
           </div>
         )}
         {error && <p role="alert" className={note}>{error}</p>}
@@ -114,11 +114,11 @@ function NewPasswordStep({ onNext, onRestart }) {
       <form onSubmit={submit} className="grid gap-5">
         <div>
           <label htmlFor="np-pw" className={label}>Fjalëkalimi i ri</label>
-          <input id="np-pw" type="password" autoComplete="new-password" required autoFocus value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} className={input} />
+          <PasswordInput id="np-pw" autoComplete="new-password" required autoFocus value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} className={input} />
         </div>
         <div>
           <label htmlFor="np-again" className={label}>Përsërite</label>
-          <input id="np-again" type="password" autoComplete="new-password" required value={f.again} onChange={(e) => setF({ ...f, again: e.target.value })} className={input} />
+          <PasswordInput id="np-again" autoComplete="new-password" required value={f.again} onChange={(e) => setF({ ...f, again: e.target.value })} className={input} />
         </div>
         {error && <p role="alert" className={note}>{error}</p>}
         <button type="submit" disabled={busy} className="btn btn-red mt-2 w-full">{busy ? 'Po ruhet…' : 'Ruaj dhe vazhdo'}</button>

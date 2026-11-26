@@ -53,9 +53,13 @@ if (!email) {
   const users = listUsers();
   console.log('\nLlogaritë e panelit:');
   users.forEach((u, i) => console.log(`  ${i + 1}. ${u.email} (${u.role === 'pronar' ? 'pronari' : 'administrator'})`));
-  const pick = Number(await ask('\nCilën llogari do të ndryshosh? Shkruaj numrin: '));
-  if (!users[pick - 1]) fail('Numër i gabuar.');
-  email = users[pick - 1].email;
+  // The number from the list or the email itself; asks again on a wrong answer
+  for (;;) {
+    const answer = await ask('\nCilën llogari do të ndryshosh? Shkruaj numrin (ose email-in): ');
+    const found = users[Number(answer) - 1] || users.find((u) => u.email === answer.toLowerCase());
+    if (found) { email = found.email; break; }
+    console.log(`Nuk e gjeta. Shkruaj një numër nga 1 deri në ${users.length}, ose email-in siç shfaqet më lart.`);
+  }
 }
 const user = userByEmail(email);
 if (!user) fail(`Nuk ka llogari me email-in ${email}.`);
@@ -64,10 +68,13 @@ if (!user) fail(`Nuk ka llogari me email-in ${email}.`);
 let changeEmail = Boolean(process.env.OWNER_NEW_EMAIL);
 let changePassword = Boolean(process.env.OWNER_PASSWORD);
 if (!changeEmail && !changePassword) {
-  const what = Number(await ask('\nÇfarë do të ndryshosh?\n  1. Fjalëkalimin\n  2. Email-in\n  3. Të dyja\nShkruaj numrin: '));
-  changePassword = what === 1 || what === 3;
-  changeEmail = what === 2 || what === 3;
-  if (!changeEmail && !changePassword) fail('Numër i gabuar.');
+  for (;;) {
+    const what = Number(await ask('\nÇfarë do të ndryshosh?\n  1. Fjalëkalimin\n  2. Email-in\n  3. Të dyja\nShkruaj numrin (1, 2 ose 3): '));
+    changePassword = what === 1 || what === 3;
+    changeEmail = what === 2 || what === 3;
+    if (changeEmail || changePassword) break;
+    console.log('Shkruaj vetëm 1, 2 ose 3.');
+  }
 }
 
 let newEmail = user.email;

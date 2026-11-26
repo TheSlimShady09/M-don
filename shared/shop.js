@@ -34,8 +34,8 @@ export const SEASONS = {
   dimer: { sq: 'Dimër', en: 'Winter', title: 'Dimri' },
 };
 
-/** Season for a date: March–May spring, June–August summer, September–November autumn, December–February winter */
-export const seasonOf = (date = new Date()) => ['dimer', 'pranvere', 'vere', 'vjeshte'][Math.floor(((date.getMonth() + 1) % 12) / 3)];
+/** Season for a date, a month ahead like the shops: November–January winter, February–April spring, May–July summer, August–October autumn */
+export const seasonOf = (date = new Date()) => ['dimer', 'pranvere', 'vere', 'vjeshte'][Math.floor(((date.getMonth() + 2) % 12) / 3)];
 
 // Where a product was made, north to south (shown on the product, not used for collections)
 export const REGIONS = {
