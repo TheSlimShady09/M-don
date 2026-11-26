@@ -12,6 +12,29 @@ function rng(seed) {
   };
 }
 
+// Visitors follow the orders: roughly 40 people for every order, a little noise on top
+function demoVisits(cur, prev) {
+  const rand = rng(77);
+  const toVisits = (list) => list.map((d) => {
+    const visitors = Math.round((d.orders + 0.8) * (30 + rand() * 20));
+    return { day: d.day, visitors, views: Math.round(visitors * (2.2 + rand())) };
+  });
+  const series = toVisits(cur);
+  const previousSeries = toVisits(prev);
+  const sum = (list, k) => list.reduce((t, d) => t + d[k], 0);
+  const views = sum(series, 'views');
+  const share = { '/': 0.38, '/katalogu': 0.27, '/produkti/xhaketa-shqiponja': 0.12, '/shporta': 0.09, '/produkti/hudi-kilim': 0.08 };
+  return {
+    today: series[series.length - 1].visitors,
+    current: { visitors: sum(series, 'visitors'), views },
+    previous: { visitors: sum(previousSeries, 'visitors'), views: sum(previousSeries, 'views') },
+    allTime: { visitors: sum(series, 'visitors') + sum(previousSeries, 'visitors') + 2140, views: 0 },
+    series,
+    previousSeries,
+    topPages: Object.entries(share).map(([path, k]) => ({ path, views: Math.round(views * k) })),
+  };
+}
+
 const dayIso = (daysAgo) => new Date(Date.now() - daysAgo * 864e5).toISOString().slice(0, 10);
 const AVG_ORDER = 390;   // $ CAD
 
@@ -106,6 +129,7 @@ export function demoStats(days) {
     byPayment,
     topProducts,
     subscribers: { total: run, inPeriod: run - subStart, series: subSeries },
+    visits: demoVisits(cur, prev),
     waiting: ordered.e_re,
     recent,
   };

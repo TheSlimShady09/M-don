@@ -118,7 +118,7 @@ export function TrendChart({ series, previous, metric, compare, format, compact,
   const vals = series.map((d) => d[metric]);
   const pvals = previous.map((d) => d[metric]);
   const raw = Math.max(...vals, ...(compare ? pvals : []), 0);
-  const integer = metric === 'orders';
+  const integer = metric !== 'revenue'; // orders, visitors: whole numbers
   const top = integer ? Math.max(4, niceMax(raw)) : raw > 0 ? niceMax(raw) : 10000; // whole orders; a clean empty scale
   const ticks = niceTicks(top);
   const plotW = w - pad.l - pad.r;

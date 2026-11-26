@@ -50,7 +50,7 @@ export const useLang = () => useContext(LangContext);
 export function useTitle(sq, suffix = ' — M’DON') {
   const { t } = useLang();
   useEffect(() => {
-    document.title = sq ? `${t(sq)}${suffix}` : t('M’DON — Moda autoktone shqiptare');
+    document.title = sq ? `${t(sq)}${suffix}` : t('M’DON — Streetwear shqiptar');
   }, [sq, suffix, t]);
 }
 

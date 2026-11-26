@@ -60,7 +60,7 @@ export default function Footer() {
       <Wrap className="grid grid-cols-2 gap-x-10 gap-y-12 py-[clamp(56px,6vw,88px)] md:grid-cols-4 xl:grid-cols-[1.6fr_repeat(4,1fr)]">
         <div className="col-span-full xl:col-span-1">
           <Link to="/" aria-label="M’DON" className="inline-block text-flame transition-opacity hover:opacity-85"><Logo variant="full" className="h-24 w-auto" /></Link>
-          <p className="mt-5 max-w-[30ch] text-sm leading-relaxed text-white/62">{t('Moda autoktone shqiptare.')}<br />{t('Rrënjë të lashta, vija të reja.')}</p>
+          <p className="mt-5 max-w-[30ch] text-sm leading-relaxed text-white/62">{t('Streetwear shqiptar.')}<br />{t('Rrënjë të lashta, vija të reja.')}</p>
         </div>
         {COLUMNS.map((col) => (
           <nav key={col.title} aria-label={t(col.title)}>

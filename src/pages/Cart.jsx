@@ -5,7 +5,7 @@ import { useCart } from '../lib/cart.jsx';
 import { useProducts } from '../lib/products.js';
 import { api } from '../lib/api.js';
 import { useShopConfig } from '../lib/config.js';
-import { CHECKOUT_PAYMENTS, MAX_QTY, PAYMENT_METHODS, PROVINCES, REGIONS, SHIPPING_FREE_FROM, postalCode, shippingFor } from '../../shared/shop.js';
+import { CHECKOUT_PAYMENTS, MAX_QTY, PAYMENT_METHODS, PROVINCES, SHIPPING_FREE_FROM, postalCode, shippingFor } from '../../shared/shop.js';
 import { Arrow, Chest, Kilim, Media, Wrap } from '../components/ui.jsx';
 
 const PAYMENT_HINTS = {
@@ -189,8 +189,7 @@ export default function Cart() {
                     <li key={p.id} className="grid grid-cols-[88px_1fr] gap-x-5 gap-y-3 border-b border-rule py-6 sm:grid-cols-[104px_1fr_auto]">
                       <Media src={p.image} ratio="3 / 4" tone="light" className="media-quiet" />
                       <div className="min-w-0">
-                        <p className="text-[10px] font-medium uppercase tracking-[.28em] text-crimson">{REGIONS[p.region]}</p>
-                        <h3 className="mt-1 font-serif text-[22px] leading-tight">{pname(p)}</h3>
+                        <h3 className="font-serif text-[22px] leading-tight">{pname(p)}</h3>
                         <p className="mt-1 text-sm">{price(p.price)}</p>
                         <button type="button" onClick={() => remove(p.id)} className="mt-3 caps-xs text-stone underline-offset-4 hover:text-crimson hover:underline">
                           {t('Hiq')}

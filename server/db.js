@@ -207,6 +207,36 @@ if (db.prepare('PRAGMA user_version').get().user_version < 5) {
   }
 }
 
+// ---------- Site visitors (schema version 6) ----------
+// No cookies and no IP addresses stored: a visitor is a one-way hash of IP + browser + the day,
+// so the same person counts once a day and cannot be followed from one day to the next.
+// visits: one row per visitor per day; page_views: views of each page per day; settings: the hash secret
+if (db.prepare('PRAGMA user_version').get().user_version < 6) {
+  db.exec('BEGIN');
+  try {
+    db.exec(`
+      CREATE TABLE visits (
+        day TEXT NOT NULL,
+        visitor TEXT NOT NULL,
+        views INTEGER NOT NULL DEFAULT 1,
+        PRIMARY KEY (day, visitor)
+      ) WITHOUT ROWID;
+      CREATE TABLE page_views (
+        day TEXT NOT NULL,
+        path TEXT NOT NULL,
+        views INTEGER NOT NULL DEFAULT 1,
+        PRIMARY KEY (day, path)
+      ) WITHOUT ROWID;
+      CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+      PRAGMA user_version = 6;
+    `);
+    db.exec('COMMIT');
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw err;
+  }
+}
+
 export function tx(fn) {
   db.exec('BEGIN');
   try {

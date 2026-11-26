@@ -4,6 +4,7 @@ import { validEmail } from '../auth.js';
 import { shippingFor, CHECKOUT_PAYMENTS, PROVINCES, postalCode, MAX_QTY } from '../../shared/shop.js';
 import { stripe, stripeEnabled, createCheckout, markPaid } from '../stripe.js';
 import { brevoEnabled, pushSubscriber } from '../newsletter.js';
+import { recordVisit } from '../visits.js';
 
 const router = Router();
 
@@ -21,6 +22,12 @@ const text = (v, min, max) => {
   const s = typeof v === 'string' ? v.trim() : '';
   return s.length >= min && s.length <= max ? s : null;
 };
+
+// One page opened in the shop (sent by the browser on each page change; see visits.js)
+router.post('/visit', (req, res) => {
+  if (!limited(`visit:${req.ip}`, 600)) recordVisit(req, req.body?.path);
+  res.status(204).end();
+});
 
 // What the shop page needs to know about the server (card payments on/off)
 router.get('/config', (req, res) => res.json({ stripe: stripeEnabled }));

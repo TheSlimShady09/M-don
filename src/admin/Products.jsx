@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { BADGES, CATEGORIES, LABELS, REGIONS, SEASONS } from '../../shared/shop.js';
+import { BADGES, CATEGORIES, LABELS, SEASONS } from '../../shared/shop.js';
 import { Media } from '../components/ui.jsx';
 import { Card, Empty, ErrorNote, PageHeader, Switch, btnDanger, btnGhost, btnPrimary, field, labelCls, money, useAdminApi } from './ui.jsx';
 
@@ -131,12 +131,6 @@ function ProductForm({ product, onClose, onSaved, onDeleted }) {
             <div>
               <label htmlFor="pf-price" className={labelCls}>Çmimi në $ CAD *</label>
               <input id="pf-price" required inputMode="numeric" placeholder="395" value={f.price} onChange={set('price')} className={field} />
-            </div>
-            <div>
-              <label htmlFor="pf-region" className={labelCls}>Treva *</label>
-              <select id="pf-region" value={f.region} onChange={set('region')} className={field}>
-                {Object.entries(REGIONS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-              </select>
             </div>
           </div>
 
@@ -272,7 +266,7 @@ export default function Products() {
               <tr>
                 <th className="px-5 py-3 font-normal">Produkti</th>
                 <th className="py-3 font-normal">Kategoria</th>
-                <th className="py-3 font-normal">Treva · stinët</th>
+                <th className="py-3 font-normal">Stinët</th>
                 <th className="py-3 text-right font-normal">Çmimi</th>
                 <th className="py-3 pl-8 font-normal">Në dyqan</th>
                 <th className="py-3 font-normal">Kryefaqe</th>
@@ -292,7 +286,7 @@ export default function Products() {
                     </div>
                   </td>
                   <td className="py-3">{p.label ? LABELS[p.label].sq : p.categories.map((c) => CATEGORIES[c].sq).join(', ')}</td>
-                  <td className="py-3">{REGIONS[p.region]}<span className="block text-xs text-muted">{p.seasons.map((k) => SEASONS[k].sq).join(', ')}</span></td>
+                  <td className="py-3 text-muted">{p.seasons.map((k) => SEASONS[k].sq).join(', ')}</td>
                   <td className="py-3 text-right tabular-nums">{money(p.price)}</td>
                   <td className="py-3 pl-8"><Switch checked={p.active} onChange={() => quickToggle(p, 'active')} label={`${p.name_sq} në dyqan`} /></td>
                   <td className="py-3"><Switch checked={p.featured} onChange={() => quickToggle(p, 'featured')} label={`${p.name_sq} te Më të mirat`} /></td>

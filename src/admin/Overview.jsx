@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { CATEGORIES, ORDER_STATUSES, PAYMENT_METHODS, REGIONS } from '../../shared/shop.js';
+import { CATEGORIES, ORDER_STATUSES, PAYMENT_METHODS } from '../../shared/shop.js';
 import { Card, Empty, ErrorNote, PageHeader, StatusChip, compact, fmtDateTime, fmtDay, fmtToday, money, useAdmin, useAdminApi } from './ui.jsx';
 import { BarList, Columns, CountUp, Segmented, Sparkline, StatusBar, TrendChart, bucket } from './charts.jsx';
 import { demoStats } from './demoStats.js';
@@ -68,6 +68,65 @@ function TableView({ head, rows }) {
   );
 }
 
+// Shop pages by their address, for the "most opened" list
+const PAGE_NAMES = { '/': 'Kryefaqja', '/katalogu': 'Katalogu', '/shporta': 'Shporta', '/arka': 'Arka' };
+const pageName = (path) => PAGE_NAMES[path] || (path.startsWith('/produkti/') ? `Produkti: ${path.slice(10)}` : path);
+
+/** Who opened the shop: visitors per day, page views and the most opened pages */
+function Visitors({ v, days }) {
+  const [compare, setCompare] = useState(false);
+  if (!v) return null;
+  return (
+    <section aria-labelledby="visitors-title" className="mt-4 grid gap-4 xl:grid-cols-3">
+      <Card className="p-5 sm:p-6 xl:col-span-2">
+        <CardHead title={<span id="visitors-title">Vizitorët e faqes</span>} sub={`Sa veta e hapën dyqanin, ${days} ditët e fundit`}>
+          <label className="flex cursor-pointer items-center gap-2 text-[13px] text-muted">
+            <input type="checkbox" checked={compare} onChange={(e) => setCompare(e.target.checked)} className="accent-crimson" />
+            Krahaso me {days} ditët e mëparshme
+          </label>
+        </CardHead>
+        <div className="mb-5 grid grid-cols-2 gap-4 sm:grid-cols-3">
+          <div>
+            <p className="text-[13px] text-muted">Sot</p>
+            <p className="mt-1 text-[26px] font-medium leading-none tabular-nums text-fg"><CountUp value={v.today} format={count} /></p>
+          </div>
+          <div>
+            <p className="text-[13px] text-muted">Vizitorë, {days} ditë</p>
+            <p className="mt-1 text-[26px] font-medium leading-none tabular-nums text-fg"><CountUp value={v.current.visitors} format={count} /></p>
+            <Delta now={v.current.visitors} before={v.previous.visitors} />
+          </div>
+          <div>
+            <p className="text-[13px] text-muted">Faqe të hapura</p>
+            <p className="mt-1 text-[26px] font-medium leading-none tabular-nums text-fg"><CountUp value={v.current.views} format={count} /></p>
+            <p className="mt-2 text-[13px] text-muted">{v.current.visitors ? (v.current.views / v.current.visitors).toFixed(1).replace('.', ',') : 0} faqe për vizitor</p>
+          </div>
+        </div>
+        <TrendChart
+          series={v.series}
+          previous={v.previousSeries}
+          metric="visitors"
+          compare={compare}
+          format={(n) => `${count(n)} vizitorë`}
+          compact={(n) => String(Math.round(n))}
+          dayLabel={dayLabel}
+          metricLabel="Vizitorët ditorë"
+        />
+        <TableView head={['Dita', 'Vizitorë', 'Faqe']} rows={[...v.series].reverse().map((d) => [dayLabel(d.day), d.visitors, d.views])} />
+      </Card>
+      <Card className="p-5 sm:p-6">
+        <CardHead title="Faqet më të hapura" sub={`${days} ditët e fundit`} />
+        {v.topPages.length
+          ? <BarList items={v.topPages.map((p) => ({ key: p.path, label: pageName(p.path), value: p.views }))} format={(n) => `${count(n)} herë`} />
+          : <Empty title="Ende pa vizita">Sapo dikush të hapë dyqanin, faqet dalin këtu.</Empty>}
+        <p className="mt-5 text-xs leading-relaxed text-muted">
+          Një person numërohet një herë në ditë. Pa cookies dhe pa ruajtur adresat IP; motorët e kërkimit nuk numërohen.
+          Gjithsej që nga fillimi: <span className="text-fg">{count(v.allTime.visitors)} vizita</span>.
+        </p>
+      </Card>
+    </section>
+  );
+}
+
 export default function Overview() {
   const call = useAdminApi();
   const navigate = useNavigate();
@@ -130,7 +189,7 @@ export default function Overview() {
         <Card className="mb-6 flex flex-col items-start justify-between gap-5 p-6 sm:flex-row sm:items-center">
           <div>
             <h2 className="text-[17px] font-medium">Ende nuk ka porosi</h2>
-            <p className="mt-1 max-w-[60ch] text-sm text-muted">Kur të vijnë porositë e para nga dyqani, këtu shfaqen të ardhurat, statuset, trevat dhe produktet më të shitura. Do të shohësh si duket?</p>
+            <p className="mt-1 max-w-[60ch] text-sm text-muted">Kur të vijnë porositë e para nga dyqani, këtu shfaqen të ardhurat, statuset, vizitorët dhe produktet më të shitura. Do të shohësh si duket?</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <button type="button" onClick={() => setDemo(true)} className="inline-flex h-11 items-center bg-strong px-5 text-[13px] font-medium text-on-strong transition-colors hover:bg-crimson hover:text-white">Shiko me të dhëna shembull</button>
@@ -155,6 +214,8 @@ export default function Overview() {
             <p className="mt-2 text-[13px] text-muted"><span className="font-medium text-fg">+{count(s.subscribers.inPeriod)}</span> në {days} ditët e fundit</p>
           </Kpi>
         </div>
+
+        <Visitors v={s.visits} days={days} />
 
         <div className="mt-4 grid gap-4 xl:grid-cols-3">
           <Card className="p-5 sm:p-6 xl:col-span-2">
@@ -215,17 +276,11 @@ export default function Overview() {
           </div>
         </div>
 
-        <div className="mt-4 grid gap-4 lg:grid-cols-3">
+        <div className="mt-4 grid gap-4 lg:grid-cols-2">
           <Card className="p-5 sm:p-6">
             <CardHead title="Sipas kategorisë" sub="Të ardhurat në këtë periudhë" />
             {s.byCategory.length
               ? <BarList items={s.byCategory.map((c) => ({ key: c.key, label: CATEGORIES[c.key]?.sq || 'Të tjera', value: c.revenue, qty: c.qty }))} format={money} meta={(it) => (it.qty ? `${it.qty} copë` : '')} onSelect={demo ? undefined : () => navigate('/admin/produktet')} />
-              : <p className="text-sm text-muted">Ende pa shitje.</p>}
-          </Card>
-          <Card className="p-5 sm:p-6">
-            <CardHead title="Sipas trevës" sub="Cila trevë shitet më shumë" />
-            {s.byRegion.length
-              ? <BarList items={s.byRegion.map((r) => ({ key: r.key, label: REGIONS[r.key] || 'Të tjera', value: r.revenue, qty: r.qty }))} format={money} meta={(it) => (it.qty ? `${it.qty} copë` : '')} />
               : <p className="text-sm text-muted">Ende pa shitje.</p>}
           </Card>
           <Card className="p-5 sm:p-6">

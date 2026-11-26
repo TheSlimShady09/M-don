@@ -1,6 +1,6 @@
 import { useLang } from '../lib/i18n.jsx';
 import { useCart } from '../lib/cart.jsx';
-import { BADGES, CATEGORIES, LABELS, REGIONS } from '../../shared/shop.js';
+import { BADGES, CATEGORIES, LABELS } from '../../shared/shop.js';
 import { Media } from './ui.jsx';
 
 export default function ProductCard({ p, className = '', style, ref, id, found = false }) {
@@ -32,8 +32,7 @@ export default function ProductCard({ p, className = '', style, ref, id, found =
         </button>
       </div>
       <div className="mt-[18px] grid grid-cols-1 items-baseline gap-x-4 gap-y-0.5 sm:grid-cols-[1fr_auto]">
-        <p className="col-span-full text-[10px] font-medium uppercase tracking-[.28em] text-crimson">{REGIONS[p.region]}</p>
-        <h3 className="mt-1 font-serif text-xl font-normal leading-tight text-ink sm:text-[23px]">{name}</h3>
+        <h3 className="font-serif text-xl font-normal leading-tight text-ink sm:text-[23px]">{name}</h3>
         <p className="whitespace-nowrap text-sm font-normal text-ink">{price(p.price)}</p>
         <p className="col-span-full text-[13px] text-stone">{kind} · {pmaterial(p)}</p>
       </div>

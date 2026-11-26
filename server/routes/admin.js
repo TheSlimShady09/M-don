@@ -13,6 +13,7 @@ import {
 import { CATEGORIES, SEASONS, REGIONS, LABELS, BADGES, ORDER_STATUSES, PAYMENT_METHODS, CHECKOUT_PAYMENTS, PAYMENT_STATUSES, NOT_SOLD } from '../../shared/shop.js';
 import { dashboardUrl } from '../stripe.js';
 import { brevoEnabled, removeSubscriber } from '../newsletter.js';
+import { visitStats } from '../visits.js';
 
 const TOO_MANY = 'Shumë përpjekje të gabuara. Provo përsëri më vonë.';
 const BAD_LOGIN = 'Email-i ose fjalëkalimi është i gabuar.';
@@ -376,6 +377,7 @@ export default function adminRoutes({ isDev, noLogin = false }) {
       byPayment,
       topProducts,
       subscribers: { total: running, inPeriod: running - subBefore, series: subSeries },
+      visits: visitStats(days),
       waiting: db.prepare("SELECT COUNT(*) AS n FROM orders WHERE status = 'e_re'").get().n,
       recent: db.prepare('SELECT id, code, name, city, total, status, created_at FROM orders ORDER BY id DESC LIMIT 6').all(),
     });

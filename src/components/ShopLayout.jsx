@@ -19,6 +19,20 @@ function ScrollManager() {
   return null;
 }
 
+// Tells the server a page was opened, for the visitor count in the owner panel (no cookies; see server/visits.js)
+function VisitCounter() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    try {
+      const body = new Blob([JSON.stringify({ path: pathname })], { type: 'application/json' });
+      if (!navigator.sendBeacon?.('/api/visit', body)) {
+        fetch('/api/visit', { method: 'POST', body, headers: { 'Content-Type': 'application/json' }, keepalive: true }).catch(() => {});
+      }
+    } catch { /* counting must never break the shop */ }
+  }, [pathname]);
+  return null;
+}
+
 export default function ShopLayout() {
   const { t } = useLang();
   // The beige mode belongs to the shop; the owner panel keeps its own theme
@@ -27,6 +41,7 @@ export default function ShopLayout() {
     <SearchProvider>
       <a href="#main" className="absolute -top-16 left-4 z-[100] bg-white px-4 py-3 text-sm text-ink focus:top-3">{t('Kalo te përmbajtja')}</a>
       <ScrollManager />
+      <VisitCounter />
       <Header />
       <main id="main">
         <Outlet />

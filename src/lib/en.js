@@ -3,7 +3,7 @@
 // Product names and materials are translated in the owner dashboard instead.
 const EN = {
   // Head
-  'M’DON — Moda autoktone shqiptare': 'M’DON — Autochthonous Albanian fashion',
+  'M’DON — Streetwear shqiptar': 'M’DON — Albanian Streetwear',
 
   // Header & menu
   'Kalo te përmbajtja': 'Skip to content',
@@ -227,7 +227,7 @@ const EN = {
   'Rrënjë të lashta, vija të reja.': 'Ancient roots, new lines.',
   'Kthehu lart': 'Back to top',
   'Pagesa': 'Payment',
-  'Moda autoktone shqiptare.': 'Autochthonous Albanian fashion.',
+  'Streetwear shqiptar.': 'Albanian streetwear.',
   'Qepur me dorë, në Shqipëri.': 'Sewn by hand, in Albania.',
   'Bli': 'Shop',
   'Dhurata': 'Gifts',

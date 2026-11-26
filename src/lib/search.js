@@ -1,4 +1,4 @@
-import { BADGES, CATEGORIES, LABELS, REGIONS, SEASONS } from '../../shared/shop.js';
+import { BADGES, CATEGORIES, LABELS, SEASONS } from '../../shared/shop.js';
 
 // Search the catalogue the way people type: in either language, with or without ë and ç,
 // in any word order, in the plural, or just the start of a word ("xham" finds Xhamadan).
@@ -42,7 +42,7 @@ function fieldsOf(p) {
   return [
     [3, [p.name_sq, p.name_en]],
     [2, [p.material_sq, p.material_en, ...names(CATEGORIES, p.categories), ...names(LABELS, [p.label])]],
-    [1, [...names(SEASONS, p.seasons), REGIONS[p.region], ...names(BADGES, [p.badge])]],
+    [1, [...names(SEASONS, p.seasons), ...names(BADGES, [p.badge])]],
   ].map(([weight, texts]) => [weight, words(texts.filter(Boolean).join(' '))]);
 }
 

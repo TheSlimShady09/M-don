@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLang } from '../lib/i18n.jsx';
 import { useProducts } from '../lib/products.js';
 import { searchProducts } from '../lib/search.js';
-import { CATEGORIES, LABELS, REGIONS } from '../../shared/shop.js';
+import { CATEGORIES, LABELS } from '../../shared/shop.js';
 import { Arrow, Magnifier, Media, Wrap } from './ui.jsx';
 
 const SUGGESTIONS = ['Xhamadan', 'Lesh', 'Qeleshe', 'Argjend', 'Fustan', 'Dimër'];
@@ -186,8 +186,7 @@ function SearchDialog({ initial, onClose }) {
                     >
                       <Media src={p.image} ratio="3 / 4" className="media-quiet w-[60px] flex-none" />
                       <div className="min-w-0">
-                        <p className="text-[10px] font-medium uppercase tracking-[.28em] text-flame">{REGIONS[p.region]}</p>
-                        <p className="mt-1 truncate font-serif text-xl leading-tight text-white">{pname(p)}</p>
+                        <p className="truncate font-serif text-xl leading-tight text-white">{pname(p)}</p>
                         <p className="mt-0.5 text-[13px] text-white/62">
                           {p.label ? pick(LABELS[p.label]) : pick(CATEGORIES[p.categories[0]])} · {price(p.price)}
                         </p>
