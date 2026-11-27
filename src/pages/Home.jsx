@@ -342,13 +342,12 @@ export default function Home() {
       <Categories />
       <Story />
       <Season />
-
-      <Wrap aria-hidden="true"><Zigzag /></Wrap>
-      <Lookbook />
       <Eagle />
       <BestSellers />
       <Features />
       <Newsletter />
+      {/* Lookbook closes the page */}
+      <Lookbook />
     </>
   );
 }
