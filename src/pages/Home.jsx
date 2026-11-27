@@ -5,8 +5,6 @@ import { useProducts } from '../lib/products.js';
 import { api } from '../lib/api.js';
 import { useToast } from '../lib/toast.jsx';
 import { Arrow, Kilim, Reveal, Wrap, Zigzag } from '../components/ui.jsx';
-import SeasonArt from '../components/SeasonArt.jsx';
-import { SEASONS, seasonOf } from '../../shared/shop.js';
 import { GjirokasterArt, QendisjeArt, ThethArt } from '../components/LookArt.jsx';
 import OutfitArt from '../components/OutfitArt.jsx';
 import ProductCard from '../components/ProductCard.jsx';
@@ -151,98 +149,16 @@ function Season() {
       {/* Title on the left, the words and the button on the right; stacked on phones */}
       <Wrap className="grid gap-y-8 md:grid-cols-[1.25fr_1fr] md:items-end md:gap-x-[clamp(32px,6vw,112px)]">
         <Reveal>
-          <p className="eyebrow eyebrow-onred">{t('Sezoni i ri')}</p>
+          <p className="eyebrow eyebrow-onred">{t('Koleksion i ri')}</p>
           <h2 id="split-title" className="mt-7 font-serif text-[length:clamp(60px,7.4vw,120px)] font-light leading-[.95]">
-            {t('Gjak i kuq,')}<br /><em>{t('dhé i zi.')}</em>
+            {t('Trashëgimi')}<br /><em>{t('në lëvizje.')}</em>
           </h2>
         </Reveal>
         <Reveal delay={120} className="md:pb-3">
-          <p className="mb-11 max-w-[42ch] text-white/90">
-            {t('Ngjyrat e flamurit, të endura në lesh: xhamadanë të zinj, qëndisma të kuqe dhe qeleshe të bardha si bora e Bjeshkëve të Nemuna.')}
+          <p className="mb-11 max-w-[56ch] leading-relaxed text-white/90">
+            {t('M’DON Vjeshtë/Dimër ’26 rimendon gjuhën e jetës së përditshme shqiptare përmes streetwear-it bashkëkohor. Si markë e pavarur shqiptare veshjesh, M’DON bashkon trashëgiminë shqiptare, modën moderne dhe identitetin kulturor përmes bluzave me grafika, hudive oversized, imazheve nostalgjike dhe tipografisë ekspresive. Nga shprehjet e njohura shqiptare të dashurisë te humori pa kompleks, koleksioni ynë i parë feston lidhjen mes diasporës shqiptare dhe atdheut të saj. I krijuar për një brez që i mban rrënjët përtej kufijve, M’DON sjell një këndvështrim bashkëkohor mbi modën shqiptare dhe kulturën streetwear: lozonjar, sentimental dhe padyshim yni.')}
           </p>
-          <Link to="/#stinet" className="btn btn-black">{t('Eksploro koleksionin')}</Link>
-        </Reveal>
-      </Wrap>
-    </section>
-  );
-}
-
-// The four seasonal collections: the fabric of each season, the Albanian custom or place it is drawn from, and one line about it
-const SEASON_CARDS = [
-  { slug: 'pranvere', tag: 'Liri · Pambuk', sign: 'Verorja · 1 Mars',
-    note: 'Xhaketa bomber me diellin e xhubletës të qëndisur në gjoks, dhe verorja kuq e bardhë, që hiqet kur kthehen dallëndyshet.' },
-  { slug: 'vere', tag: 'Liri i bardhë', sign: 'Bregu i Jonit',
-    note: 'Bluza liri të bardha me një brez qëndisjeje me pika kryq, të lehta për vapën e bregdetit.' },
-  { slug: 'vjeshte', tag: 'Pambuk i trashë', sign: 'Vjelja e rrushit',
-    note: 'Hudi me brez qilimi të Kukësit dhe xhufka në kordonë, për ditët kur bien gjethet dhe vilet rrushi.' },
-  { slug: 'dimer', tag: 'Pupla · Lesh', sign: 'Bjeshkët e Nemuna',
-    note: 'Xhaketa me pupla dhe kapela e bardhë leshi si qeleshja, për dimrat e gjatë të malësisë.' },
-];
-
-function Seasons() {
-  const { t, pick, lang } = useLang();
-  const now = seasonOf();
-  // Wide screens: the four panels sit side by side and the one under the pointer or focus opens up.
-  // At rest the current season is open. Narrower screens: a swipeable row of full cards.
-  const [open, setOpen] = useState(now);
-  return (
-    <section id="stinet" aria-labelledby="stinet-title" className="scroll-mt-20 pb-[clamp(72px,8vw,120px)] pt-[clamp(88px,11vw,168px)]">
-      <Wrap>
-        <header className="mb-[clamp(44px,5vw,72px)] grid items-end gap-x-16 gap-y-8 lg:grid-cols-[1fr_minmax(0,400px)]">
-          <div>
-            <p className="eyebrow">{t('Katër stinë')}</p>
-            <h2 id="stinet-title" className={`${h2} text-white`}>{t('Koleksionet e stinëve')}</h2>
-          </div>
-          <p className="text-white/62">{t('Katër koleksione, një për çdo stinë: materiali, ngjyra dhe tradita që i shkojnë asaj kohe të vitit.')}</p>
-        </header>
-        <Reveal
-          as="ul"
-          onMouseLeave={() => setOpen(now)}
-          className="-mx-[clamp(16px,4vw,56px)] flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-[clamp(16px,4vw,56px)] px-[clamp(16px,4vw,56px)] py-1 [scrollbar-width:none] lg:mx-0 lg:h-[clamp(580px,78vh,720px)] lg:gap-4 lg:overflow-visible lg:p-0"
-        >
-          {SEASON_CARDS.map(({ slug, tag, sign, note }, i) => {
-            const isOpen = open === slug;
-            return (
-              <li
-                key={slug}
-                onMouseEnter={() => setOpen(slug)}
-                onFocus={() => setOpen(slug)}
-                style={{ '--grow': isOpen ? 2.8 : 1 }}
-                className="w-[80%] flex-none snap-start sm:w-[46%] md:w-[36%] lg:w-auto lg:min-w-0 lg:flex-[var(--grow)_1_0%] lg:transition-[flex-grow] lg:duration-700 lg:ease-[var(--ease-brand)]"
-              >
-                <Link to={`/katalogu?stina=${slug}`} className={`group flex h-full flex-col overflow-hidden border bg-ink-2 transition-colors duration-300 hover:border-flame ${isOpen ? 'border-crimson lg:border-flame' : 'border-crimson'}`}>
-                  <div className="relative aspect-square overflow-hidden bg-[#181111] lg:aspect-auto lg:min-h-0 lg:flex-1">
-                    {/* Closed panels show the garment (left third of the drawing), the open one the whole scene */}
-                    <SeasonArt
-                      season={slug}
-                      label={`${pick(SEASONS[slug])}: ${t(note)}`}
-                      className={`block w-full lg:absolute lg:left-1/2 lg:top-1/2 lg:aspect-square lg:h-full lg:w-auto lg:max-w-none lg:-translate-y-1/2 lg:transition-transform lg:duration-700 lg:ease-[var(--ease-brand)] ${isOpen ? 'lg:-translate-x-1/2' : 'lg:-translate-x-[30%]'}`}
-                    />
-                    {slug === now && (
-                      <span className="absolute left-3 top-3 bg-flame px-2.5 py-1.5 text-[10px] font-medium uppercase tracking-[.24em] text-white">
-                        {t('Sezoni i tanishëm')}
-                      </span>
-                    )}
-                  </div>
-                  <Zigzag className="flex-none opacity-60" />
-                  <div className="flex-none px-5 pb-6 pt-4">
-                    <p className="flex items-baseline gap-3 font-serif text-lg leading-none">
-                      <span className="text-flame [font-variant-numeric:lining-nums]">0{i + 1}</span>
-                      {lang === 'en' && <span lang="sq" className="italic text-white/45">{SEASONS[slug].sq.toLocaleLowerCase('sq')}</span>}
-                    </p>
-                    <h3 className="mt-3 whitespace-nowrap font-serif text-[length:clamp(36px,3vw,46px)] font-light leading-none text-white">{pick(SEASONS[slug])}</h3>
-                    <p className="mt-3.5 whitespace-nowrap text-[10px] font-medium uppercase tracking-[.24em] text-white/62">{t(tag)}</p>
-                    <p className="mt-1 whitespace-nowrap font-serif text-[17px] italic text-white/80">{t(sign)}</p>
-                    {/* Same size open or closed (fixed width, faded out) so the drawing above never jumps */}
-                    <div className={`transition-opacity duration-500 lg:w-[36ch] ${isOpen ? '' : 'lg:opacity-0'}`}>
-                      <p className="mt-4 text-sm leading-relaxed text-white/62 lg:min-h-[6.5em]">{t(note)}</p>
-                      <span className="link-arrow mt-5 text-white">{t('Shiko koleksionin')} <Arrow /></span>
-                    </div>
-                  </div>
-                </Link>
-              </li>
-            );
-          })}
+          <Link to="/katalogu?stina=dimer" className="btn btn-black">{t('Eksploro koleksionin')}</Link>
         </Reveal>
       </Wrap>
     </section>
@@ -426,7 +342,7 @@ export default function Home() {
       <Categories />
       <Story />
       <Season />
-      <Seasons />
+
       <Wrap aria-hidden="true"><Zigzag /></Wrap>
       <Lookbook />
       <Eagle />

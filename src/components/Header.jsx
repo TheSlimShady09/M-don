@@ -11,7 +11,7 @@ const NAV = [
   { to: '/katalogu?k=burra', label: 'Burra', k: 'burra' },
   { to: '/katalogu?k=gra', label: 'Gra', k: 'gra' },
   // Fëmijë returns with the first kids drop
-  { to: '/#stinet', label: 'Stinët' },
+  { to: '/katalogu?stina=dimer', label: 'Koleksion i ri' },
   { to: '/#historia', label: 'Historia' },
 ];
 

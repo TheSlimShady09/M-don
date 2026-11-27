@@ -8,7 +8,7 @@ import { QendisjeBand } from './LookArt.jsx';
 import Logo from './Logo.jsx';
 
 const COLUMNS = [
-  { title: 'Bli', links: [['Burra', '/katalogu?k=burra'], ['Gra', '/katalogu?k=gra'], ['Koleksionet e stinëve', '/#stinet'], ['Të rejat', '/katalogu?rendit=te-rejat']] },
+  { title: 'Bli', links: [['Burra', '/katalogu?k=burra'], ['Gra', '/katalogu?k=gra'], ['Të rejat', '/katalogu?rendit=te-rejat']] },
   { title: 'M’DON', links: [['Historia jonë', '/#historia'], ['Versioni premium', '/#shqiponja'], ['Lookbook', '/#lookbook'], ['Më të mirat', '/#me-te-mirat']] },
   { title: 'Ndihmë', links: [['Shporta', '/shporta'], ['Dërgesat dhe kthimet', '/#sherbimet'], ['Mënyrat e pagesës', '/#sherbimet']] },
 ];

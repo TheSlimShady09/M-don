@@ -83,10 +83,11 @@ const EN = {
 
   // Split banner
   'Sezoni i ri': 'New season',
-  'Gjak i kuq,': 'Red blood,',
-  'dhé i zi.': 'black earth.',
-  'Ngjyrat e flamurit, të endura në lesh: xhamadanë të zinj, qëndisma të kuqe dhe qeleshe të bardha si bora e Bjeshkëve të Nemuna.':
-    'The colours of the flag, woven in wool: black xhamadans, red embroidery and qeleshe caps as white as the snow of the Accursed Mountains.',
+  'Koleksion i ri': 'New collection',
+  'Trashëgimi': 'Heritage',
+  'në lëvizje.': 'in Motion.',
+  'M’DON Vjeshtë/Dimër ’26 rimendon gjuhën e jetës së përditshme shqiptare përmes streetwear-it bashkëkohor. Si markë e pavarur shqiptare veshjesh, M’DON bashkon trashëgiminë shqiptare, modën moderne dhe identitetin kulturor përmes bluzave me grafika, hudive oversized, imazheve nostalgjike dhe tipografisë ekspresive. Nga shprehjet e njohura shqiptare të dashurisë te humori pa kompleks, koleksioni ynë i parë feston lidhjen mes diasporës shqiptare dhe atdheut të saj. I krijuar për një brez që i mban rrënjët përtej kufijve, M’DON sjell një këndvështrim bashkëkohor mbi modën shqiptare dhe kulturën streetwear: lozonjar, sentimental dhe padyshim yni.':
+    'M’DON Fall/Winter ’26 reimagines the language of everyday Albanian life through contemporary streetwear. As an independent Albanian clothing brand, M’DON brings together Albanian heritage, modern fashion and cultural identity through graphic T-shirts, oversized hoodies, nostalgic imagery and expressive typography. From familiar Albanian expressions of affection to unapologetic humour, our debut collection celebrates the connection between the Albanian diaspora and its homeland. Designed for a generation that carries its roots beyond borders, M’DON offers a contemporary perspective on Albanian fashion and streetwear culture: playful, sentimental and unmistakably ours.',
   'Eksploro koleksionin': 'Explore the collection',
 
   // Seasons
