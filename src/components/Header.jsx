@@ -10,7 +10,7 @@ import { setMode, useMode } from '../lib/mode.js';
 const NAV = [
   { to: '/katalogu?k=burra', label: 'Burra', k: 'burra' },
   { to: '/katalogu?k=gra', label: 'Gra', k: 'gra' },
-  { to: '/katalogu?k=femije', label: 'Fëmijë', k: 'femije' },
+  // Fëmijë returns with the first kids drop
   { to: '/#stinet', label: 'Stinët' },
   { to: '/#historia', label: 'Historia' },
 ];

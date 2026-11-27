@@ -23,15 +23,14 @@ function Hero() {
       {/* Test: the 342-diamond eagle photo behind the logo, darkened so the red letters stay legible */}
       <img src="/img/shqiponja-342.jpg" alt="" fetchPriority="high" className="absolute inset-0 -z-10 size-full object-cover [filter:brightness(1.12)_contrast(1.06)]" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,rgba(14,10,10,.3),rgba(14,10,10,.05)_45%,rgba(14,10,10,.55))]" />
-      <Wrap className="grid flex-1 grid-cols-1 grid-rows-[auto_1fr_auto] md:grid-cols-[1fr_minmax(240px,24vw)_1fr] md:gap-x-[clamp(24px,4vw,72px)]">
-        <p className="col-span-full caps text-white md:text-xs">{t('Rrënjë të lashta.')}<br />{t('Vija të reja.')}</p>
+      <Wrap className="grid flex-1 grid-cols-1 grid-rows-[1fr_auto] md:grid-cols-[1fr_minmax(240px,24vw)_1fr] md:gap-x-[clamp(24px,4vw,72px)]">
         <h1 id="hero-title" className="col-span-full my-[clamp(20px,3vw,44px)] self-center text-white">
           <span className="sr-only">M’DON</span>
           <Logo className="mx-auto h-auto w-[80%] max-w-[min(760px,calc((100svh_-_260px)*1.6))]" />
         </h1>
-        {/* "Bli tani" bottom right, "Zbulo historinë" bottom left; stacked on phones */}
-        <Link to="/katalogu" className="btn btn-red mt-2 h-[60px] rounded-full self-end px-11 text-xs max-md:w-full md:col-start-3 md:row-start-3 md:mt-0 md:justify-self-end">{t('Bli tani')}</Link>
-        <Link to="/#historia" className="link-arrow mt-5 self-end justify-self-start py-1 text-xs text-white md:col-start-1 md:row-start-3 md:mt-0 md:mb-[22px]">{t('Zbulo historinë')} <Arrow /></Link>
+        {/* "Bli tani" bottom right, "Zbulo koleksionin" bottom left; stacked on phones */}
+        <Link to="/katalogu" className="btn btn-red mt-2 h-[60px] rounded-full self-end px-11 text-xs max-md:w-full md:col-start-3 md:row-start-2 md:mt-0 md:justify-self-end">{t('Bli tani')}</Link>
+        <Link to="/katalogu?stina=dimer" className="link-arrow mt-5 self-end justify-self-start py-1 text-xs text-white md:col-start-1 md:row-start-2 md:mt-0 md:mb-[22px]">{t('Zbulo koleksionin')} <Arrow /></Link>
       </Wrap>
     </section>
   );
@@ -58,13 +57,13 @@ function PreOrder() {
       <Wrap className="grid items-center gap-x-16 gap-y-10 lg:grid-cols-[1fr_auto]">
         <div>
           <p className="eyebrow">{t('Së shpejti · Para-porosi')}</p>
-          <h2 id="preorder-title" className="mt-5 font-serif text-[length:clamp(36px,4.4vw,64px)] font-light leading-[1.02] text-white">
-            {left ? <>{t('Marka')} <em className="text-flame">{t('po vjen.')}</em></> : <>M’DON <em className="text-flame">{t('ka ardhur.')}</em></>}
+          <h2 id="preorder-title" className="mt-6 font-serif text-[length:clamp(48px,6.4vw,96px)] font-light leading-[.98] text-white">
+            {left ? <>{t('Koleksioni')} <em className="text-flame">{t('i ri.')}</em></> : <>{t('Koleksioni i ri')} <em className="text-flame">{t('është këtu.')}</em></>}
           </h2>
-          <p className="mt-4 max-w-[48ch] text-white/62">
+          <p className="mt-6 max-w-[48ch] text-white/62">
             {left ? `${t('M’DON hapet më')} ${date}. ${t('Bëj para-porosinë tani dhe merre ndër të parët.')}` : t('Faleminderit që na pritët. Dyqani është i hapur.')}
           </p>
-          <Link to="/katalogu?stina=dimer" className="link-arrow mt-7 text-white">{t(left ? 'Bëj para-porosi' : 'Bli tani')} <Arrow /></Link>
+          <Link to="/katalogu?stina=dimer" className="btn btn-red mt-10 mb-2 h-[60px] rounded-full px-12 text-xs max-sm:w-full">{t(left ? 'Bëj para-porosi' : 'Bli tani')}</Link>
         </div>
         {left > 0 && (
           <div>
@@ -85,16 +84,16 @@ function PreOrder() {
 }
 
 const CATS = [
-  { k: 'burra', name: 'Burra', art: 'Ilustrim: hudi e zezë me shqiponjë të kuqe në gjoks, xhinse dhe atlete të bardha', text: 'Hudi, xhinse dhe xhaketa për çdo ditë.' },
-  { k: 'gra', name: 'Gra', art: 'Ilustrim: xhaketë e zezë mbi bluzë të bardhë, pantallona të gjera të kuqe dhe atlete të bardha', text: 'Linja të pastra, me një detaj shqiptar.' },
-  { k: 'femije', name: 'Fëmijë', art: 'Ilustrim: një djalë me hudi të kuqe dhe një vajzë me xhaketë të kuqe', text: 'I njëjti stil, në masa të vogla.' },
+  { k: 'burra', name: 'Burra', art: 'Ilustrim: hudi e zezë me shqiponjë të kuqe në gjoks, xhinse dhe atlete të bardha' },
+  { k: 'gra', name: 'Gra', art: 'Ilustrim: xhaketë e zezë mbi bluzë të bardhë, pantallona të gjera të kuqe dhe atlete të bardha' },
+  // Fëmijë comes back with the first kids drop
 ];
 
 function Categories() {
   const { t } = useLang();
   return (
     <section id="kategorite" aria-label={t('Kategoritë')} className="on-red bg-crimson pb-[clamp(64px,7vw,104px)] pt-[clamp(48px,6vw,88px)] text-white">
-      <Wrap as="ul" className="grid gap-12 md:grid-cols-3 md:gap-[clamp(20px,2.6vw,40px)]">
+      <Wrap as="ul" className="grid gap-12 md:mx-auto md:max-w-[1100px] md:grid-cols-2 md:gap-[clamp(20px,2.6vw,40px)]">
         {CATS.map((c, i) => (
           <Reveal as="li" key={c.k} delay={i * 90}>
             <Link to={`/katalogu?k=${c.k}`} className="group block" aria-label={`${t('Shiko')} ${t(c.name)}`}>
@@ -105,7 +104,6 @@ function Categories() {
                 <h2 className="font-serif text-[length:clamp(36px,3.4vw,52px)] font-light leading-none tracking-[.02em]">{t(c.name)}</h2>
                 <span className="link-arrow border-0 pb-0">{t('Shiko')} <Arrow /></span>
               </div>
-              <p className="mt-3.5 text-[15px] text-white/90">{t(c.text)}</p>
             </Link>
           </Reveal>
         ))}
@@ -128,10 +126,16 @@ function Story() {
         </Reveal>
         <p className="mt-6 font-serif text-lg italic text-white/62">{t('Themeluar në Toronto, me rrënjë në Shqipëri.')}</p>
         <Reveal as="p" className="mt-[clamp(48px,5vw,72px)] max-w-[30ch] font-serif text-[length:clamp(26px,2.6vw,38px)] font-light italic leading-[1.32] text-white">
-          {t('M’DON lindi në Toronto, për këdo që e mban Shqipërinë me vete kudo që shkon.')}
+          {t('Shtëpia nuk ishte kurrë një vend që e lamë.')}
         </Reveal>
-        <Reveal as="p" className="mt-9 max-w-[60ch] text-white/62">
-          {t('Bëjmë veshje moderne për burra, gra dhe fëmijë: xhaketa, hudi, bluza dhe aksesorë, me detaje shqiptare në gjuhën e sotme. Çdo copë pritet dhe qepet në Toronto dhe dërgohet kudo në Kanada.')}
+        <Reveal as="p" className="mt-9 max-w-[60ch] leading-relaxed text-white/72">
+          {t('Diku mes një bilete vetëm vajtje dhe një kthimi veror, lindi M’DON. I formuar nga përvoja e emigrimit, brendi lindi nga kompleksiteti i rritjes mes dy botëve dhe i ndërtimit të një të ardhmeje jashtë vendit, duke mbetur thellësisht i lidhur me Shqipërinë. Verat u bënë një ritual kthimi, i matur me ribashkime, rrugë të njohura dhe lamtumira që nuk u bënë kurrë më të lehta. Ajo që për të tjerët ishte pushim, për ne ishte kthim aty ku i përkisnim. Jeta jonë ishte diku tjetër, por zemrat tona mbetën në shtëpi.')}
+        </Reveal>
+        <Reveal as="p" className="mt-6 max-w-[60ch] leading-relaxed text-white/72">
+          {t('M’DON e përkthen këtë ndjenjë në një gjuhë bashkëkohore të modës, duke e rimenduar trashëgiminë shqiptare përtej kufijve gjeografikë. Është shprehje identiteti, festë e origjinës sonë dhe refuzim për ta lënë largësinë të zbehë atë që jemi.')}
+        </Reveal>
+        <Reveal as="p" className="mt-10 max-w-[30ch] text-balance font-serif text-[length:clamp(22px,2vw,30px)] font-light italic leading-[1.3] text-flame">
+          {t('Për ata që ikën, por kurrë s’ikën vërtet.')}
         </Reveal>
         <p className="mb-14 mt-8 caps text-white">{t('Ekipi i M’DON, Toronto')}</p>
         <Zigzag className="w-52" />

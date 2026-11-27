@@ -19,7 +19,7 @@ const DESCRIPTIONS = {
   vjeshte: 'Koleksioni i vjeshtës: lesh, kadife dhe motive qilimi.',
   dimer: 'Koleksioni i dimrit: lesh i trashë, pallto dhe shalle.',
 };
-const TABS = [['', 'Të gjitha'], ['burra', 'Burra'], ['gra', 'Gra'], ['femije', 'Fëmijë']];
+const TABS = [['', 'Të gjitha'], ['burra', 'Burra'], ['gra', 'Gra']]; // Fëmijë returns with the first kids drop
 const SORTS = {
   rekomanduar: ['Të rekomanduara', () => 0],
   'te-rejat': ['Të rejat', (a, b) => (b.badge === 'risi') - (a.badge === 'risi')],

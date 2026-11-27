@@ -54,6 +54,11 @@ const EN = {
   'Vija të reja.': 'New lines.',
   'Bli tani': 'Shop now',
   'Zbulo historinë': 'Discover the story',
+  'Zbulo koleksionin': 'Discover the collection',
+  'Shtëpia nuk ishte kurrë një vend që e lamë.': 'Home Was Never a Place We Left.',
+  'Diku mes një bilete vetëm vajtje dhe një kthimi veror, lindi M’DON. I formuar nga përvoja e emigrimit, brendi lindi nga kompleksiteti i rritjes mes dy botëve dhe i ndërtimit të një të ardhmeje jashtë vendit, duke mbetur thellësisht i lidhur me Shqipërinë. Verat u bënë një ritual kthimi, i matur me ribashkime, rrugë të njohura dhe lamtumira që nuk u bënë kurrë më të lehta. Ajo që për të tjerët ishte pushim, për ne ishte kthim aty ku i përkisnim. Jeta jonë ishte diku tjetër, por zemrat tona mbetën në shtëpi.': 'Somewhere between a one-way ticket and a summer return, M’DON was born. Shaped by the experience of immigration, the brand emerged from the complexities of growing up between two worlds and building a future abroad while remaining deeply connected to Albania. Summers became a ritual of return, measured in reunions, familiar streets and goodbyes that never grew easier. What was considered a vacation by others was, to us, a return to where we belonged. Our lives existed elsewhere, but our hearts remained home.',
+  'M’DON e përkthen këtë ndjenjë në një gjuhë bashkëkohore të modës, duke e rimenduar trashëgiminë shqiptare përtej kufijve gjeografikë. Është shprehje identiteti, festë e origjinës sonë dhe refuzim për ta lënë largësinë të zbehë atë që jemi.': 'M’DON translates this sentiment into a contemporary language of fashion, reimagining Albanian heritage beyond geographical borders. It is an expression of identity, a celebration of our origins and a refusal to let distance dilute who we are.',
+  'Për ata që ikën, por kurrë s’ikën vërtet.': 'For those who left, yet never truly did.',
 
   // Categories
   'Kategoritë': 'Categories',
@@ -126,8 +131,10 @@ const EN = {
 
   // Pre-order countdown
   'Së shpejti · Para-porosi': 'Coming soon · Pre-order',
-  'Marka': 'The brand',
-  'po vjen.': 'is coming.',
+  'Koleksioni': 'New',
+  'i ri.': 'collection.',
+  'Koleksioni i ri': 'The new collection',
+  'është këtu.': 'is here.',
   'ka ardhur.': 'is here.',
   'M’DON hapet më': 'M’DON opens on',
   'Bëj para-porosinë tani dhe merre ndër të parët.': 'Pre-order now and be among the first to get it.',
