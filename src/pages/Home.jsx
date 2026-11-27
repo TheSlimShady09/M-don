@@ -254,7 +254,7 @@ function Eagle() {
 function BestSellers() {
   const { t } = useLang();
   const { products, error } = useProducts();
-  const best = products.filter((p) => p.featured).slice(0, 8);
+  const best = products.filter((p) => p.featured && !(p.categories?.length && p.categories.every((c) => c === 'femije'))).slice(0, 8); // no kids until the kids drop
   return (
     <section id="me-te-mirat" aria-labelledby="best-title" className="scroll-mt-20 border-t border-rule bg-white pb-[clamp(88px,11vw,168px)] pt-[clamp(80px,9vw,136px)] text-ink">
       <Wrap>
@@ -344,12 +344,12 @@ export default function Home() {
     <>
       <Hero />
       <PreOrder />
+      <BestSellers />
       <Kilim />
       <Categories />
       <Eagle />
       <Story />
       <Season />
-      <BestSellers />
       <Features />
       <Newsletter />
       {/* Lookbook closes the page */}
