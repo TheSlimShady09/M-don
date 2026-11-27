@@ -2,7 +2,7 @@
 
 // The shop is in Toronto and ships within Canada. Prices are whole Canadian dollars.
 export const CURRENCY = 'CAD';
-export const SHIPPING_FREE_FROM = 150; // $ CAD
+export const SHIPPING_FREE_FROM = 250; // $ CAD
 export const SHIPPING_COST = 15; // $ CAD
 
 // Canadian provinces and territories (shipping address)

@@ -168,4 +168,4 @@ shared/shop.js  rregullat e përbashkëta: transporti, kategoritë, stinët, tre
 arkiva-statike/ versioni i vjetër HTML/CSS (vetëm për referencë)
 ```
 
-Dyqani dërgon vetëm brenda Kanadasë. Transporti: falas mbi $150, përndryshe $15 (`SHIPPING_FREE_FROM` dhe `SHIPPING_COST` te `shared/shop.js`). Shporta kërkon provincën dhe kodin postar kanadez.
+Dyqani dërgon vetëm brenda Kanadasë. Transporti: falas mbi $250, përndryshe $15 (`SHIPPING_FREE_FROM` dhe `SHIPPING_COST` te `shared/shop.js`). Shporta kërkon provincën dhe kodin postar kanadez.

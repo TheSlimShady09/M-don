@@ -28,7 +28,7 @@ export default function Footer() {
   const toTop = () => window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
 
   const info = [
-    [t('Dërgesa'), `${t('Falas mbi')} ${price(SHIPPING_FREE_FROM)}`, t('Kudo në Kanada, 2–7 ditë pune.')],
+    [t('Dërgesa'), `${t('Falas mbi')} ${price(SHIPPING_FREE_FROM)}`, t('Kudo në Kanada.')],
     [t('Pagesa'), t('Pagesë e sigurt'), payments.map(([, v]) => pick(v)).join(' · ')],
     [t('Punishtja'), t('Toronto, Kanada'), t('Prerë, qëndisur dhe qepur me dorë.')],
   ];
