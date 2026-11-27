@@ -9,7 +9,7 @@ import { CHECKOUT_PAYMENTS, MAX_QTY, PAYMENT_METHODS, PROVINCES, SHIPPING_FREE_F
 import { Arrow, Chest, Kilim, Media, Wrap } from '../components/ui.jsx';
 
 const PAYMENT_HINTS = {
-  karte: 'Visa, Mastercard e të tjera. Paguan tani, në mënyrë të sigurt.',
+  karte: 'Visa, Mastercard, Apple Pay ose Google Pay. Paguan tani, në mënyrë të sigurt.',
 };
 
 function Lock() {
@@ -21,16 +21,33 @@ function Lock() {
   );
 }
 
-// Plain card outlines, no brand logos
+// Acceptance marks of what the payment page takes, as small badges in each brand's colours
+const badge = 'h-[22px] w-[36px] rounded-[3px]';
 function CardMarks() {
   return (
-    <span aria-hidden="true" className="flex gap-1 text-stone">
-      {[0, 1].map((i) => (
-        <svg key={i} viewBox="0 0 28 18" className="h-[18px] w-7" fill="none" stroke="currentColor" strokeWidth="1.2">
-          <rect x=".6" y=".6" width="26.8" height="16.8" rx="2" />
-          {i === 0 ? <path d="M.6 5.5h26.8M.6 8.5h26.8" /> : <rect x="4" y="5" width="6" height="4.5" rx=".8" />}
-        </svg>
-      ))}
+    <span role="img" aria-label="Visa, Mastercard, Apple Pay, Google Pay" className="flex flex-wrap justify-end gap-1">
+      <svg viewBox="0 0 36 22" className={badge}>
+        <rect width="36" height="22" rx="3" fill="#1A1F71" />
+        <text x="18" y="15.2" textAnchor="middle" fill="#fff" fontFamily="Arial, Helvetica, sans-serif" fontSize="10" fontWeight="700" fontStyle="italic" letterSpacing=".3">VISA</text>
+      </svg>
+      <svg viewBox="0 0 36 22" className={badge}>
+        <rect width="36" height="22" rx="3" fill="#fff" stroke="#E2D6C3" />
+        <circle cx="14.5" cy="11" r="6.2" fill="#EB001B" />
+        <circle cx="21.5" cy="11" r="6.2" fill="#F79E1B" />
+        <path d="M18 5.9a6.2 6.2 0 0 1 0 10.2 6.2 6.2 0 0 1 0-10.2Z" fill="#FF5F00" />
+      </svg>
+      <svg viewBox="0 0 36 22" className={badge}>
+        <rect width="36" height="22" rx="3" fill="#000" />
+        <path d="M11.6 8.4c.5-.6.8-1.4.7-2.2-.7 0-1.5.5-2 1.1-.4.5-.8 1.3-.7 2.1.8.1 1.5-.4 2-1Zm.7 1.1c-1.1-.1-2 .6-2.5.6s-1.3-.6-2.2-.6c-1.1 0-2.1.7-2.7 1.7-1.2 2-.3 5 .8 6.7.6.8 1.2 1.7 2.1 1.6.8 0 1.2-.5 2.2-.5s1.3.5 2.2.5c.9 0 1.5-.8 2-1.6.6-.9.9-1.8.9-1.9 0 0-1.8-.7-1.8-2.7 0-1.7 1.4-2.5 1.4-2.5-.8-1.2-2-1.3-2.4-1.3Z" fill="#fff" />
+        <text x="24.5" y="15" textAnchor="middle" fill="#fff" fontFamily="-apple-system, 'Helvetica Neue', Arial, sans-serif" fontSize="9" fontWeight="500">Pay</text>
+      </svg>
+      <svg viewBox="0 0 36 22" className={badge}>
+        <rect width="36" height="22" rx="3" fill="#fff" stroke="#E2D6C3" />
+        <text x="5" y="15" fontFamily="Arial, Helvetica, sans-serif" fontSize="10" fontWeight="700">
+          <tspan fill="#4285F4">G</tspan>
+        </text>
+        <text x="22.5" y="15" textAnchor="middle" fill="#5F6368" fontFamily="Arial, Helvetica, sans-serif" fontSize="9" fontWeight="500">Pay</text>
+      </svg>
     </span>
   );
 }
@@ -286,7 +303,7 @@ export default function Cart() {
                 {byCard && (
                   <p className="mt-3 flex items-start gap-2 text-[13px] text-stone">
                     <Lock />
-                    <span>{t('Pagesa bëhet në faqen e sigurt të Stripe. Ne nuk i shohim dhe nuk i ruajmë të dhënat e kartës.')}</span>
+                    <span>{t('Pagesa bëhet në një faqe pagese të sigurt e të koduar. Ne nuk i shohim dhe nuk i ruajmë të dhënat e kartës.')}</span>
                   </p>
                 )}
                 <Link to="/katalogu" className="link-arrow mt-6 text-ink">{t('Vazhdo blerjet')} <Arrow /></Link>

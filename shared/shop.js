@@ -58,7 +58,7 @@ export const BADGES = {
 };
 
 export const PAYMENT_METHODS = {
-  karte: { sq: 'Kartë (Stripe)', en: 'Card (Stripe)' },   // shown only when Stripe keys are set
+  karte: { sq: 'Kartë', en: 'Card' },   // Stripe Checkout (cards, Apple Pay, Google Pay); shown only when Stripe keys are set
   dorezim: { sq: 'Pagesë në dorëzim', en: 'Cash on delivery' },
   banke: { sq: 'Transfertë bankare', en: 'Bank transfer' },
 };
