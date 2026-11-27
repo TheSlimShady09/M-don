@@ -6,7 +6,7 @@ import { ROOT, UPLOAD_DIR, db, tx } from './db.js';
 import publicRoutes from './routes/public.js';
 import adminRoutes from './routes/admin.js';
 import { stripeEnabled, WEBHOOK_SECRET, PUBLIC_URL, handleWebhook, syncPending } from './stripe.js';
-import { CATEGORIES, SEASONS } from '../shared/shop.js';
+import { CATEGORIES } from '../shared/shop.js';
 import { brevoEnabled, syncSubscribers } from './newsletter.js';
 import crypto from 'node:crypto';
 import { audit, createUser, endUserSessions, passwordProblem, setPassword, userCount, validEmail } from './auth.js';
@@ -155,8 +155,9 @@ app.get('/sitemap.xml', (req, res) => {
   const pages = [
     ['/', '1.0'],
     ['/katalogu', '0.9'],
-    ...Object.keys(CATEGORIES).map((k) => [`/katalogu?k=${k}`, '0.8']),
-    ...Object.keys(SEASONS).map((s) => [`/katalogu?stina=${s}`, '0.7']),
+    // Only what the shop shows now: no Fëmijë until the kids drop, and only the winter collection
+    ...Object.keys(CATEGORIES).filter((k) => k !== 'femije').map((k) => [`/katalogu?k=${k}`, '0.8']),
+    ['/katalogu?stina=dimer', '0.8'],
   ];
   const urls = pages.map(([p, priority]) => `  <url><loc>${base}${p}</loc><changefreq>weekly</changefreq><priority>${priority}</priority></url>`);
   res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`);
