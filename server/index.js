@@ -2,13 +2,14 @@ import express from 'express';
 import fs from 'node:fs';
 import path from 'node:path';
 import multer from 'multer';
-import { ROOT, UPLOAD_DIR } from './db.js';
+import { ROOT, UPLOAD_DIR, db, tx } from './db.js';
 import publicRoutes from './routes/public.js';
 import adminRoutes from './routes/admin.js';
 import { stripeEnabled, WEBHOOK_SECRET, PUBLIC_URL, handleWebhook, syncPending } from './stripe.js';
 import { CATEGORIES, SEASONS } from '../shared/shop.js';
 import { brevoEnabled, syncSubscribers } from './newsletter.js';
-import { audit, createUser, passwordProblem, userCount, validEmail } from './auth.js';
+import crypto from 'node:crypto';
+import { audit, createUser, endUserSessions, passwordProblem, setPassword, userCount, validEmail } from './auth.js';
 
 const isDev = process.argv.includes('--dev');
 const PORT = Number(process.env.PORT) || (isDev ? 3001 : 3000);
@@ -38,6 +39,35 @@ if (userCount() === 0 && (process.env.OWNER_EMAIL || process.env.OWNER_PASSWORD)
     const user = createUser({ email, password, role: 'pronar', mustChange: true });
     audit({ ip: 'server' }, user, 'user_added', 'Llogaria e pronarit u krijua nga OWNER_EMAIL / OWNER_PASSWORD');
     console.log(`\n  Llogaria e pronarit u krijua: ${email}. Hyr te /admin; tani mund t'i fshish OWNER_EMAIL dhe OWNER_PASSWORD.\n`);
+  }
+}
+
+// Owner locked out (forgotten email, password or phone) and no terminal: OWNER_RESET=1 with OWNER_EMAIL and
+// OWNER_PASSWORD puts that email and a temporary password on the owner account and unlinks its 2FA app,
+// so the next sign-in asks for a new password and a new QR code. Done once per email + password pair,
+// so leaving the settings in place does not reset the account again at every restart.
+if (userCount() > 0 && process.env.OWNER_RESET === '1' && process.env.OWNER_EMAIL && process.env.OWNER_PASSWORD) {
+  const email = process.env.OWNER_EMAIL.trim().toLowerCase();
+  const password = process.env.OWNER_PASSWORD.trim();
+  const mark = crypto.createHash('sha256').update(`${email}|${password}`).digest('hex');
+  const done = db.prepare("SELECT value FROM settings WHERE key = 'owner_reset'").get()?.value === mark;
+  const owner = db.prepare("SELECT id, email FROM users WHERE role = 'pronar' ORDER BY id LIMIT 1").get();
+  const taken = db.prepare('SELECT id FROM users WHERE email = ? AND id <> ?').get(email, owner?.id ?? -1);
+  const problem = !owner ? 'nuk ka llogari pronari.'
+    : taken ? 'ky email i përket një llogarie tjetër.'
+      : !validEmail(email) ? 'OWNER_EMAIL nuk është email i vlefshëm.'
+        : passwordProblem(password, email);
+  if (problem) console.error(`\n  OWNER_RESET nuk u bë: ${problem}\n`);
+  else if (!done) {
+    tx(() => {
+      db.prepare('UPDATE users SET email = ?, totp_secret = NULL, totp_last_step = 0, failed_logins = 0, locked_until = 0 WHERE id = ?').run(email, owner.id);
+      db.prepare('DELETE FROM recovery_codes WHERE user_id = ?').run(owner.id);
+      setPassword(owner.id, password, { mustChange: true });
+      endUserSessions(owner.id);
+      db.prepare("INSERT INTO settings (key, value) VALUES ('owner_reset', ?) ON CONFLICT (key) DO UPDATE SET value = excluded.value").run(mark);
+    });
+    audit({ ip: 'server' }, { id: owner.id, email }, 'password_changed', `Rivendosje nga OWNER_RESET (${owner.email} → ${email}), 2FA u hoq`);
+    console.log(`\n  Llogaria e pronarit u rivendos: ${email}. Hyr te /admin, pastaj fshi OWNER_RESET, OWNER_EMAIL dhe OWNER_PASSWORD.\n`);
   }
 }
 
