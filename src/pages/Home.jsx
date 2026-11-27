@@ -301,26 +301,26 @@ function Newsletter() {
   };
 
   return (
-    <section aria-labelledby="news-title" className="relative isolate overflow-hidden border-t border-white/14 bg-ink py-[clamp(88px,10vw,152px)]">
+    <section aria-labelledby="news-title" className="on-red relative isolate overflow-hidden bg-crimson py-[clamp(88px,10vw,152px)] text-white">
       {/* big faint MD behind the words */}
-      <Monogram className="pointer-events-none absolute -right-[6%] top-1/2 -z-10 w-[min(560px,80vw)] -translate-y-1/2 text-crimson opacity-15 lg:opacity-25" />
+      <Monogram className="pointer-events-none absolute -right-[6%] top-1/2 -z-10 w-[min(560px,80vw)] -translate-y-1/2 text-ink opacity-20 lg:opacity-30" />
       <Wrap className="grid items-end gap-x-[clamp(40px,7vw,120px)] gap-y-12 lg:grid-cols-[1.1fr_1fr]">
         <div>
-          <p className="eyebrow">{t('Newsletter')}</p>
+          <p className="eyebrow eyebrow-onred">{t('Newsletter')}</p>
           <h2 id="news-title" className="mt-6 font-serif text-[length:clamp(52px,7vw,110px)] font-light leading-[.95] text-white">
-            {t('Bëhu pjesë')}<br /><em className="text-flame">{t('e fisit.')}</em>
+            {t('Bëhu pjesë')}<br /><em className="text-beige">{t('e fisit.')}</em>
           </h2>
-          <p className="mt-6 max-w-[42ch] leading-relaxed text-white/70">{t('Merr i pari koleksionet e reja, ftesat për shfaqjet dhe historitë pas çdo motivi.')}</p>
+          <p className="mt-6 max-w-[42ch] leading-relaxed text-white/90">{t('Merr i pari koleksionet e reja, ftesat për shfaqjet dhe historitë pas çdo motivi.')}</p>
         </div>
         <div>
           <ul className="mb-8 space-y-3.5">
             {['Qasje e hershme në çdo drop', 'Para-porosia para të gjithëve', 'Historitë pas çdo motivi'].map((perk) => (
-              <li key={perk} className="flex items-center gap-4 text-white/85">
-                <span aria-hidden="true" className="size-2 shrink-0 rotate-45 bg-flame" />{t(perk)}
+              <li key={perk} className="flex items-center gap-4 text-white">
+                <span aria-hidden="true" className="size-2 shrink-0 rotate-45 bg-beige" />{t(perk)}
               </li>
             ))}
           </ul>
-          <form onSubmit={submit} noValidate className="flex items-center rounded-full border border-white/25 bg-white/[.04] p-1.5 transition-colors focus-within:border-flame has-[[aria-invalid]]:border-flame">
+          <form onSubmit={submit} noValidate className="flex items-center rounded-full border border-white/45 bg-ink/15 p-1.5 transition-colors focus-within:border-white focus-within:bg-ink/25 has-[[aria-invalid]]:border-ink">
             <label htmlFor="news-email" className="sr-only">{t('Adresa e email-it')}</label>
             <input
               ref={input}
@@ -332,11 +332,11 @@ function Newsletter() {
               aria-invalid={state.invalid || undefined}
               aria-describedby="news-note"
               placeholder={t('Adresa jote e email-it')}
-              className="h-12 min-w-0 flex-1 bg-transparent pl-5 pr-3 text-[15px] font-light tracking-[.02em] text-white outline-none placeholder:text-white/55"
+              className="h-12 min-w-0 flex-1 bg-transparent pl-5 pr-3 text-[15px] font-light tracking-[.02em] text-white outline-none placeholder:text-white/70"
             />
-            <button type="submit" disabled={state.busy} className="btn btn-red h-12 shrink-0 rounded-full px-6 text-xs sm:px-8">{t('Regjistrohu')}</button>
+            <button type="submit" disabled={state.busy} className="btn btn-black h-12 shrink-0 rounded-full px-6 text-xs sm:px-8">{t('Regjistrohu')}</button>
           </form>
-          <p id="news-note" role="status" className={`mt-4 min-h-[1.7em] pl-5 text-[13px] ${state.invalid ? 'text-flame' : 'text-white/55'}`}>{t(state.note)}</p>
+          <p id="news-note" role="status" className={`mt-4 min-h-[1.7em] pl-5 text-[13px] ${state.invalid ? 'font-medium text-white' : 'text-white/80'}`}>{t(state.note)}</p>
         </div>
       </Wrap>
     </section>
