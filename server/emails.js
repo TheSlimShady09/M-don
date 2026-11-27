@@ -86,6 +86,21 @@ function layout({ title, preheader, site, logo, address, body, unsubscribe }) {
 </html>`;
 }
 
+/** Owner panel: link to choose a new password (valid 30 minutes, once). Albanian first: the panel is in Albanian. */
+export function resetPasswordEmail({ site, logo, address, link }) {
+  const body = `
+    ${eyebrow('Paneli i pronarit')}
+    ${heading('Fjalëkalim i ri')}
+    ${para('Dikush (shpresojmë ti) kërkoi të ndryshojë fjalëkalimin e panelit të M’DON. Lidhja vlen 30 minuta dhe vetëm një herë. Pas saj, paneli do të të kërkojë sërish kodin 6-shifror nga aplikacioni.')}
+    ${button(link, 'Zgjidh fjalëkalimin e ri')}
+    ${divider}
+    ${eyebrow('Owner panel')}
+    ${heading('A new password', 30)}
+    ${para('Someone (hopefully you) asked to change the M’DON panel password. The link works for 30 minutes, once. The panel will still ask for the 6-digit code from your app.')}
+    ${para('Nuk e kërkove ti? Mos bëj asgjë: fjalëkalimi mbetet i njëjti. · Didn’t ask for this? Do nothing: your password stays the same.')}`;
+  return layout({ title: 'Fjalëkalim i ri · M’DON', preheader: 'Lidhja për fjalëkalimin e ri, e vlefshme 30 minuta.', site, logo, address, body, unsubscribe: false });
+}
+
 /** Double opt-in: Brevo replaces {{ doubleoptin }} with the person's confirmation link */
 export function confirmEmail({ site, logo, address }) {
   const body = `

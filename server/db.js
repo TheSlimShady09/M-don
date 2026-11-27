@@ -237,6 +237,27 @@ if (db.prepare('PRAGMA user_version').get().user_version < 6) {
   }
 }
 
+// ---------- "Forgot password" links for the owner panel (schema version 7) ----------
+// Only a hash of the token is kept; each link expires after 30 minutes and works once.
+if (db.prepare('PRAGMA user_version').get().user_version < 7) {
+  db.exec('BEGIN');
+  try {
+    db.exec(`
+      CREATE TABLE password_resets (
+        token_hash TEXT PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        expires_at INTEGER NOT NULL,
+        used_at INTEGER
+      );
+      PRAGMA user_version = 7;
+    `);
+    db.exec('COMMIT');
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw err;
+  }
+}
+
 export function tx(fn) {
   db.exec('BEGIN');
   try {

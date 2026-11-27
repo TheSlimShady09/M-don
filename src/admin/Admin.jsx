@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { api } from '../lib/api.js';
 import { AdminContext } from './ui.jsx';
 import AdminLayout from './AdminLayout.jsx';
-import { SignIn, NoOwner } from './Login.jsx';
+import { SignIn, NoOwner, ResetPassword } from './Login.jsx';
 import Overview from './Overview.jsx';
 import Orders from './Orders.jsx';
 import OrderDetail from './OrderDetail.jsx';
@@ -38,6 +38,7 @@ function useIdleGuard(active, idleMinutes, onIdle) {
 export default function Admin() {
   const [session, setSession] = useState(null);
   const [notice, setNotice] = useState('');
+  const [resetToken, setResetToken] = useState(() => new URLSearchParams(window.location.search).get('rivendos'));
 
   const refresh = useCallback(() => api('/admin/session')
     .then(setSession)
@@ -84,6 +85,19 @@ export default function Admin() {
   }), [session?.user, session?.preview, refresh, signedOut]);
 
   if (!session) return <div className="min-h-screen bg-ink" />;
+  // The link from the "forgot password" email: /admin?rivendos=…
+  if (resetToken && !session.loggedIn) {
+    return (
+      <ResetPassword
+        token={resetToken}
+        onDone={(msg) => {
+          window.history.replaceState(null, '', '/admin');
+          setResetToken(null);
+          setNotice(msg);
+        }}
+      />
+    );
+  }
   if (!session.loggedIn) {
     if (session.setupNeeded && !session.stage) {
       return session.setupAllowed ? <SignIn setup onDone={refresh} /> : <NoOwner problem={session.setupProblem} />;

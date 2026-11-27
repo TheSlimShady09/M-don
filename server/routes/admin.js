@@ -11,7 +11,8 @@ import {
   requireUser, requireOwnerRole, ipBlocked, noteIpFailure, audit,
 } from '../auth.js';
 import { CATEGORIES, SEASONS, REGIONS, LABELS, BADGES, ORDER_STATUSES, PAYMENT_METHODS, CHECKOUT_PAYMENTS, PAYMENT_STATUSES, NOT_SOLD } from '../../shared/shop.js';
-import { dashboardUrl } from '../stripe.js';
+import { dashboardUrl, PUBLIC_URL } from '../stripe.js';
+import { createResetToken, resetMailEnabled, resetTokenUser, sendResetEmail, useResetToken } from '../password-reset.js';
 import { brevoEnabled, removeSubscriber } from '../newsletter.js';
 import { visitStats } from '../visits.js';
 
@@ -156,6 +157,57 @@ export default function adminRoutes({ isDev, noLogin = false, ownerSetupProblem 
 
   router.post('/login/cancel', (req, res) => {
     endPending(req, res, opts);
+    res.json({ ok: true });
+  });
+
+  // ---------- Forgot password: a one-time link by email ----------
+  // The answer is the same whether the email has an account or not, so nobody can test addresses.
+
+  const resetHits = new Map();
+  const tooManyResets = (key, max) => {
+    const now = Date.now();
+    const list = (resetHits.get(key) || []).filter((t) => now - t < 3600_000);
+    list.push(now);
+    resetHits.set(key, list);
+    return list.length > max;
+  };
+  // Where the link points: the real https address online, the dev site on this computer
+  const siteFor = (req) => (PUBLIC_URL.startsWith('https://') || isDev ? PUBLIC_URL : `${req.protocol}://${req.get('host')}`);
+
+  router.post('/forgot', async (req, res) => {
+    if (!resetMailEnabled) return res.status(503).json({ error: 'Dërgimi i email-eve nuk është lidhur (BREVO_API_KEY). Ndryshoje fjalëkalimin me npm run pronari.' });
+    const email = String(req.body?.email || '').trim().toLowerCase();
+    if (!validEmail(email)) return res.status(400).json({ error: 'Shkruaj një email të vlefshëm.' });
+    if (tooManyResets(`ip:${req.ip}`, 5) || tooManyResets(`email:${email}`, 3)) return res.status(429).json({ error: TOO_MANY });
+    const user = userByEmail(email);
+    if (user) {
+      const token = createResetToken(user.id);
+      try {
+        await sendResetEmail(user.email, `${siteFor(req)}/admin?rivendos=${token}`);
+        audit(req, user, 'password_reset_requested', 'Lidhja për fjalëkalimin e ri u dërgua me email');
+      } catch (err) {
+        console.error(`Email-i për fjalëkalimin nuk u dërgua: ${err.message}`);
+        return res.status(502).json({ error: 'Email-i nuk u dërgua. Provo pas pak, ose përdor npm run pronari.' });
+      }
+    }
+    res.json({ ok: true });
+  });
+
+  const EXPIRED = 'Lidhja ka skaduar ose është përdorur. Kërko një të re.';
+
+  router.get('/reset/check', (req, res) => res.json({ valid: Boolean(resetTokenUser(req.query.token)) }));
+
+  router.post('/reset', (req, res) => {
+    const { token, password } = req.body || {};
+    const target = userById(resetTokenUser(token));
+    if (!target) return res.status(400).json({ error: EXPIRED });
+    const problem = passwordProblem(password, target.email);
+    if (problem) return res.status(400).json({ error: problem });
+    if (useResetToken(token) !== target.id) return res.status(400).json({ error: EXPIRED });
+    setPassword(target.id, password);
+    db.prepare('UPDATE users SET failed_logins = 0, locked_until = 0 WHERE id = ?').run(target.id);
+    endUserSessions(target.id);
+    audit(req, target, 'password_reset', 'Fjalëkalimi u ndryshua me lidhjen nga email-i');
     res.json({ ok: true });
   });
 

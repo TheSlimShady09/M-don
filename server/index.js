@@ -5,7 +5,8 @@ import multer from 'multer';
 import { ROOT, UPLOAD_DIR } from './db.js';
 import publicRoutes from './routes/public.js';
 import adminRoutes from './routes/admin.js';
-import { stripeEnabled, WEBHOOK_SECRET, handleWebhook, syncPending } from './stripe.js';
+import { stripeEnabled, WEBHOOK_SECRET, PUBLIC_URL, handleWebhook, syncPending } from './stripe.js';
+import { CATEGORIES, SEASONS } from '../shared/shop.js';
 import { brevoEnabled, syncSubscribers } from './newsletter.js';
 import { audit, createUser, passwordProblem, userCount, validEmail } from './auth.js';
 
@@ -99,11 +100,44 @@ app.use('/api', publicRoutes);
 app.use('/api', (req, res) => res.status(404).json({ error: 'Nuk u gjet.' }));
 app.use('/uploads', express.static(UPLOAD_DIR, { maxAge: '7d' }));
 
+// ---------- For Google: robots.txt and sitemap.xml ----------
+// The site's own address: PUBLIC_URL when it is set to the real https address, otherwise the one Google asked for
+const siteUrl = (req) => (PUBLIC_URL.startsWith('https://') ? PUBLIC_URL : `${req.protocol}://${req.get('host')}`);
+const PRIVATE = ['/admin', '/api/', '/shporta', '/porosia/'];
+
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain').send([
+    'User-agent: *',
+    ...PRIVATE.map((p) => `Disallow: ${p}`),
+    '',
+    `Sitemap: ${siteUrl(req)}/sitemap.xml`,
+    '',
+  ].join('\n'));
+});
+
+app.get('/sitemap.xml', (req, res) => {
+  const base = siteUrl(req);
+  const pages = [
+    ['/', '1.0'],
+    ['/katalogu', '0.9'],
+    ...Object.keys(CATEGORIES).map((k) => [`/katalogu?k=${k}`, '0.8']),
+    ...Object.keys(SEASONS).map((s) => [`/katalogu?stina=${s}`, '0.7']),
+  ];
+  const urls = pages.map(([p, priority]) => `  <url><loc>${base}${p}</loc><changefreq>weekly</changefreq><priority>${priority}</priority></url>`);
+  res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`);
+});
+
 // Production: serve the built React app
 const dist = path.join(ROOT, 'dist');
+// Addresses the shop really has; anything else gets the "not found" page with a real 404, so Google drops it
+const KNOWN = /^\/(katalogu|shporta)?\/?$|^\/porosia\/[^/]+\/?$|^\/admin(\/.*)?$/;
 if (!isDev && fs.existsSync(dist)) {
   app.use(express.static(dist, { index: false, maxAge: '1h' }));
-  app.use((req, res, next) => (req.method === 'GET' ? res.sendFile(path.join(dist, 'index.html')) : next()));
+  app.use((req, res, next) => {
+    if (req.method !== 'GET') return next();
+    if (PRIVATE.some((p) => req.path.startsWith(p))) res.set('X-Robots-Tag', 'noindex');
+    return res.status(KNOWN.test(req.path) ? 200 : 404).sendFile(path.join(dist, 'index.html'));
+  });
 }
 
 // eslint-disable-next-line no-unused-vars

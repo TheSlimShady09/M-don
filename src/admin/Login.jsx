@@ -52,7 +52,7 @@ function useStep() {
 
 // ---------- Step 1: email + password (or first-time account) ----------
 
-function PasswordStep({ setup, notice, onNext }) {
+function PasswordStep({ setup, notice, onNext, onForgot }) {
   const [f, setF] = useState({ email: '', password: '', again: '' });
   const { error, setError, busy, run } = useStep();
 
@@ -87,7 +87,95 @@ function PasswordStep({ setup, notice, onNext }) {
         )}
         {error && <p role="alert" className={note}>{error}</p>}
         <button type="submit" disabled={busy} className="btn btn-red mt-2 w-full">{busy ? 'Po kontrollohet…' : 'Vazhdo'}</button>
+        {!setup && <button type="button" onClick={onForgot} className="caps-xs text-white/60 hover:text-white">Harrove fjalëkalimin?</button>}
       </form>
+    </Shell>
+  );
+}
+
+// ---------- Forgot password: ask for the link by email ----------
+
+function ForgotStep({ onBack }) {
+  const [email, setEmail] = useState('');
+  const [sent, setSent] = useState(false);
+  const { error, busy, run } = useStep();
+
+  const submit = (e) => {
+    e.preventDefault();
+    run(async () => {
+      await api('/admin/forgot', { method: 'POST', body: { email } });
+      setSent(true);
+    }).catch(() => {});
+  };
+
+  return (
+    <Shell title="Harrove fjalëkalimin?">
+      {sent ? (
+        <div className="grid gap-5 text-center text-sm text-white/80">
+          <p role="status">Nëse <strong className="font-medium text-white">{email}</strong> ka një llogari në panel, sapo i dërguam një email me lidhjen për fjalëkalimin e ri. Lidhja vlen <strong className="font-medium text-white">30 minuta</strong>.</p>
+          <p className="text-white/60">Nuk e gjen? Shiko edhe te Spam ose Promotions.</p>
+          <button type="button" onClick={onBack} className="btn btn-red w-full">Kthehu te hyrja</button>
+        </div>
+      ) : (
+        <form onSubmit={submit} className="grid gap-5">
+          <p className="text-center text-sm text-white/70">Shkruaj email-in e llogarisë. Do të të dërgojmë një lidhje për të zgjedhur një fjalëkalim të ri. Kodi 6-shifror nga aplikacioni do të kërkohet përsëri.</p>
+          <div>
+            <label htmlFor="fg-email" className={label}>Email-i</label>
+            <input id="fg-email" type="email" autoComplete="username" required autoFocus value={email} onChange={(e) => setEmail(e.target.value)} className={input} />
+          </div>
+          {error && <p role="alert" className={note}>{error}</p>}
+          <button type="submit" disabled={busy} className="btn btn-red w-full">{busy ? 'Po dërgohet…' : 'Më dërgo lidhjen'}</button>
+          <button type="button" onClick={onBack} className="caps-xs text-white/60 hover:text-white">← Kthehu te hyrja</button>
+        </form>
+      )}
+    </Shell>
+  );
+}
+
+// ---------- The link from the email: choose the new password ----------
+
+export function ResetPassword({ token, onDone }) {
+  const [valid, setValid] = useState(null);
+  const [f, setF] = useState({ password: '', again: '' });
+  const { error, setError, busy, run } = useStep();
+
+  useEffect(() => {
+    api(`/admin/reset/check?token=${encodeURIComponent(token)}`).then((r) => setValid(r.valid)).catch(() => setValid(false));
+  }, [token]);
+
+  const submit = (e) => {
+    e.preventDefault();
+    if (f.password !== f.again) return setError('Fjalëkalimet nuk përputhen.');
+    return run(async () => {
+      await api('/admin/reset', { method: 'POST', body: { token, password: f.password } });
+      onDone('Fjalëkalimi u ndryshua. Hyr me fjalëkalimin e ri dhe kodin nga aplikacioni.');
+    }).catch(() => {});
+  };
+
+  return (
+    <Shell title="Fjalëkalimi i ri">
+      {valid === null && <p className="text-center text-sm text-white/60">Po kontrollohet lidhja…</p>}
+      {valid === false && (
+        <div className="grid gap-5 text-center text-sm text-white/80">
+          <p role="alert">Kjo lidhje ka skaduar ose është përdorur tashmë. Kërko një të re nga faqja e hyrjes.</p>
+          <button type="button" onClick={() => onDone('')} className="btn btn-red w-full">Kthehu te hyrja</button>
+        </div>
+      )}
+      {valid && (
+        <form onSubmit={submit} className="grid gap-5">
+          <p className="text-center text-sm text-white/70">Zgjidh një fjalëkalim që e di vetëm ti: të paktën 12 shkronja, mundësisht disa fjalë të ndara me viza.</p>
+          <div>
+            <label htmlFor="rs-pw" className={label}>Fjalëkalimi i ri</label>
+            <PasswordInput id="rs-pw" autoComplete="new-password" required autoFocus value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} className={input} />
+          </div>
+          <div>
+            <label htmlFor="rs-again" className={label}>Përsërite</label>
+            <PasswordInput id="rs-again" autoComplete="new-password" required value={f.again} onChange={(e) => setF({ ...f, again: e.target.value })} className={input} />
+          </div>
+          {error && <p role="alert" className={note}>{error}</p>}
+          <button type="submit" disabled={busy} className="btn btn-red w-full">{busy ? 'Po ruhet…' : 'Ruaj fjalëkalimin'}</button>
+        </form>
+      )}
     </Shell>
   );
 }
@@ -264,7 +352,8 @@ export function SignIn({ setup = false, initialStage, notice: initialNotice, onD
   if (stage === 'enroll') return <EnrollStep onRestart={restart} onEnrolled={(list, email) => { setCodes({ list, email }); setStage('codes'); }} />;
   if (stage === 'codes') return <CodesStep codes={codes.list} email={codes.email} onDone={() => onDone()} />;
   if (stage === 'totp') return <TotpStep onRestart={restart} onDone={(left) => onDone(left)} />;
-  return <PasswordStep setup={setup} notice={notice} onNext={setStage} />;
+  if (stage === 'forgot') return <ForgotStep onBack={() => restart('')} />;
+  return <PasswordStep setup={setup} notice={notice} onNext={setStage} onForgot={() => setStage('forgot')} />;
 }
 
 export function NoOwner({ problem }) {
