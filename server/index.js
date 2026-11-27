@@ -132,7 +132,12 @@ app.use('/uploads', express.static(UPLOAD_DIR, { maxAge: '7d' }));
 
 // ---------- For Google: robots.txt and sitemap.xml ----------
 // The site's own address: PUBLIC_URL when it is set to the real https address, otherwise the one Google asked for
-const siteUrl = (req) => (PUBLIC_URL.startsWith('https://') ? PUBLIC_URL : `${req.protocol}://${req.get('host')}`);
+// Online it is always https, even when the proxy in front (Render) reaches us over http
+const siteUrl = (req) => {
+  if (PUBLIC_URL.startsWith('https://')) return PUBLIC_URL;
+  const host = req.get('host') || '';
+  return `${/^(localhost|127\.|\[::1\])/.test(host) ? req.protocol : 'https'}://${host}`;
+};
 const PRIVATE = ['/admin', '/api/', '/shporta', '/porosia/'];
 
 app.get('/robots.txt', (req, res) => {
