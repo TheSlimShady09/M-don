@@ -149,18 +149,21 @@ const EN = {
   'orë': 'hours',
   'deri në hapje': 'until opening',
 
-  // Premium: the 342-diamond eagle
+  // Premium: the founder's Iced Out Eagle (not for sale)
   'Versioni premium': 'The premium edition',
-  'Shqiponja,': 'The eagle,',
-  '342 diamante': '342 diamonds',
-  'Copa më e veçantë e M’DON. Në shpinë të këmishës xhins, shqiponja dykrenore e flamurit, e bërë me 342 diamante të vegjël që kapin dritën në çdo lëvizje. Një simbol i lashtë, në versionin më premium të markës sonë.':
-    'The most special piece M’DON makes. On the back of the denim shirt, the double-headed eagle of the flag, made with 342 small diamonds that catch the light with every move. An ancient symbol, in the most premium edition of our brand.',
   'Një burrë me shpinë nga ne, brenda një kutie xhami me akull, me këmishë xhins që ka në shpinë shqiponjën dykrenore prej diamantesh':
     'A man with his back to us inside an icy glass box, in a denim shirt with the double-headed eagle in diamonds on the back',
-  'Këmisha Shqiponja, xhins me 342 diamante': 'The Eagle shirt, denim with 342 diamonds',
-  'diamante të vegjël': 'small diamonds',
-  'shqiponjë dykrenore, në shpinë': 'double-headed eagle, on the back',
-  'xhins, prerë dhe qepur në Toronto': 'denim, cut and sewn in Toronto',
+  'Shqiponja Iced Out,': 'Iced Out Eagle,',
+  '346 diamante': '346 diamonds',
+  'Me 346 diamante të vendosur me dorë një nga një, secili i pozicionuar me kujdes për të ndriçuar shqiponjën dykrenore shqiptare. Një emblemë identiteti, force dhe trashëgimie, e rimenduar përmes gjuhës vizuale të veçantë të M’DON.': 'Featuring 346 individually hand-placed diamonds, each meticulously positioned to illuminate the Albanian double-headed eagle. An emblem of identity, strength and legacy, reinterpreted through the distinctive visual language of M’DON.',
+  'E projektuar dhe e veshur nga themeluesi ynë Kenli Petrela si numri i parë i M’DON Vjeshtë/Dimër ’26, kjo copë unike ofron një hyrje intime në universin krijues të shtëpisë, ku mjeshtëria bëhet shprehje dhe trashëgimia bëhet art.': 'Designed and worn by our founder Kenli Petrela as a first issue of M’DON Fall/Winter ’26, this one-of-a-kind piece offers an intimate introduction to the creative universe of the house, where craftsmanship becomes expression and heritage becomes art.',
+  'Krijuar ekskluzivisht për editorialin e M’DON. Nuk do të riprodhohet kurrë.': 'Created exclusively for the M’DON editorial. Never to be reproduced.',
+  'Nuk shitet.': 'Not available for purchase.',
+  'Një hyrje në botën e M’DON.': 'An introduction to the world of M’DON.',
+  'Shqiponja Iced Out, këmishë xhins me 346 diamante': 'The Iced Out Eagle, denim shirt with 346 diamonds',
+  'diamante, të vendosur me dorë një nga një': 'diamonds, hand-placed one by one',
+  'copë e vetme, nuk riprodhohet kurrë': 'one-of-a-kind piece, never reproduced',
+  'numri i parë i M’DON': 'the first issue of M’DON',
 
   // Craft
   'Mjeshtëria': 'Craft',

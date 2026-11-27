@@ -202,24 +202,20 @@ function Lookbook() {
 
 // The facts under the eagle photo: figure, then what it counts
 const EAGLE_FACTS = [
-  { n: '342', text: 'diamante të vegjël' },
-  { n: '1', text: 'shqiponjë dykrenore, në shpinë' },
-  { n: '100%', text: 'xhins, prerë dhe qepur në Toronto' },
+  { n: '346', text: 'diamante, të vendosur me dorë një nga një' },
+  { n: '1', text: 'copë e vetme, nuk riprodhohet kurrë' },
+  { n: 'FW26', text: 'numri i parë i M’DON' },
 ];
 
+// The founder's one-of-a-kind piece: shown, never sold
 function Eagle() {
   const { t } = useLang();
   return (
-    <section id="shqiponja" aria-labelledby="eagle-title" className="scroll-mt-20 pb-[clamp(80px,9vw,136px)] pt-[clamp(88px,11vw,168px)]">
+    <section id="shqiponja" aria-labelledby="eagle-title" className="scroll-mt-20 pb-[clamp(80px,9vw,136px)] pt-[clamp(64px,8vw,120px)]">
       <Wrap>
-        <header className="mb-[clamp(40px,5vw,64px)] grid items-end gap-x-16 gap-y-6 lg:grid-cols-[1fr_minmax(0,420px)]">
-          <div>
-            <p className="eyebrow">{t('Versioni premium')}</p>
-            <h2 id="eagle-title" className={`${h2} text-white`}>{t('Shqiponja,')} <em className="text-flame">{t('342 diamante')}</em></h2>
-          </div>
-          <p className="text-white/62">
-            {t('Copa më e veçantë e M’DON. Në shpinë të këmishës xhins, shqiponja dykrenore e flamurit, e bërë me 342 diamante të vegjël që kapin dritën në çdo lëvizje. Një simbol i lashtë, në versionin më premium të markës sonë.')}
-          </p>
+        <header className="mb-[clamp(32px,4vw,56px)]">
+          <p className="eyebrow">{t('Versioni premium')}</p>
+          <h2 id="eagle-title" className={`${h2} text-white`}>{t('Shqiponja Iced Out,')} <em className="text-flame">{t('346 diamante')}</em></h2>
         </header>
         <Reveal as="figure">
           <img
@@ -230,8 +226,18 @@ function Eagle() {
             alt={t('Një burrë me shpinë nga ne, brenda një kutie xhami me akull, me këmishë xhins që ka në shpinë shqiponjën dykrenore prej diamantesh')}
             className="block aspect-[4/5] w-full object-cover sm:aspect-[16/9]"
           />
-          <figcaption className="mt-3.5 caps-xs text-white/62">{t('Këmisha Shqiponja, xhins me 342 diamante')}</figcaption>
+          <figcaption className="mt-3.5 caps-xs text-white/62">{t('Shqiponja Iced Out, këmishë xhins me 346 diamante')}</figcaption>
         </Reveal>
+        <div className="mt-[clamp(40px,5vw,72px)] grid gap-x-16 gap-y-10 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+          <div className="max-w-[62ch] space-y-5 leading-relaxed text-white/80">
+            <p>{t('Me 346 diamante të vendosur me dorë një nga një, secili i pozicionuar me kujdes për të ndriçuar shqiponjën dykrenore shqiptare. Një emblemë identiteti, force dhe trashëgimie, e rimenduar përmes gjuhës vizuale të veçantë të M’DON.')}</p>
+            <p>{t('E projektuar dhe e veshur nga themeluesi ynë Kenli Petrela si numri i parë i M’DON Vjeshtë/Dimër ’26, kjo copë unike ofron një hyrje intime në universin krijues të shtëpisë, ku mjeshtëria bëhet shprehje dhe trashëgimia bëhet art.')}</p>
+          </div>
+          <div className="border-l border-crimson pl-6 lg:self-start">
+            <p className="font-serif text-xl italic leading-snug text-white/80">{t('Krijuar ekskluzivisht për editorialin e M’DON. Nuk do të riprodhohet kurrë.')}<br />{t('Nuk shitet.')}</p>
+            <p className="mt-6 caps text-white">{t('Një hyrje në botën e M’DON.')}</p>
+          </div>
+        </div>
         <ul className="mt-[clamp(40px,5vw,64px)] grid gap-8 border-t border-white/14 pt-8 sm:grid-cols-3">
           {EAGLE_FACTS.map(({ n, text }) => (
             <li key={n} className="flex items-baseline gap-4">
@@ -340,9 +346,9 @@ export default function Home() {
       <PreOrder />
       <Kilim />
       <Categories />
+      <Eagle />
       <Story />
       <Season />
-      <Eagle />
       <BestSellers />
       <Features />
       <Newsletter />
