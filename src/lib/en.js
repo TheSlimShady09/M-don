@@ -211,6 +211,12 @@ const EN = {
 
   // Newsletter
   'Bëhu pjesë e fisit': 'Join the Fis',
+  'Newsletter': 'Newsletter',
+  'Bëhu pjesë': 'Join',
+  'e fisit.': 'the Fis.',
+  'Qasje e hershme në çdo drop': 'Early access to every drop',
+  'Para-porosia para të gjithëve': 'Pre-order before everyone else',
+  'Historitë pas çdo motivi': 'The stories behind every motif',
   'Merr i pari koleksionet e reja, ftesat për shfaqjet dhe historitë pas çdo motivi.':
     'Be the first to see new collections, invitations to our shows and the stories behind every motif.',
   'Adresa e email-it': 'Email address',

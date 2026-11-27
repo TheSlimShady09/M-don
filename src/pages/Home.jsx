@@ -301,28 +301,43 @@ function Newsletter() {
   };
 
   return (
-    <section aria-labelledby="news-title" className="on-red bg-crimson py-[clamp(88px,10vw,144px)] text-center text-white">
-      <Wrap className="flex flex-col items-center">
-        <Monogram className="mb-8 w-[88px] text-beige" />
-        <h2 id="news-title" className="font-serif text-[length:clamp(46px,5.6vw,84px)] font-light leading-none tracking-[.01em]">{t('Bëhu pjesë e fisit')}</h2>
-        <p className="mt-5 max-w-[46ch] text-white/90">{t('Merr i pari koleksionet e reja, ftesat për shfaqjet dhe historitë pas çdo motivi.')}</p>
-        <form onSubmit={submit} noValidate className="mt-11 flex w-full max-w-[560px] flex-col gap-3 sm:flex-row sm:gap-0">
-          <label htmlFor="news-email" className="sr-only">{t('Adresa e email-it')}</label>
-          <input
-            ref={input}
-            id="news-email"
-            type="email"
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            aria-invalid={state.invalid || undefined}
-            aria-describedby="news-note"
-            placeholder={t('Adresa jote e email-it')}
-            className="h-[54px] min-w-0 flex-none rounded-none border sm:flex-1 border-white/70 bg-transparent px-5 text-[15px] font-light tracking-[.02em] text-white outline-none placeholder:text-white/80 focus:border-white focus:bg-ink/10 aria-invalid:border-ink sm:border-r-0"
-          />
-          <button type="submit" disabled={state.busy} className="btn btn-black">{t('Regjistrohu')}</button>
-        </form>
-        <p id="news-note" role="status" className="mt-[18px] min-h-[1.7em] text-[13px] text-white/85">{t(state.note)}</p>
+    <section aria-labelledby="news-title" className="relative isolate overflow-hidden border-t border-white/14 bg-ink py-[clamp(88px,10vw,152px)]">
+      {/* big faint MD behind the words */}
+      <Monogram className="pointer-events-none absolute -right-[6%] top-1/2 -z-10 w-[min(560px,80vw)] -translate-y-1/2 text-crimson opacity-15 lg:opacity-25" />
+      <Wrap className="grid items-end gap-x-[clamp(40px,7vw,120px)] gap-y-12 lg:grid-cols-[1.1fr_1fr]">
+        <div>
+          <p className="eyebrow">{t('Newsletter')}</p>
+          <h2 id="news-title" className="mt-6 font-serif text-[length:clamp(52px,7vw,110px)] font-light leading-[.95] text-white">
+            {t('Bëhu pjesë')}<br /><em className="text-flame">{t('e fisit.')}</em>
+          </h2>
+          <p className="mt-6 max-w-[42ch] leading-relaxed text-white/70">{t('Merr i pari koleksionet e reja, ftesat për shfaqjet dhe historitë pas çdo motivi.')}</p>
+        </div>
+        <div>
+          <ul className="mb-8 space-y-3.5">
+            {['Qasje e hershme në çdo drop', 'Para-porosia para të gjithëve', 'Historitë pas çdo motivi'].map((perk) => (
+              <li key={perk} className="flex items-center gap-4 text-white/85">
+                <span aria-hidden="true" className="size-2 shrink-0 rotate-45 bg-flame" />{t(perk)}
+              </li>
+            ))}
+          </ul>
+          <form onSubmit={submit} noValidate className="flex items-center rounded-full border border-white/25 bg-white/[.04] p-1.5 transition-colors focus-within:border-flame has-[[aria-invalid]]:border-flame">
+            <label htmlFor="news-email" className="sr-only">{t('Adresa e email-it')}</label>
+            <input
+              ref={input}
+              id="news-email"
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              aria-invalid={state.invalid || undefined}
+              aria-describedby="news-note"
+              placeholder={t('Adresa jote e email-it')}
+              className="h-12 min-w-0 flex-1 bg-transparent pl-5 pr-3 text-[15px] font-light tracking-[.02em] text-white outline-none placeholder:text-white/55"
+            />
+            <button type="submit" disabled={state.busy} className="btn btn-red h-12 shrink-0 rounded-full px-6 text-xs sm:px-8">{t('Regjistrohu')}</button>
+          </form>
+          <p id="news-note" role="status" className={`mt-4 min-h-[1.7em] pl-5 text-[13px] ${state.invalid ? 'text-flame' : 'text-white/55'}`}>{t(state.note)}</p>
+        </div>
       </Wrap>
     </section>
   );
